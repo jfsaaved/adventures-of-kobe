@@ -10,20 +10,29 @@ import com.mygdx.runrunrun.Main;
 public class Hero extends MoveableObject {
 
     private TextureRegion hero;
+    private float x;
+    private float y;
 
     public Hero(){
 
+        super();
+        this.x = Main.WIDTH / 2;
+        this.y = Main.HEIGHT / 2;
         hero = Main.resource.getAtlas("assets").findRegion("Hero");
 
     }
 
     public void update(float dt){
 
+        this.y = yVelocity(this.y);
+        this.x = xVelocity(this.x);
 
     }
 
     public void render(SpriteBatch sb){
-        sb.draw(hero, Main.WIDTH / 2, Main.HEIGHT / 2);
+
+        sb.draw(hero, x, y);
+
     }
 
 }
