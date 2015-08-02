@@ -8,10 +8,13 @@ import com.mygdx.runrunrun.Main;
  */
 public class MoveableObject {
 
+
+    // Gravity acceleration variables
     protected static float GRAVITY = -5f;
     protected static float MAX_ACC = 10f;
     protected float free_fall_timer = 0f;
 
+    // The move-able object properties
     protected Vector2 position;
     protected float width;
     protected float height;
@@ -33,8 +36,12 @@ public class MoveableObject {
 
     protected Vector2 velocity(float init_x, float init_y){
         Vector2 newPos;
-        float final_x = init_x;
+        float final_x = init_x + 5;
         float final_y = init_y + (GRAVITY * free_fall_timer);
+
+        if(final_x > 800){
+            final_x = 0;
+        }
 
         if(init_y > 0){
             newPos = new Vector2(final_x, final_y);
@@ -44,7 +51,7 @@ public class MoveableObject {
             }
         }
         else{
-            newPos = new Vector2(init_x,0);
+            newPos = new Vector2(final_x,0);
             free_fall_timer = 0;
         }
         return newPos;
