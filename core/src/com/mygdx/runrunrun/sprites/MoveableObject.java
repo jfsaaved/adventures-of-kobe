@@ -9,8 +9,7 @@ import com.mygdx.runrunrun.Main;
 public class MoveableObject {
 
     protected static float GRAVITY = -5f;
-    protected static float MAX_ACC = 2f;
-    protected static float TIME_INCREMENT = 0.05f;
+    protected static float MAX_ACC = 10f;
     protected float free_fall_timer = 0f;
 
     protected Vector2 position;
@@ -41,7 +40,7 @@ public class MoveableObject {
             newPos = new Vector2(final_x, final_y);
 
             if(free_fall_timer <= MAX_ACC) {
-                free_fall_timer += TIME_INCREMENT;
+                free_fall_timer += 0.05f;
             }
         }
         else{

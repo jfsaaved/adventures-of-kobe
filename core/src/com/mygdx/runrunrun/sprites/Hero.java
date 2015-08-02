@@ -29,7 +29,7 @@ public class Hero extends MoveableObject {
 
     public void jump(){
         if(inAir == false) {
-            jump_acceleration = 7f;
+            jump_acceleration = 8f;
             jump_potential_energy = 1f;
         }
     }
@@ -38,7 +38,7 @@ public class Hero extends MoveableObject {
 
         jump_velocity = jump_acceleration * jump_potential_energy;
 
-        if(jump_velocity > 0f && jump_velocity < 100f){
+        if(jump_velocity > 0f){
             inAir = true;
             jump_acceleration += 0.05f;
             jump_potential_energy -= 0.015f;
@@ -47,6 +47,7 @@ public class Hero extends MoveableObject {
             inAir = false;
             jump_acceleration = 0f;
             jump_potential_energy = 0f;
+            jump_velocity = 0f;
         }
 
         this.position = velocity(this.position.x, this.position.y + jump_velocity);
