@@ -2,6 +2,7 @@ package com.mygdx.runrunrun.sprites;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.runrunrun.Main;
 
 /**
@@ -10,28 +11,50 @@ import com.mygdx.runrunrun.Main;
 public class Hero extends MoveableObject {
 
     private TextureRegion hero;
-    private float x;
-    private float y;
+    private Vector2 position;
+
+    // Jump mechanics
+    private float jump_acceleration;
+    private float jump_potential_energy;
+    private float jump_velocity;
+    private boolean inAir;
 
     public Hero(){
 
-        super();
-        this.x = Main.WIDTH / 2;
-        this.y = Main.HEIGHT / 2;
+        super(100, 0);
+        this.position = super.position;
         hero = Main.resource.getAtlas("assets").findRegion("Hero");
 
     }
 
+    public void jump(){
+        if(inAir == false) {
+            jump_acceleration = 7f;
+            jump_potential_energy = 1f;
+        }
+    }
+
     public void update(float dt){
 
-        this.y = yVelocity(this.y);
-        this.x = xVelocity(this.x);
+        jump_velocity = jump_acceleration * jump_potential_energy;
 
+        if(jump_velocity > 0f && jump_velocity < 100f){
+            inAir = true;
+            jump_acceleration += 0.05f;
+            jump_potential_energy -= 0.015f;
+        }
+        else{
+            inAir = false;
+            jump_acceleration = 0f;
+            jump_potential_energy = 0f;
+        }
+
+        this.position = velocity(this.position.x, this.position.y + jump_velocity);
     }
 
     public void render(SpriteBatch sb){
 
-        sb.draw(hero, x, y);
+        sb.draw(hero, this.position.x, this.position.y);
 
     }
 

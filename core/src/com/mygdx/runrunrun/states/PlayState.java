@@ -1,5 +1,6 @@
 package com.mygdx.runrunrun.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.runrunrun.Main;
@@ -20,13 +21,15 @@ public class PlayState extends State{
     }
 
     public void handleInput(){
-
+        if(Gdx.input.justTouched()){
+            hero.jump();
+        }
     }
 
     public void update(float dt){
 
+        handleInput();
         hero.update(dt);
-
     }
 
     public void render(SpriteBatch sb){

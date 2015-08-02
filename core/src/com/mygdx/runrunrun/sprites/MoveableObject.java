@@ -1,5 +1,6 @@
 package com.mygdx.runrunrun.sprites;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.runrunrun.Main;
 
 /**
@@ -7,37 +8,47 @@ import com.mygdx.runrunrun.Main;
  */
 public class MoveableObject {
 
-    protected static int GRAVITY = -4;
+    protected static float GRAVITY = -5f;
+    protected static float MAX_ACC = 2f;
+    protected static float TIME_INCREMENT = 0.05f;
+    protected float free_fall_timer = 0f;
 
-    protected float x;
-    protected float y;
+    protected Vector2 position;
     protected float width;
     protected float height;
 
     protected MoveableObject(){
-        this.x = 0;
-        this.y = 0;
+        position = new Vector2(0,0);
+    }
+
+    protected MoveableObject(float x, float y){
+        position = new Vector2(x, y);
     }
 
     public boolean contains(float x, float y){
-        return x > this.x - width / 2 &&
-                x < this.x + width / 2 &&
-                y > this.y - height / 2 &&
-                y < this.y + height / 2;
+        return x > this.position.x - width / 2 &&
+                x < this.position.x + width / 2 &&
+                y > this.position.y - height / 2 &&
+                y < this.position.y + height / 2;
     }
 
-    protected float yVelocity(float p_y){
-        if(p_y <= 0){
-            return 0;
+    protected Vector2 velocity(float init_x, float init_y){
+        Vector2 newPos;
+        float final_x = init_x;
+        float final_y = init_y + (GRAVITY * free_fall_timer);
+
+        if(init_y > 0){
+            newPos = new Vector2(final_x, final_y);
+
+            if(free_fall_timer <= MAX_ACC) {
+                free_fall_timer += TIME_INCREMENT;
+            }
         }
         else{
-            return p_y + GRAVITY;
+            newPos = new Vector2(init_x,0);
+            free_fall_timer = 0;
         }
+        return newPos;
     }
-
-    protected float xVelocity(float p_x){
-        return p_x;
-    }
-
 
 }
