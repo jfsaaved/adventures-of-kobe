@@ -21,7 +21,7 @@ public class Hero extends MoveableObject {
 
     public Hero(){
 
-        super(100, 0);
+        super(0, 0);
         this.position = super.position;
         hero = Main.resource.getAtlas("assets").findRegion("Hero");
 
@@ -50,7 +50,15 @@ public class Hero extends MoveableObject {
             jump_velocity = 0f;
         }
 
-        this.position = velocity(this.position.x, this.position.y + jump_velocity);
+        this.position = velocity(this.position.x, this.position.y + jump_velocity, true);
+    }
+
+    public float getX(){
+        return this.position.x;
+    }
+
+    public float getY(){
+        return this.position.y;
     }
 
     public void render(SpriteBatch sb){

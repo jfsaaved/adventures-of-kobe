@@ -34,13 +34,20 @@ public class MoveableObject {
                 y < this.position.y + height / 2;
     }
 
-    protected Vector2 velocity(float init_x, float init_y){
+    protected Vector2 velocity(float init_x, float init_y, boolean x_vel){
         Vector2 newPos;
-        float final_x = init_x + 5;
+        float final_x;
+        if(x_vel == true)
+            final_x = init_x + 5;
+        else{
+            final_x = init_x;
+        }
         float final_y = init_y + (GRAVITY * free_fall_timer);
 
-        if(final_x > 800){
-            final_x = 0;
+        if(x_vel == true) {
+            if (final_x > 960) {
+                final_x = 0;
+            }
         }
 
         if(init_y > 0){
