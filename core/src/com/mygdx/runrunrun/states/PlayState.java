@@ -7,6 +7,7 @@ import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Hero;
 import com.mygdx.runrunrun.sprites.MoveableObject;
+import com.mygdx.runrunrun.ui.TextImage;
 
 import java.util.Random;
 
@@ -21,6 +22,9 @@ public class PlayState extends State{
     private TextureRegion bg;
 
     private float hit_cool_down;
+    private float hit_splash_cool_down;
+
+    private TextImage hit_splash;
 
     public PlayState(GSM gsm){
         super(gsm);
@@ -31,6 +35,7 @@ public class PlayState extends State{
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+        hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
 
     }
 
@@ -42,8 +47,8 @@ public class PlayState extends State{
 
     public void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
         if(firstObj.contains(secondObj.getPosition())){
-            System.out.println("HIT!!");
             hit_cool_down = 5f;
+            hit_splash_cool_down = 60f;
         }
     }
 
@@ -61,6 +66,14 @@ public class PlayState extends State{
             collisionDetection(hero,block);
         }
 
+        if(hit_splash_cool_down > 0f){
+            hit_splash.setHide(false);
+            hit_splash_cool_down--;
+        }
+        else{
+            hit_splash.setHide(true);
+        }
+
         if(hero.getPosition().x >= 960){
             Random rand = new Random();
             int x_block_pos = rand.nextInt(700) + 100;
@@ -70,6 +83,9 @@ public class PlayState extends State{
 
         cam.position.set(hero.getPosition().x + 150, 100, 0);
         cam.update();
+
+        hit_splash.update("Hit!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+
     }
 
     public void render(SpriteBatch sb){
@@ -81,8 +97,10 @@ public class PlayState extends State{
         sb.draw(bg,960,0);
         sb.draw(bg,-960,0);
 
-        hero.render(sb);
         block.render(sb);
+        hero.render(sb);
+
+        hit_splash.render(sb);
 
         sb.end();
 

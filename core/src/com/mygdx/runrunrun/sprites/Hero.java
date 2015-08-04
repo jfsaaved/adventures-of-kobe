@@ -18,12 +18,17 @@ public class Hero extends MoveableObject {
     private float jump_velocity;
     private boolean inAir;
 
+    private float sprinting;
+    private boolean up_or_down;
+
     public Hero(float x, float y){
 
         super(x, y);
         hero = Main.resource.getAtlas("assets").findRegion("Hero");
         width = hero.getRegionWidth();
         height = hero.getRegionHeight();
+        sprinting = 0f;
+        up_or_down = true;
 
     }
 
@@ -35,6 +40,19 @@ public class Hero extends MoveableObject {
     }
 
     public void update(float dt){
+
+        if(up_or_down == true){
+            sprinting++;
+            if(sprinting > 5f){
+                up_or_down = false;
+            }
+        }
+        else if(up_or_down == false){
+            sprinting--;
+            if(sprinting < 0f){
+                up_or_down = true;
+            }
+        }
 
         jump_velocity = jump_acceleration * jump_potential_energy;
 
@@ -55,7 +73,7 @@ public class Hero extends MoveableObject {
 
     public void render(SpriteBatch sb){
 
-        sb.draw(hero, position.x, position.y);
+        sb.draw(hero, position.x, position.y, width, height - sprinting);
 
     }
 
