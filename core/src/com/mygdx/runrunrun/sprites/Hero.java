@@ -11,7 +11,6 @@ import com.mygdx.runrunrun.Main;
 public class Hero extends MoveableObject {
 
     private TextureRegion hero;
-    private Vector2 position;
 
     // Jump mechanics
     private float jump_acceleration;
@@ -19,11 +18,12 @@ public class Hero extends MoveableObject {
     private float jump_velocity;
     private boolean inAir;
 
-    public Hero(){
+    public Hero(float x, float y){
 
-        super(0, 0);
-        this.position = super.position;
+        super(x, y);
         hero = Main.resource.getAtlas("assets").findRegion("Hero");
+        width = hero.getRegionWidth();
+        height = hero.getRegionHeight();
 
     }
 
@@ -50,20 +50,12 @@ public class Hero extends MoveableObject {
             jump_velocity = 0f;
         }
 
-        this.position = velocity(this.position.x, this.position.y + jump_velocity, true);
-    }
-
-    public float getX(){
-        return this.position.x;
-    }
-
-    public float getY(){
-        return this.position.y;
+       position = velocity(position.x, position.y + jump_velocity, true);
     }
 
     public void render(SpriteBatch sb){
 
-        sb.draw(hero, this.position.x, this.position.y);
+        sb.draw(hero, position.x, position.y);
 
     }
 

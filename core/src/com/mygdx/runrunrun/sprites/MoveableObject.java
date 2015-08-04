@@ -19,19 +19,10 @@ public class MoveableObject {
     protected float width;
     protected float height;
 
-    protected MoveableObject(){
-        position = new Vector2(0,0);
-    }
-
     protected MoveableObject(float x, float y){
-        position = new Vector2(x, y);
-    }
 
-    public boolean contains(float x, float y){
-        return x > this.position.x - width / 2 &&
-                x < this.position.x + width / 2 &&
-                y > this.position.y - height / 2 &&
-                y < this.position.y + height / 2;
+        position = new Vector2(x, y);
+
     }
 
     protected Vector2 velocity(float init_x, float init_y, boolean x_vel){
@@ -62,6 +53,25 @@ public class MoveableObject {
             free_fall_timer = 0;
         }
         return newPos;
+    }
+
+    public boolean contains(Vector2 vector){
+        return vector.x > this.position.x - width / 2 &&
+                vector.x < this.position.x + width / 2 &&
+                vector.y > this.position.y - height / 2 &&
+                vector.y < this.position.y + height / 2;
+    }
+
+    public Vector2 getPosition(){
+        return position;
+    }
+
+    public float getWidth(){
+        return width;
+    }
+
+    public float getHeight(){
+        return height;
     }
 
 }
