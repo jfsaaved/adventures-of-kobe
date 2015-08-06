@@ -22,6 +22,7 @@ public class PlayState extends State{
 
     // BGs
     private TextureRegion bg;
+    private float current_bg_x;
 
     // Text
     private TextImage hit_splash;
@@ -96,6 +97,12 @@ public class PlayState extends State{
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
 
+
+        current_bg_x += 3f;
+        if(current_bg_x >= 960){
+            current_bg_x = 0;
+        }
+
     }
 
     public void render(SpriteBatch sb){
@@ -103,9 +110,10 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(bg,0,0);
-        sb.draw(bg,960,0);
-        sb.draw(bg,-960,0);
+        sb.draw(bg,current_bg_x,0);
+        sb.draw(bg,current_bg_x + 960,0);
+        sb.draw(bg,current_bg_x - 960,0);
+
 
         block.render(sb);
         hero.render(sb);

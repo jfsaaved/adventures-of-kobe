@@ -39,7 +39,7 @@ public class MoveableObject {
         float final_y = init_y + (GRAVITY * free_fall_timer);
 
         if(x_vel == true) {
-            if (final_x > 960) {
+            if (final_x >= 960) {
                 final_x = 0;
             }
         }
