@@ -21,7 +21,9 @@ public class Hero extends MoveableObject {
     private float sprinting;
     private boolean up_or_down;
 
-    public Hero(float x, float y){
+    private int health_counter;
+
+    public Hero(float x, float y, int health_counter){
 
         super(x, y);
         hero = Main.resource.getAtlas("assets").findRegion("Hero");
@@ -30,6 +32,8 @@ public class Hero extends MoveableObject {
         sprinting = 0f;
         up_or_down = true;
 
+        this.health_counter = health_counter;
+
     }
 
     public void jump(){
@@ -37,6 +41,18 @@ public class Hero extends MoveableObject {
             jump_acceleration = 8f;
             jump_potential_energy = 1f;
         }
+    }
+
+    public int getHealth_counter(){
+        return health_counter;
+    }
+
+    public void reduceHealth(){
+        health_counter--;
+    }
+
+    public void addHealth(){
+        health_counter++;
     }
 
     public void update(float dt){
@@ -76,5 +92,6 @@ public class Hero extends MoveableObject {
         sb.draw(hero, position.x, position.y, width, height - sprinting);
 
     }
+
 
 }

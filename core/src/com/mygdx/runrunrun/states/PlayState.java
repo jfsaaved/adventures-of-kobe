@@ -16,23 +16,30 @@ import java.util.Random;
  */
 public class PlayState extends State{
 
+    // Moveable Objects
     private Hero hero;
     private Block block;
 
+    // BGs
     private TextureRegion bg;
 
+    // Text
+    private TextImage hit_splash;
+
+    // UIs
+    private TextureRegion health;
+
+    // Cool Downs
     private float hit_cool_down;
     private float hit_splash_cool_down;
-
-    private TextImage hit_splash;
 
     public PlayState(GSM gsm){
         super(gsm);
 
-
-        hero = new Hero(0,0);
+        hero = new Hero(0,0,3);
         block = new Block(400, 0);
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
+        health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
@@ -60,6 +67,9 @@ public class PlayState extends State{
         block.update(dt);
 
         if(hit_cool_down > 0f){
+            if(hit_cool_down == 5f){
+                hero.reduceHealth();
+            }
             hit_cool_down--;
         }
         else{
@@ -84,7 +94,7 @@ public class PlayState extends State{
         cam.position.set(hero.getPosition().x + 150, 100, 0);
         cam.update();
 
-        hit_splash.update("Hit!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
 
     }
 
@@ -101,6 +111,10 @@ public class PlayState extends State{
         hero.render(sb);
 
         hit_splash.render(sb);
+
+        for(int i = 1; i <= hero.getHealth_counter(); i++){
+            sb.draw(health,cam.position.x - 200 + (25 * i), cam.position.y + cam.viewportHeight/2 - 25,health.getRegionWidth()/2,health.getRegionHeight()/2);
+        }
 
         sb.end();
 

@@ -46,6 +46,8 @@ public class TextImage extends Box{
     }
 
     public void update(String text, float x, float y, float scale){
+        this.text = text;
+        this.scale = scale;
         this.x = x;
         this.y = y;
     }

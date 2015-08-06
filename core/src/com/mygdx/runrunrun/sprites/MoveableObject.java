@@ -28,8 +28,11 @@ public class MoveableObject {
     protected Vector2 velocity(float init_x, float init_y, boolean x_vel){
         Vector2 newPos;
         float final_x;
-        if(x_vel == true)
-            final_x = init_x + 5;
+
+        // If it's the hero, add value to x vector
+        if(x_vel == true) {
+            final_x = init_x + 5f;
+        }
         else{
             final_x = init_x;
         }
@@ -41,6 +44,7 @@ public class MoveableObject {
             }
         }
 
+        // If the object's position is above 0 (in the air) apply gravity
         if(init_y > 0){
             newPos = new Vector2(final_x, final_y);
 
