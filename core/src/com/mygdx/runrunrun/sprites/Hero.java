@@ -16,8 +16,11 @@ public class Hero extends MoveableObject {
     private float jump_velocity;
     private boolean inAir;
 
-    private float sprinting;
+    private float height_var;
+    private float x_var;
     private boolean up_or_down;
+    private boolean hide;
+    private boolean still_hit;
 
     private int health_counter;
 
@@ -25,7 +28,19 @@ public class Hero extends MoveableObject {
 
         super(x, y, image);
 
-        sprinting = 0f;
+        height_var = 0f;
+        up_or_down = true;
+        health_counter = 3;
+        hide = false;
+
+    }
+
+    // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
+    public Hero(float x, float y, TextureRegion image, float bg_width_reference){
+
+        super(x, y, image, bg_width_reference);
+
+        height_var = 0f;
         up_or_down = true;
         health_counter = 3;
 
@@ -50,17 +65,38 @@ public class Hero extends MoveableObject {
         health_counter++;
     }
 
+    public void hit_animation(float t){
+        still_hit = true;
+        if(t%2 == 0){
+            hide = false;
+        }
+        else{
+            hide = true;
+        }
+
+        if(t > 0f){
+            x_var -= 0.1f;
+        }
+        else{
+            still_hit = false;
+        }
+    }
+
     public void update(float dt){
 
-        if(up_or_down == true){
-            sprinting++;
-            if(sprinting > 5f){
+        if(still_hit == false && x_var < 0f){
+            x_var += 0.05f;
+        }
+
+        if(up_or_down == true && inAir == false){
+            height_var++;
+            if(height_var > 5f){
                 up_or_down = false;
             }
         }
-        else if(up_or_down == false){
-            sprinting--;
-            if(sprinting < 0f){
+        else if(up_or_down == false && inAir == false){
+            height_var--;
+            if(height_var < 0f){
                 up_or_down = true;
             }
         }
@@ -71,6 +107,15 @@ public class Hero extends MoveableObject {
             inAir = true;
             jump_acceleration += 0.05f;
             jump_potential_energy -= 0.015f;
+
+            if(jump_velocity > 7)
+                height_var -= 1.5;
+            else if(jump_velocity < 7 && jump_velocity > 3 ){
+                height_var += 0.7;
+            }
+            else if(jump_velocity <= 3 && jump_velocity > 0){
+                height_var = 0;
+            }
         }
         else{
             inAir = false;
@@ -79,12 +124,13 @@ public class Hero extends MoveableObject {
             jump_velocity = 0f;
         }
 
-       position = velocity(position.x, position.y + jump_velocity, true);
+       position = velocity(position.x + x_var, position.y + jump_velocity, true);
     }
 
     public void render(SpriteBatch sb){
 
-        sb.draw(image, position.x, position.y, width, height - sprinting);
+        if(hide == false)
+            sb.draw(image, position.x, position.y, width, height - height_var);
 
     }
 

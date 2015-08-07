@@ -20,10 +20,24 @@ public class MoveableObject {
     protected TextureRegion image;
     protected float width;
     protected float height;
+    protected float bg_width_reference;
 
     public MoveableObject(float x, float y, TextureRegion image){
 
         position = new Vector2(x, y);
+
+        if(image != null) {
+            this.image = image;
+            width = image.getRegionWidth();
+            height = image.getRegionHeight();
+        }
+
+    }
+
+    public MoveableObject(float x, float y, TextureRegion image, float bg_width_reference){
+
+        position = new Vector2(x, y);
+        this.bg_width_reference = bg_width_reference;
 
         if(image != null) {
             this.image = image;
@@ -47,7 +61,7 @@ public class MoveableObject {
         float final_y = init_y + (GRAVITY * free_fall_timer);
 
         if(x_vel == true) {
-            if (final_x >= 960) {
+            if (final_x >= bg_width_reference) {
                 final_x = 0;
             }
         }

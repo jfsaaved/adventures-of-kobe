@@ -16,6 +16,8 @@ import java.util.Random;
  */
 public class PlayState extends State{
 
+    private static float HIT_COOL_DOWN_MAX = 20f;
+
     // Moveable Objects
     private Hero hero;
     private Block block;
@@ -37,9 +39,10 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
-        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"));
-        block = new Block(400, 0, Main.resource.getAtlas("assets").findRegion("block"));
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
+        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg.getRegionWidth());
+        block = new Block(400, 0, Main.resource.getAtlas("assets").findRegion("block"));
+
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
@@ -55,7 +58,7 @@ public class PlayState extends State{
 
     public void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
         if(firstObj.contains(secondObj.getPosition())){
-            hit_cool_down = 5f;
+            hit_cool_down = HIT_COOL_DOWN_MAX;
             hit_splash_cool_down = 60f;
         }
     }
@@ -68,10 +71,11 @@ public class PlayState extends State{
         block.update(dt);
 
         if(hit_cool_down > 0f){
-            if(hit_cool_down == 5f){
+            if(hit_cool_down == HIT_COOL_DOWN_MAX){
                 hero.reduceHealth();
             }
             hit_cool_down--;
+            hero.hit_animation(hit_cool_down);
         }
         else{
             collisionDetection(hero,block);
@@ -85,9 +89,9 @@ public class PlayState extends State{
             hit_splash.setHide(true);
         }
 
-        if(hero.getPosition().x >= 960){
+        if(hero.getPosition().x >= bg.getRegionWidth()){
             Random rand = new Random();
-            int x_block_pos = rand.nextInt(940) + 20;
+            int x_block_pos = rand.nextInt(bg.getRegionWidth() - 20) + 20;
             int y_block_pos = rand.nextInt(200) + 0;
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
         }
@@ -99,7 +103,7 @@ public class PlayState extends State{
 
 
         current_bg_x += 3f;
-        if(current_bg_x >= 960){
+        if(current_bg_x >= bg.getRegionWidth()){
             current_bg_x = 0;
         }
 
@@ -111,8 +115,8 @@ public class PlayState extends State{
         sb.begin();
 
         sb.draw(bg,current_bg_x,0);
-        sb.draw(bg,current_bg_x + 960,0);
-        sb.draw(bg,current_bg_x - 960,0);
+        sb.draw(bg,current_bg_x + bg.getRegionWidth(),0);
+        sb.draw(bg,current_bg_x - bg.getRegionWidth(),0);
 
 
         block.render(sb);
