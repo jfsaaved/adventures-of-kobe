@@ -1,5 +1,6 @@
 package com.mygdx.runrunrun.sprites;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.runrunrun.Main;
 
@@ -16,12 +17,19 @@ public class MoveableObject {
 
     // The move-able object properties
     protected Vector2 position;
+    protected TextureRegion image;
     protected float width;
     protected float height;
 
-    protected MoveableObject(float x, float y){
+    public MoveableObject(float x, float y, TextureRegion image){
 
         position = new Vector2(x, y);
+
+        if(image != null) {
+            this.image = image;
+            width = image.getRegionWidth();
+            height = image.getRegionHeight();
+        }
 
     }
 
@@ -71,10 +79,12 @@ public class MoveableObject {
     }
 
     public float getWidth(){
+
         return width;
     }
 
     public float getHeight(){
+
         return height;
     }
 

@@ -10,14 +10,9 @@ import com.mygdx.runrunrun.Main;
  */
 public class Block extends MoveableObject{
 
-    private TextureRegion block;
+    public Block(float x, float y, TextureRegion image){
 
-    public Block(float x, float y){
-
-        super(x,y);
-        block = Main.resource.getAtlas("assets").findRegion("block");
-        width = block.getRegionWidth();
-        height = block.getRegionHeight();
+        super(x,y,image);
 
     }
 
@@ -29,7 +24,7 @@ public class Block extends MoveableObject{
 
     public void render(SpriteBatch sb){
 
-        sb.draw(block,position.x,position.y);
+        sb.draw(image,position.x,position.y);
 
     }
 

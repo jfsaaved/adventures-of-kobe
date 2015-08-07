@@ -10,8 +10,6 @@ import com.mygdx.runrunrun.Main;
  */
 public class Hero extends MoveableObject {
 
-    private TextureRegion hero;
-
     // Jump mechanics
     private float jump_acceleration;
     private float jump_potential_energy;
@@ -23,16 +21,13 @@ public class Hero extends MoveableObject {
 
     private int health_counter;
 
-    public Hero(float x, float y, int health_counter){
+    public Hero(float x, float y, TextureRegion image){
 
-        super(x, y);
-        hero = Main.resource.getAtlas("assets").findRegion("Hero");
-        width = hero.getRegionWidth();
-        height = hero.getRegionHeight();
+        super(x, y, image);
+
         sprinting = 0f;
         up_or_down = true;
-
-        this.health_counter = health_counter;
+        health_counter = 3;
 
     }
 
@@ -89,7 +84,7 @@ public class Hero extends MoveableObject {
 
     public void render(SpriteBatch sb){
 
-        sb.draw(hero, position.x, position.y, width, height - sprinting);
+        sb.draw(image, position.x, position.y, width, height - sprinting);
 
     }
 

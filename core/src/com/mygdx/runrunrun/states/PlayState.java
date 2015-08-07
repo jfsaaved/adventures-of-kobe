@@ -37,8 +37,8 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
-        hero = new Hero(0,0,3);
-        block = new Block(400, 0);
+        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"));
+        block = new Block(400, 0, Main.resource.getAtlas("assets").findRegion("block"));
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
@@ -87,9 +87,9 @@ public class PlayState extends State{
 
         if(hero.getPosition().x >= 960){
             Random rand = new Random();
-            int x_block_pos = rand.nextInt(700) + 100;
+            int x_block_pos = rand.nextInt(940) + 20;
             int y_block_pos = rand.nextInt(200) + 0;
-            block = new Block(x_block_pos, y_block_pos);
+            block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
         }
 
         cam.position.set(hero.getPosition().x + 150, 100, 0);
