@@ -47,24 +47,22 @@ public class MoveableObject {
 
     }
 
-    protected Vector2 velocity(float init_x, float init_y, boolean x_vel){
+    protected Vector2 velocity(float init_x, float init_y, boolean is_this_a_hero){
         Vector2 newPos;
-        float final_x;
+        float final_x, final_y;
 
         // If it's the hero, add value to x vector
-        if(x_vel == true) {
+        if(is_this_a_hero == true) {
             final_x = init_x + 5f;
-        }
-        else{
-            final_x = init_x;
-        }
-        float final_y = init_y + (GRAVITY * free_fall_timer);
-
-        if(x_vel == true) {
             if (final_x >= bg_width_reference) {
                 final_x = 0;
             }
         }
+        else{
+            final_x = init_x;
+        }
+
+        final_y = init_y + (GRAVITY * free_fall_timer);
 
         // If the object's position is above 0 (in the air) apply gravity
         if(init_y > 0){

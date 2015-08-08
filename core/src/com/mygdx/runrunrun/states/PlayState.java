@@ -113,9 +113,9 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(bg,current_bg_x,0);
-        sb.draw(bg,current_bg_x + bg.getRegionWidth(),0);
-        sb.draw(bg,current_bg_x - bg.getRegionWidth(),0);
+        sb.draw(bg,current_bg_x,-20);
+        sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
+        sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);
 
 
         block.render(sb);
