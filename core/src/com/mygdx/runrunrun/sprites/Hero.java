@@ -86,6 +86,9 @@ public class Hero extends MoveableObject {
 
         if(still_hit == false && x_var < 0f){
             x_var += 0.05f;
+            if(x_var == 0){
+                still_hit = true;
+            }
         }
 
         if(up_or_down == true && inAir == false){

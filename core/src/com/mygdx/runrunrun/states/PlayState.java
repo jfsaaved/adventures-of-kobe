@@ -101,7 +101,6 @@ public class PlayState extends State{
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
 
-
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
             current_bg_x = 0;
