@@ -14,6 +14,7 @@ public class Hero extends MoveableObject {
     private float jump_acceleration;
     private float jump_potential_energy;
     private float jump_velocity;
+    private float jump_coolDown;
     private boolean inAir;
 
     private float height_var;
@@ -58,6 +59,10 @@ public class Hero extends MoveableObject {
         health_counter++;
     }
 
+    public boolean isJumping(){
+        return inAir;
+    }
+
     public void hit_animation(float t){
         in_hit_animation = true;
         if(t%2 == 0){
@@ -77,9 +82,11 @@ public class Hero extends MoveableObject {
     }
 
     public void jump(){
-        if(inAir == false) {
+        if(inAir == false && jump_coolDown <= 0f) {
+            System.out.println(jump_coolDown);
             jump_acceleration = 8f; // Initial jump acceleration
-            jump_potential_energy = 0.7f;
+            jump_potential_energy = 1f;
+            jump_coolDown = 8f;
         }
     }
 
@@ -105,22 +112,33 @@ public class Hero extends MoveableObject {
                 }
             }
         }
+        else{
+            height_var = 0;
+        }
+
 
         jump_velocity = jump_acceleration * jump_potential_energy;
 
-        if(jump_velocity > 0f){
+        if(jump_velocity > 0){
             inAir = true;
-            jump_acceleration += 0.05f;
-            jump_potential_energy -= 0.015f;
+            if(jump_acceleration < 16f)
+                jump_acceleration += 0.05f;
+            if(jump_potential_energy > 0)
+                jump_potential_energy -= 0.05f;
+                //jump_potential_energy -= 0.015f;
         }
-        else{
+        else if(jump_velocity <= 0){
             inAir = false;
-            jump_acceleration = 0f;
-            jump_potential_energy = 0f;
-            jump_velocity = 0f;
+            if(jump_coolDown > 0){
+                jump_coolDown--;
+            }
+            jump_acceleration = 0;
+            jump_potential_energy = 0;
+            jump_velocity = 0;
         }
 
-       position = velocity(position.x + x_var_from_getting_hit, position.y + jump_velocity, true);
+
+        position = velocity(position.x + x_var_from_getting_hit, position.y + jump_velocity, true);
     }
 
     public void render(SpriteBatch sb){

@@ -21,7 +21,21 @@ public class UnitTests
 
         @Test
         public void checkHealth(){
-           assertEquals("This should return 3",3,hero_test.getHealth_counter());
+            int jump_bool_counter = 0;
+
+            float try_time = 1000f;
+
+            while(try_time >=0) {
+                hero_test.jump();
+                hero_test.update(0);
+                hero_test.jump();
+                hero_test.update(0);
+                if(hero_test.isJumping() == true) {
+                    jump_bool_counter++;
+                }
+                try_time--;
+            }
+            assertEquals("This should return 0 ",0,jump_bool_counter);
         }
 
         @Test
