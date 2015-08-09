@@ -70,6 +70,7 @@ public class PlayState extends State{
         hero.update(dt);
         block.update(dt);
 
+        // On hit code below
         if(hit_cool_down > 0f){
             if(hit_cool_down == HIT_COOL_DOWN_MAX){
                 hero.reduceHealth();
@@ -89,6 +90,7 @@ public class PlayState extends State{
             hit_splash.setHide(true);
         }
 
+        // Position update below
         if(hero.getPosition().x >= bg.getRegionWidth()){
             Random rand = new Random();
             int x_block_pos = rand.nextInt(bg.getRegionWidth() - 20) + 20;
@@ -101,6 +103,7 @@ public class PlayState extends State{
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
 
+        // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
             current_bg_x = 0;

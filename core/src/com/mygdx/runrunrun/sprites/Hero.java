@@ -18,7 +18,7 @@ public class Hero extends MoveableObject {
 
     private float height_var;
     private float x_var_from_getting_hit;
-    private boolean up_or_down;
+    private boolean height_anim_interval_status;
     private boolean hide;
     private boolean in_hit_animation;
 
@@ -29,7 +29,7 @@ public class Hero extends MoveableObject {
         super(x, y, image);
 
         height_var = 0f;
-        up_or_down = true;
+        height_anim_interval_status = true;
         health_counter = 3;
         hide = false;
 
@@ -41,7 +41,7 @@ public class Hero extends MoveableObject {
         super(x, y, image, bg_width_reference);
 
         height_var = 0f;
-        up_or_down = true;
+        height_anim_interval_status = true;
         health_counter = 3;
 
     }
@@ -79,7 +79,7 @@ public class Hero extends MoveableObject {
     public void jump(){
         if(inAir == false) {
             jump_acceleration = 8f; // Initial jump acceleration
-            jump_potential_energy = 1f;
+            jump_potential_energy = 0.7f;
         }
     }
 
@@ -92,16 +92,17 @@ public class Hero extends MoveableObject {
             }
         }
 
-        if(up_or_down == true && inAir == false){
-            height_var++;
-            if(height_var > 5f){
-                up_or_down = false;
-            }
-        }
-        else if(up_or_down == false && inAir == false){
-            height_var--;
-            if(height_var < 0f){
-                up_or_down = true;
+        if(!inAir) {
+            if (height_anim_interval_status) {
+                height_var++;
+                if (height_var > 5f) {
+                    height_anim_interval_status = false;
+                }
+            } else{
+                height_var--;
+                if (height_var < 0f) {
+                    height_anim_interval_status = true;
+                }
             }
         }
 
@@ -111,15 +112,6 @@ public class Hero extends MoveableObject {
             inAir = true;
             jump_acceleration += 0.05f;
             jump_potential_energy -= 0.015f;
-
-            if(jump_velocity > 7)
-                height_var -= 1.5;
-            else if(jump_velocity < 7 && jump_velocity > 3 ){
-                height_var += 0.7;
-            }
-            else if(jump_velocity <= 3 && jump_velocity > 0){
-                height_var = 0;
-            }
         }
         else{
             inAir = false;
