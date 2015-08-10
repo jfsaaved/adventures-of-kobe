@@ -83,7 +83,6 @@ public class Hero extends MoveableObject {
 
     public void jump(){
         if(inAir == false && jump_coolDown <= 0f) {
-            System.out.println(jump_coolDown);
             jump_acceleration = 8f; // Initial jump acceleration
             jump_potential_energy = 1f;
             jump_coolDown = 8f;
@@ -125,7 +124,6 @@ public class Hero extends MoveableObject {
                 jump_acceleration += 0.05f;
             if(jump_potential_energy > 0)
                 jump_potential_energy -= 0.05f;
-                //jump_potential_energy -= 0.015f;
         }
         else if(jump_velocity <= 0){
             inAir = false;

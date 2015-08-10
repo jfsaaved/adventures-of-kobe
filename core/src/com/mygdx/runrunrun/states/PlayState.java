@@ -7,6 +7,7 @@ import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Hero;
 import com.mygdx.runrunrun.sprites.MoveableObject;
+import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
 
 import java.util.Random;
@@ -28,6 +29,7 @@ public class PlayState extends State{
 
     // Text
     private TextImage hit_splash;
+    private TextBoxImage textBox;
 
     // UIs
     private TextureRegion health;
@@ -47,7 +49,7 @@ public class PlayState extends State{
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-
+        textBox = new TextBoxImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
     }
 
     public void handleInput(){
@@ -102,7 +104,7 @@ public class PlayState extends State{
         cam.update();
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-
+        textBox.update(cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100);
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
@@ -125,6 +127,7 @@ public class PlayState extends State{
         hero.render(sb);
 
         hit_splash.render(sb);
+        textBox.render(sb);
 
         for(int i = 1; i <= hero.getHealth_counter(); i++){
             sb.draw(health,cam.position.x - 200 + (25 * i), cam.position.y + cam.viewportHeight/2 - 25,health.getRegionWidth()/2,health.getRegionHeight()/2);

@@ -52,6 +52,11 @@ public class TextImage extends Box{
         this.y = y;
     }
 
+    public void update(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
+
     public void render(SpriteBatch sb){
         if(hidden == false){
             for (int i = 0; i < text.length(); i++) {
