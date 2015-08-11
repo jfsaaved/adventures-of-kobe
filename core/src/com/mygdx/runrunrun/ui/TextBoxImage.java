@@ -19,7 +19,7 @@ public class TextBoxImage extends TextImage {
 
         int size = 32;
         box_rows = 4;
-        box_cols = 8;
+        box_cols = 10;
         this.scale = scale;
 
         TextureRegion box_sheet = Main.resource.getAtlas("assets").findRegion("textbox1");
@@ -37,6 +37,8 @@ public class TextBoxImage extends TextImage {
     @Override
     public void render(SpriteBatch sb){
         int row = 0, col = 0;
+
+        float text_box_x = 0, text_box_y = 0;
 
         for (int i = 0; i < box_rows; i++) {
             for(int j = 0; j < box_cols; j++){
@@ -60,7 +62,7 @@ public class TextBoxImage extends TextImage {
 
             int row_text = index / fontSheet[0].length;
             int col_text = index % fontSheet[0].length;
-            sb.draw(fontSheet[row_text][col_text], x - width / 2 + (45 * scale) * i + 100, y - height / 2, 45 * scale, 45 * scale);
+            sb.draw(fontSheet[row_text][col_text], x + (32 * scale) * i + (box_cols * 2), y - height / 2, 32 * scale, 32 * scale);
         }
     }
 
