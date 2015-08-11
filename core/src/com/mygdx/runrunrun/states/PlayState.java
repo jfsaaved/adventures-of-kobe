@@ -104,7 +104,7 @@ public class PlayState extends State{
         cam.update();
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox.update(cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100);
+        textBox.update("HELLO!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){

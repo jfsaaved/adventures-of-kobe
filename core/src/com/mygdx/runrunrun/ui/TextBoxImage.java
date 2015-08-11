@@ -41,28 +41,26 @@ public class TextBoxImage extends TextImage {
         for (int i = 0; i < box_rows; i++) {
             for(int j = 0; j < box_cols; j++){
 
-                if(i > 0 && i < box_rows - 1){
-                    row = 1;
-                }
-                else if(i == box_rows - 1){
-                    row = 2;
-                }
-                else{
-                    row = i;
-                }
+                if(i > 0 && i < box_rows - 1) row = 1;
+                else if(i == box_rows - 1) row = 2;
+                else row = i;
 
-                if(j > 0 && j < box_cols - 1){
-                    col = 1;
-                }
-                else if(j == box_cols - 1){
-                    col = 2;
-                }
-                else{
-                    col = j;
-                }
+                if(j > 0 && j < box_cols - 1) col = 1;
+                else if(j == box_cols - 1) col = 2;
+                else col = j;
 
                 sb.draw(textBox[row][col],x + (j * 32 * scale),y - (i * 32 * scale), 32*scale, 32*scale);
             }
+        }
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            int index;
+            index = c - 32;
+
+            int row_text = index / fontSheet[0].length;
+            int col_text = index % fontSheet[0].length;
+            sb.draw(fontSheet[row_text][col_text], x - width / 2 + (45 * scale) * i + 100, y - height / 2, 45 * scale, 45 * scale);
         }
     }
 

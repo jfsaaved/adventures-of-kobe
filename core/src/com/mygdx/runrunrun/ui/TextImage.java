@@ -9,11 +9,10 @@ import com.mygdx.runrunrun.Main;
  */
 public class TextImage extends Box{
 
-    private TextureRegion[][] fontSheet;
+    protected TextureRegion[][] fontSheet;
 
-    private String text;
+    protected String text;
     private float scale;
-    private int size;
 
     private boolean hidden;
 
@@ -23,7 +22,7 @@ public class TextImage extends Box{
         this.y = y;
         this.scale = scale;
 
-        size = 45;
+        int size = 45;
         width = size * text.length();
         height = size;
         hidden = true;
