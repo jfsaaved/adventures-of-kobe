@@ -35,6 +35,5 @@ public class GameOverState extends State {
         game_over_text.render(sb);
 
         sb.end();
-
     }
 }
