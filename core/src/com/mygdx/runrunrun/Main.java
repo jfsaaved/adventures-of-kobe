@@ -24,8 +24,6 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 
-        Gdx.gl.glClearColor(0.7f, 0.5f, 0.1f,1);
-
         resource = new Content();
         resource.loadAtlas("pack1.pack","assets");
 
@@ -38,6 +36,7 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void render () {
 
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gsm.update(Gdx.graphics.getDeltaTime());
         gsm.render(sb);

@@ -18,8 +18,8 @@ public class TextBoxImage extends TextImage {
         super(text,x,y,scale);
 
         int size = 32;
-        box_rows = 4;
-        box_cols = 10;
+        box_rows = text.length();
+        box_cols = text.length();
         this.scale = scale;
 
         TextureRegion box_sheet = Main.resource.getAtlas("assets").findRegion("textbox1");
@@ -62,7 +62,7 @@ public class TextBoxImage extends TextImage {
 
             int row_text = index / fontSheet[0].length;
             int col_text = index % fontSheet[0].length;
-            sb.draw(fontSheet[row_text][col_text], x + (32 * scale) * i + (box_cols * 2), y - height / 2, 32 * scale, 32 * scale);
+            sb.draw(fontSheet[row_text][col_text], (x + (32 * scale) * i) + (box_cols * 2), y - height / 2, 32 * scale, 32 * scale);
         }
     }
 

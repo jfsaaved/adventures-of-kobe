@@ -49,7 +49,7 @@ public class PlayState extends State{
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        textBox = new TextBoxImage("HELLO!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
     }
 
     public void handleInput(){
@@ -71,6 +71,10 @@ public class PlayState extends State{
 
         hero.update(dt);
         block.update(dt);
+
+        if(hero.getHealth_counter() <= 0){
+            gsm.set(new GameOverState(gsm));
+        }
 
         // On hit code below
         if(hit_cool_down > 0f){
