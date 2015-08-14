@@ -49,7 +49,7 @@ public class PlayState extends State{
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("HELLO!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        textBox = new TextBoxImage("WHAT YOU DOIN?",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.25f);
     }
 
     public void handleInput(){
@@ -72,9 +72,9 @@ public class PlayState extends State{
         hero.update(dt);
         block.update(dt);
 
-        if(hero.getHealth_counter() <= 0){
+        /*if(hero.getHealth_counter() <= 0){
             gsm.set(new GameOverState(gsm));
-        }
+        }*/
 
         // On hit code below
         if(hit_cool_down > 0f){
@@ -108,7 +108,7 @@ public class PlayState extends State{
         cam.update();
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox.update("HELLO!",cam.position.x - cam.viewportWidth/2 + 125, cam.position.y + cam.viewportHeight/2 - 50,0.5f);
+        textBox.update("WHAT YOU DOIN?",cam.position.x - cam.viewportWidth/2 + 125, cam.position.y + cam.viewportHeight/2 - 50,0.25f);
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){

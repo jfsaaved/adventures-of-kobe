@@ -17,9 +17,9 @@ public class TextBoxImage extends TextImage {
     public TextBoxImage(String text, float x, float y, float scale){
         super(text,x,y,scale);
 
-        int size = 32;
-        box_rows = text.length();
-        box_cols = text.length();
+        int size = 45;
+        box_rows = 3;
+        box_cols = text.length() + 2;
         this.scale = scale;
 
         TextureRegion box_sheet = Main.resource.getAtlas("assets").findRegion("textbox1");
@@ -37,6 +37,7 @@ public class TextBoxImage extends TextImage {
     @Override
     public void render(SpriteBatch sb){
         int row = 0, col = 0;
+        int text_index = 0;
 
         float text_box_x = 0, text_box_y = 0;
 
@@ -51,18 +52,21 @@ public class TextBoxImage extends TextImage {
                 else if(j == box_cols - 1) col = 2;
                 else col = j;
 
-                sb.draw(textBox[row][col],x + (j * 32 * scale),y - (i * 32 * scale), 32*scale, 32*scale);
+                sb.draw(textBox[row][col],x + (j * 45 * scale),y - (i * 45 * scale), 45*scale, 45*scale);
+
+                if(row == 1 && col == 1 && text_index < text.length()){
+                    char c = text.charAt(text_index);
+                    int index = c - 32;
+
+                    int row_text = index / fontSheet[0].length;
+                    int col_text = index % fontSheet[0].length;
+
+                    if(text_index < text.length()) {
+                        sb.draw(fontSheet[row_text][col_text], x + (j * 45 * scale), y - (i * 45 * scale), 45 * scale, 45 * scale);
+                        text_index ++;
+                    }
+                }
             }
-        }
-
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            int index;
-            index = c - 32;
-
-            int row_text = index / fontSheet[0].length;
-            int col_text = index % fontSheet[0].length;
-            sb.draw(fontSheet[row_text][col_text], (x + (32 * scale) * i) + (box_cols * 2), y - height / 2, 32 * scale, 32 * scale);
         }
     }
 
