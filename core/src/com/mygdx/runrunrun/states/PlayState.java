@@ -49,7 +49,7 @@ public class PlayState extends State{
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("WHAT YOU DOIN?",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.25f);
+        textBox = new TextBoxImage("Why u gay son?",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
     }
 
     public void handleInput(){
@@ -108,7 +108,10 @@ public class PlayState extends State{
         cam.update();
 
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox.update("WHAT YOU DOIN?",cam.position.x - cam.viewportWidth/2 + 125, cam.position.y + cam.viewportHeight/2 - 50,0.25f);
+
+        int cam_x_offset = 2;
+        int cam_y_offset = 4;
+        textBox.update("Why u gay son?",cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
@@ -133,8 +136,9 @@ public class PlayState extends State{
         hit_splash.render(sb);
         textBox.render(sb);
 
+        int health_y_offset = 4;
         for(int i = 1; i <= hero.getHealth_counter(); i++){
-            sb.draw(health,cam.position.x - 200 + (25 * i), cam.position.y + cam.viewportHeight/2 - 25,health.getRegionWidth()/2,health.getRegionHeight()/2);
+            sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
         }
 
         sb.end();

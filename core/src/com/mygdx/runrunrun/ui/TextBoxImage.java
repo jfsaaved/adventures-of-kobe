@@ -14,12 +14,12 @@ public class TextBoxImage extends TextImage {
     private int box_cols;
     private float scale;
 
-    public TextBoxImage(String text, float x, float y, float scale){
+    public TextBoxImage(String text, float x, float y, float scale, float cam_width){
         super(text,x,y,scale);
 
         int size = 45;
-        box_rows = 3;
-        box_cols = text.length() + 2;
+        box_rows = 6;
+        box_cols = ((int) cam_width) / 9;
         this.scale = scale;
 
         TextureRegion box_sheet = Main.resource.getAtlas("assets").findRegion("textbox1");
