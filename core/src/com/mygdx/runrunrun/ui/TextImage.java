@@ -14,7 +14,7 @@ public class TextImage extends Box{
     protected String text;
     private float scale;
 
-    private boolean hidden;
+    protected boolean text_hidden;
 
     public TextImage(String text, float x, float y, float scale){
         this.text = text;
@@ -25,7 +25,7 @@ public class TextImage extends Box{
         int size = 45;
         width = size * text.length();
         height = size;
-        hidden = true;
+        text_hidden = true;
 
         TextureRegion sheet = Main.resource.getAtlas("assets").findRegion("fontsheet");
         int numCols = sheet.getRegionWidth() / size;
@@ -40,8 +40,8 @@ public class TextImage extends Box{
 
     }
 
-    public void setHide(boolean b){
-        hidden = b;
+    public void setTextHide(boolean b){
+        text_hidden = b;
     }
 
     public void update(String text, float x, float y, float scale){
@@ -57,7 +57,7 @@ public class TextImage extends Box{
     }
 
     public void render(SpriteBatch sb){
-        if(hidden == false){
+        if(text_hidden == false){
             for (int i = 0; i < text.length(); i++) {
                 char c = text.charAt(i);
                 int index;

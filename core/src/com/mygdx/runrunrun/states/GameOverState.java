@@ -15,7 +15,7 @@ public class GameOverState extends State {
     public GameOverState(GSM gsm){
         super(gsm);
         game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2, 1f);
-        game_over_text.setHide(false);
+        game_over_text.setTextHide(false);
     }
 
     public void handleInput(){

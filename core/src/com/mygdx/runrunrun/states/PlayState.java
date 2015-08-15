@@ -49,12 +49,13 @@ public class PlayState extends State{
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("Why u gay son?",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+        textBox = new TextBoxImage("This is a testing",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
     }
 
     public void handleInput(){
         if(Gdx.input.justTouched()){
             hero.jump();
+            textBox.setTextHide(false);
         }
     }
 
@@ -62,6 +63,7 @@ public class PlayState extends State{
         if(firstObj.contains(secondObj.getPosition())){
             hit_cool_down = HIT_COOL_DOWN_MAX;
             hit_splash_cool_down = 60f;
+            textBox.setTextHide(true);
         }
     }
 
@@ -89,11 +91,11 @@ public class PlayState extends State{
         }
 
         if(hit_splash_cool_down > 0f){
-            hit_splash.setHide(false);
+            hit_splash.setTextHide(false);
             hit_splash_cool_down--;
         }
         else{
-            hit_splash.setHide(true);
+            hit_splash.setTextHide(true);
         }
 
         // Position update below
@@ -111,7 +113,7 @@ public class PlayState extends State{
 
         int cam_x_offset = 2;
         int cam_y_offset = 4;
-        textBox.update("Why u gay son?",cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
+        textBox.update("This is a testing",cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
