@@ -55,7 +55,11 @@ public class PlayState extends State{
     public void handleInput(){
         if(Gdx.input.justTouched()){
             hero.jump();
-            textBox.setTextHide(false);
+            if(textBox.isTextHidden() == true)
+                textBox.setTextHide(false);
+            else{
+                textBox.setTextHide(true);
+            }
         }
     }
 
@@ -63,7 +67,6 @@ public class PlayState extends State{
         if(firstObj.contains(secondObj.getPosition())){
             hit_cool_down = HIT_COOL_DOWN_MAX;
             hit_splash_cool_down = 60f;
-            textBox.setTextHide(true);
         }
     }
 

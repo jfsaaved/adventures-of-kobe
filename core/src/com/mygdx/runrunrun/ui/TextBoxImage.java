@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.runrunrun.Main;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 /**
  * Created by 343076 on 07/08/2015.
  */
 public class TextBoxImage extends TextImage {
 
     private TextureRegion[][] textBox;
-    private int[][] text_to_box_index;
     private int box_rows;
     private int box_cols;
     private boolean textBox_hide;
@@ -44,18 +47,24 @@ public class TextBoxImage extends TextImage {
         text_hidden = b;
     }
 
+    public boolean isTextHidden(){
+        return text_hidden;
+    }
+
     @Override
     public void render(SpriteBatch sb){
 
+        LinkedList<Integer> row_text_to_box_index = new LinkedList<Integer>();
+        LinkedList<Integer> col_text_to_box_index = new LinkedList<Integer>();
+
         if(textBox_hide == false) {
             int row = 0, col = 0;
-            int text_index = 0;
-
-            float text_box_x = 0, text_box_y = 0;
 
             for (int i = 0; i < box_rows; i++) {
                 for (int j = 0; j < box_cols; j++) {
 
+
+                    // Decides whether to draw a border or inside box, inside box are row == 1 and col == 1
                     if (i > 0 && i < box_rows - 1) row = 1;
                     else if (i == box_rows - 1) row = 2;
                     else row = i;
@@ -64,26 +73,41 @@ public class TextBoxImage extends TextImage {
                     else if (j == box_cols - 1) col = 2;
                     else col = j;
 
+                    if(row == 1 && col == 1){
+                        row_text_to_box_index.add(j);
+                        col_text_to_box_index.add(i);
+                    }
+
                     sb.draw(textBox[row][col], x + (j * 45 * scale), y - (i * 45 * scale), 45 * scale, 45 * scale);
+                }
+            }
 
-                    if (row == 1 && col == 1 && text_index < text.length()) {
+        }
 
+        if(this.text_hidden == false) {
+            ListIterator<Integer> i = row_text_to_box_index.listIterator();
+            ListIterator<Integer> j = row_text_to_box_index.listIterator();
+
+            int text_index = 0;
+            int tmp = i.next();
+            int tmp2 = j.next();
+
+            while(i.hasNext()){
+                while(j.hasNext()){
+                    if(text_index < text.length()) {
                         char c = text.charAt(text_index);
                         int index = c - 32;
 
                         int row_text = index / fontSheet[0].length;
                         int col_text = index % fontSheet[0].length;
 
-                        if (text_index < text.length() && this.text_hidden == false) {
-                            sb.draw(fontSheet[row_text][col_text], x + (j * 45 * scale), y - (i * 45 * scale), 45 * scale, 45 * scale);
-                            text_index++;
-                        }
-
+                        sb.draw(fontSheet[row_text][col_text], x + (tmp2 * 45 * scale), y - (tmp * 45 * scale), 45 * scale, 45 * scale);
+                        text_index++;
                     }
+                    tmp2 = j.next();
                 }
+                tmp = i.next();
             }
         }
-
     }
-
 }
