@@ -28,6 +28,7 @@ public class TextBoxImage extends TextImage {
     private int row_iterator_val;
     private int col_iterator_val;
     private float text_delay;
+    private boolean text_complete;
 
 
     public TextBoxImage(String text, float x, float y, float scale, float cam_width){
@@ -37,8 +38,8 @@ public class TextBoxImage extends TextImage {
         box_rows = 6;
         box_cols = ((int) cam_width) / 9;
         this.scale = scale;
-        textBox_hide = false;
-        this.text_hidden = false;
+        this.textBox_hide = true;
+        this.text_hidden = true;
 
         TextureRegion box_sheet = Main.resource.getAtlas("assets").findRegion("textbox1");
         int numCols = box_sheet.getRegionWidth() / size;
@@ -86,8 +87,20 @@ public class TextBoxImage extends TextImage {
         }
     }
 
+    public void setTextBox_hide(boolean b){
+        textBox_hide = b;
+    }
+
     public boolean isTextHidden(){
         return text_hidden;
+    }
+
+    public boolean isFinishDrawing(){
+        return text_complete;
+    }
+
+    public String getText(){
+        return text;
     }
 
     public void renderBox(SpriteBatch sb){
@@ -138,6 +151,7 @@ public class TextBoxImage extends TextImage {
             }
 
             if(text_index < text.length()){
+                text_complete = false;
                 if(index == 0){
                     text_delay = 0;
                 }
@@ -147,6 +161,10 @@ public class TextBoxImage extends TextImage {
                     text_index++;
                     text_delay = TEXT_DELAY_TIME;
                 }
+            }
+
+            else if(text_index >= text.length()){
+                text_complete = true;
             }
 
         }

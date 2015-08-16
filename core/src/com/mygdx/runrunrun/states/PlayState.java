@@ -38,6 +38,10 @@ public class PlayState extends State{
     private float hit_cool_down;
     private float hit_splash_cool_down;
 
+    // Events
+    private float box_timer;
+    private float box_exit_delay;
+
     public PlayState(GSM gsm){
         super(gsm);
 
@@ -49,17 +53,17 @@ public class PlayState extends State{
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("This is a testing",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+        textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+        textBox.setTextHide(true);
+        textBox.setTextBox_hide(true);
+
+        box_timer = 100f;
+        box_exit_delay = 100f;
     }
 
     public void handleInput(){
         if(Gdx.input.justTouched()){
             hero.jump();
-            if(textBox.isTextHidden() == true)
-                textBox.setTextHide(false);
-            else{
-                textBox.setTextHide(true);
-            }
         }
     }
 
@@ -116,7 +120,29 @@ public class PlayState extends State{
 
         int cam_x_offset = 2;
         int cam_y_offset = 4;
-        textBox.update("Hello there people of the world!!",cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
+
+        String text = "POPS: Yo duckie, get the fuck outta there now!! Shit's bout to blow!!!!";
+        textBox.update(text,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
+
+        if(box_timer > 0){
+            box_timer--;
+        }
+        else{
+            textBox.setTextBox_hide(false);
+            if(textBox.isTextHidden())
+                textBox.setTextHide(false);
+
+            if(textBox.isFinishDrawing()){
+                box_exit_delay--;
+                if(box_exit_delay <= 0){
+                    textBox.setTextBox_hide(true);
+                    if(!textBox.isTextHidden())
+                        textBox.setTextHide(true);
+                }
+            }
+        }
+
+
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
