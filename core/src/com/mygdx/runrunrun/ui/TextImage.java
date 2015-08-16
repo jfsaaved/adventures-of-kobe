@@ -12,7 +12,7 @@ public class TextImage extends Box{
     protected TextureRegion[][] fontSheet;
 
     protected String text;
-    private float scale;
+    protected float scale;
 
     protected boolean text_hidden;
 

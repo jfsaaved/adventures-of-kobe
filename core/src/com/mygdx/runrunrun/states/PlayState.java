@@ -139,7 +139,8 @@ public class PlayState extends State{
         hero.render(sb);
 
         hit_splash.render(sb);
-        textBox.render(sb);
+        textBox.renderBox(sb);
+        textBox.renderText(sb);
 
         int health_y_offset = 4;
         for(int i = 1; i <= hero.getHealth_counter(); i++){
