@@ -13,6 +13,8 @@ import java.util.ListIterator;
  */
 public class TextBoxImage extends TextImage {
 
+    private static float TEXT_DELAY_TIME = 1f;
+
     private TextureRegion[][] textBox;
     private int box_rows;
     private int box_cols;
@@ -80,7 +82,7 @@ public class TextBoxImage extends TextImage {
         }
         else{
             text_index = 0;
-            text_delay = 10f;
+            text_delay = TEXT_DELAY_TIME;
         }
     }
 
@@ -116,11 +118,13 @@ public class TextBoxImage extends TextImage {
         row_iterator_val = row_list_iterator.next();
         col_iterator_val = col_list_iterator.next();
 
+        int index = 0;
+
         if(this.text_hidden == false) {
 
             for(int i = 0; i < text_index; i++) {
                 char c = text.charAt(i);
-                int index = c - 32;
+                index = c - 32;
 
                 int row_text = index / fontSheet[0].length;
                 int col_text = index % fontSheet[0].length;
@@ -132,16 +136,22 @@ public class TextBoxImage extends TextImage {
                 if (row_list_iterator.hasNext())
                     row_iterator_val = row_list_iterator.next();
             }
+
+            if(text_index < text.length()){
+                if(index == 0){
+                    text_delay = 0;
+                }
+                if(text_delay > 0){
+                    text_delay--;
+                }else{
+                    text_index++;
+                    text_delay = TEXT_DELAY_TIME;
+                }
+            }
+
         }
 
-        if(text_index < text.length()){
-            if(text_delay > 0){
-                text_delay--;
-            }else{
-                text_index++;
-                text_delay = 10f;
-            }
-        }
+
 
     }
 }

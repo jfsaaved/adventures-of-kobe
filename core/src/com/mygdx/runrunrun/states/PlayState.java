@@ -116,7 +116,7 @@ public class PlayState extends State{
 
         int cam_x_offset = 2;
         int cam_y_offset = 4;
-        textBox.update("This is a testing",cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
+        textBox.update("Hello there people of the world!!",cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
         // Add velocity to the bg, to make bg look further away
         current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
