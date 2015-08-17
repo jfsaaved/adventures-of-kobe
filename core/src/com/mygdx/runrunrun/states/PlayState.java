@@ -47,7 +47,7 @@ public class PlayState extends State{
 
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg.getRegionWidth());
-        block = new Block(400, 0, Main.resource.getAtlas("assets").findRegion("block"));
+        block = new Block(50, 150, Main.resource.getAtlas("assets").findRegion("block"));
 
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
@@ -121,7 +121,10 @@ public class PlayState extends State{
         int cam_x_offset = 2;
         int cam_y_offset = 4;
 
-        String text = "POPS: Yo duckie, get the fuck outta there now!! Shit's bout to blow!!!!";
+        // sample text "------------------------------------------"
+        String text = "jesus: oh shit!!!!!!                      " +
+                      "jesus: watch out!!                        " +
+                      "duckie: chill.... i got this              ";
         textBox.update(text,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
 
         if(box_timer > 0){
@@ -132,22 +135,22 @@ public class PlayState extends State{
             if(textBox.isTextHidden())
                 textBox.setTextHide(false);
 
-            if(textBox.isFinishDrawing()){
+            /*if(textBox.isFinishDrawing()){
                 box_exit_delay--;
                 if(box_exit_delay <= 0){
                     textBox.setTextBox_hide(true);
                     if(!textBox.isTextHidden())
                         textBox.setTextHide(true);
                 }
-            }
+            }*/
         }
 
 
         // Add velocity to the bg, to make bg look further away
-        current_bg_x += 3f;
+        /*current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
             current_bg_x = 0;
-        }
+        }*/
 
     }
 
@@ -156,9 +159,10 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(bg,current_bg_x,-20);
-        sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
-        sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);
+        sb.draw(bg,-100,0);
+        //sb.draw(bg,current_bg_x,-20);
+        //sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
+        //sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);
 
 
         block.render(sb);

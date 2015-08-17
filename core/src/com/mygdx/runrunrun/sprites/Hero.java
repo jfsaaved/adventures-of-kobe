@@ -81,15 +81,66 @@ public class Hero extends MoveableObject {
         }
     }
 
-    public void jump(){
+    /*public void jump(){
         if(inAir == false && jump_coolDown <= 0f) {
             jump_acceleration = 8f; // Initial jump acceleration
             jump_potential_energy = 1f;
             jump_coolDown = 8f;
         }
+    }*/
+
+    public void jump(){
+        if(inAir == false){
+            jump_acceleration = 100f;
+        }
     }
 
     public void update(float dt){
+
+        super.update(dt);
+
+        float init_x = this.position.x;
+        float init_y = this.position.y;
+
+
+        if(in_hit_animation == false && x_var_from_getting_hit < 0f){
+            x_var_from_getting_hit += 0.05f;
+            if(x_var_from_getting_hit > 0){ // Reset the variable, to continue normal velocity
+                x_var_from_getting_hit = 0;
+            }
+        }
+
+        if(!inAir) {
+            if (height_anim_interval_status) {
+                height_var++;
+                if (height_var > 5f) {
+                    height_anim_interval_status = false;
+                }
+            } else{
+                height_var--;
+                if (height_var < 0f) {
+                    height_anim_interval_status = true;
+                }
+            }
+        }
+        else{
+            height_var = 0;
+        }
+
+        position.y = init_y + (jump_acceleration) * dt;
+        if(position.y > 0f){
+            inAir = true;
+            jump_acceleration -= 10 * dt;
+        }
+        else{
+            jump_acceleration = 0;
+            position.y = 0;
+            inAir = false;
+        }
+
+    }
+
+   /* public void update(float dt){
 
         if(in_hit_animation == false && x_var_from_getting_hit < 0f){
             x_var_from_getting_hit += 0.05f;
@@ -137,7 +188,9 @@ public class Hero extends MoveableObject {
 
 
         position = velocity(position.x + x_var_from_getting_hit, position.y + jump_velocity, true);
-    }
+    }*/
+
+
 
     public void render(SpriteBatch sb){
 

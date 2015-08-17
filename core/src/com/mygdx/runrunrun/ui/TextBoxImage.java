@@ -155,8 +155,12 @@ public class TextBoxImage extends TextImage {
                 if(index == 0){
                     text_delay = 0;
                 }
+
                 if(text_delay > 0){
-                    text_delay--;
+                    if(index == 14){
+                        text_delay -= 0.05f;
+                    }
+                    else text_delay--;
                 }else{
                     text_index++;
                     text_delay = TEXT_DELAY_TIME;

@@ -11,21 +11,15 @@ import com.mygdx.runrunrun.Main;
 public class Block extends MoveableObject{
 
     public Block(float x, float y, TextureRegion image){
-
         super(x,y,image);
-
     }
 
     public void update(float dt){
-
-        position = velocity(position.x, position.y, false);
-
+        super.update(dt);
     }
 
     public void render(SpriteBatch sb){
-
         sb.draw(image,position.x,position.y);
-
     }
 
 }

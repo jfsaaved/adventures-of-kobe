@@ -11,8 +11,8 @@ public class MoveableObject {
 
 
     // Gravity acceleration variables
-    protected static float GRAVITY = -5f;
-    protected static float MAX_ACC = 10f;
+    protected static float GRAVITY = -10f;
+    protected static float MAX_ACC = 60f;
     protected float free_fall_timer = 0f;
 
     // The move-able object properties
@@ -47,7 +47,26 @@ public class MoveableObject {
 
     }
 
-    protected Vector2 velocity(float init_x, float init_y, boolean is_this_a_hero){
+    public void update(float dt){
+
+        float init_x = this.position.x;
+        float init_y = this.position.y;
+
+        if(init_y > 0){
+            position.y = init_y + (GRAVITY * free_fall_timer * dt);
+
+            if(free_fall_timer <= MAX_ACC) {
+                free_fall_timer += 10 * dt;
+            }
+        }
+        else{
+            position.y = 0;
+            free_fall_timer = 0;
+        }
+
+    }
+
+    /*protected Vector2 velocity(float init_x, float init_y, boolean is_this_a_hero){
         Vector2 newPos;
         float final_x, final_y;
 
@@ -77,7 +96,7 @@ public class MoveableObject {
             free_fall_timer = 0;
         }
         return newPos;
-    }
+    }*/
 
     public boolean contains(Vector2 vector){
         return vector.x > this.position.x - width / 2 &&
