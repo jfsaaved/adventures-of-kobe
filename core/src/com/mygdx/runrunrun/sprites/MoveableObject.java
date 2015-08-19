@@ -34,29 +34,16 @@ public class MoveableObject {
 
     }
 
-    public MoveableObject(float x, float y, TextureRegion image, float bg_width_reference){
-
-        position = new Vector2(x, y);
-        this.bg_width_reference = bg_width_reference;
-
-        if(image != null) {
-            this.image = image;
-            width = image.getRegionWidth();
-            height = image.getRegionHeight();
-        }
-
-    }
-
     public void update(float dt){
 
-        float init_x = this.position.x;
+        //float init_x = this.position.x;
         float init_y = this.position.y;
 
         if(init_y > 0){
             position.y = init_y + (GRAVITY * free_fall_timer * dt);
 
             if(free_fall_timer <= MAX_ACC) {
-                free_fall_timer += 10 * dt;
+                free_fall_timer += 50f * dt;
             }
         }
         else{
@@ -65,38 +52,6 @@ public class MoveableObject {
         }
 
     }
-
-    /*protected Vector2 velocity(float init_x, float init_y, boolean is_this_a_hero){
-        Vector2 newPos;
-        float final_x, final_y;
-
-        // If it's the hero, add value to x vector
-        if(is_this_a_hero == true) {
-            final_x = init_x + 5f;
-            if (final_x >= bg_width_reference) {
-                final_x = 0;
-            }
-        }
-        else{
-            final_x = init_x;
-        }
-
-        final_y = init_y + (GRAVITY * free_fall_timer);
-
-        // If the object's position is above 0 (in the air) apply gravity
-        if(init_y > 0){
-            newPos = new Vector2(final_x, final_y);
-
-            if(free_fall_timer <= MAX_ACC) {
-                free_fall_timer += 0.05f;
-            }
-        }
-        else{
-            newPos = new Vector2(final_x,0);
-            free_fall_timer = 0;
-        }
-        return newPos;
-    }*/
 
     public boolean contains(Vector2 vector){
         return vector.x > this.position.x - width / 2 &&

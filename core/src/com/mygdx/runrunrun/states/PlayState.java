@@ -47,7 +47,7 @@ public class PlayState extends State{
 
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg.getRegionWidth());
-        block = new Block(50, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
 
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
@@ -135,14 +135,14 @@ public class PlayState extends State{
             if(textBox.isTextHidden())
                 textBox.setTextHide(false);
 
-            /*if(textBox.isFinishDrawing()){
+            if(textBox.isFinishDrawing()){
                 box_exit_delay--;
                 if(box_exit_delay <= 0){
                     textBox.setTextBox_hide(true);
                     if(!textBox.isTextHidden())
                         textBox.setTextHide(true);
                 }
-            }*/
+            }
         }
 
 
@@ -159,7 +159,9 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(bg,-100,0);
+        sb.draw(bg,bg.getRegionWidth(),0);
+        sb.draw(bg,0,0);
+        sb.draw(bg,-bg.getRegionWidth(),0);
         //sb.draw(bg,current_bg_x,-20);
         //sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
         //sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);

@@ -24,8 +24,11 @@ public class Hero extends MoveableObject {
     private boolean in_hit_animation;
 
     private int health_counter;
+    private float bg_reference;
+    private float speed;
 
-    public Hero(float x, float y, TextureRegion image){
+    // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
+    public Hero(float x, float y, TextureRegion image, float bg_width_reference){
 
         super(x, y, image);
 
@@ -33,17 +36,8 @@ public class Hero extends MoveableObject {
         height_anim_interval_status = true;
         health_counter = 3;
         hide = false;
-
-    }
-
-    // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
-    public Hero(float x, float y, TextureRegion image, float bg_width_reference){
-
-        super(x, y, image, bg_width_reference);
-
-        height_var = 0f;
-        height_anim_interval_status = true;
-        health_counter = 3;
+        speed = 200f;
+        bg_reference = bg_width_reference;
 
     }
 
@@ -81,17 +75,9 @@ public class Hero extends MoveableObject {
         }
     }
 
-    /*public void jump(){
-        if(inAir == false && jump_coolDown <= 0f) {
-            jump_acceleration = 8f; // Initial jump acceleration
-            jump_potential_energy = 1f;
-            jump_coolDown = 8f;
-        }
-    }*/
-
     public void jump(){
         if(inAir == false){
-            jump_acceleration = 100f;
+            jump_acceleration = 200f;
         }
     }
 
@@ -127,10 +113,15 @@ public class Hero extends MoveableObject {
             height_var = 0;
         }
 
+        position.x = init_x + speed * dt;
+        if(position.x >= bg_reference){
+            position.x = 0;
+        }
+
         position.y = init_y + (jump_acceleration) * dt;
         if(position.y > 0f){
             inAir = true;
-            jump_acceleration -= 10 * dt;
+            jump_acceleration -= 100f * dt;
         }
         else{
             jump_acceleration = 0;
@@ -139,58 +130,6 @@ public class Hero extends MoveableObject {
         }
 
     }
-
-   /* public void update(float dt){
-
-        if(in_hit_animation == false && x_var_from_getting_hit < 0f){
-            x_var_from_getting_hit += 0.05f;
-            if(x_var_from_getting_hit > 0){ // Reset the variable, to continue normal velocity
-                x_var_from_getting_hit = 0;
-            }
-        }
-
-        if(!inAir) {
-            if (height_anim_interval_status) {
-                height_var++;
-                if (height_var > 5f) {
-                    height_anim_interval_status = false;
-                }
-            } else{
-                height_var--;
-                if (height_var < 0f) {
-                    height_anim_interval_status = true;
-                }
-            }
-        }
-        else{
-            height_var = 0;
-        }
-
-
-        jump_velocity = jump_acceleration * jump_potential_energy;
-
-        if(jump_velocity > 0){
-            inAir = true;
-            if(jump_acceleration < 16f)
-                jump_acceleration += 0.05f;
-            if(jump_potential_energy > 0)
-                jump_potential_energy -= 0.05f;
-        }
-        else if(jump_velocity <= 0){
-            inAir = false;
-            if(jump_coolDown > 0){
-                jump_coolDown--;
-            }
-            jump_acceleration = 0;
-            jump_potential_energy = 0;
-            jump_velocity = 0;
-        }
-
-
-        position = velocity(position.x + x_var_from_getting_hit, position.y + jump_velocity, true);
-    }*/
-
-
 
     public void render(SpriteBatch sb){
 
