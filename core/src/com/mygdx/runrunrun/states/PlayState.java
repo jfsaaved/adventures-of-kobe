@@ -46,7 +46,7 @@ public class PlayState extends State{
         super(gsm);
 
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
-        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg.getRegionWidth());
+        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
 
         health = Main.resource.getAtlas("assets").findRegion("Hero");
@@ -106,11 +106,13 @@ public class PlayState extends State{
         }
 
         // Position update below
-        if(hero.getPosition().x >= bg.getRegionWidth()){
+        if(hero.getPosition().x == 0){
             Random rand = new Random();
             int x_block_pos = rand.nextInt(bg.getRegionWidth() - 20) + 20;
             int y_block_pos = rand.nextInt(200) + 0;
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
+
+            System.out.println(block.getPosition().x);
         }
 
         cam.position.set(hero.getPosition().x + 150, 100, 0);
@@ -159,9 +161,9 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(bg,bg.getRegionWidth(),0);
-        sb.draw(bg,0,0);
-        sb.draw(bg,-bg.getRegionWidth(),0);
+        sb.draw(bg,bg.getRegionWidth(),-20);
+        sb.draw(bg,0,-20);
+        sb.draw(bg,-bg.getRegionWidth(),-20);
         //sb.draw(bg,current_bg_x,-20);
         //sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
         //sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);

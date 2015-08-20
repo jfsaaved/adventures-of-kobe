@@ -20,7 +20,6 @@ public class MoveableObject {
     protected TextureRegion image;
     protected float width;
     protected float height;
-    protected float bg_width_reference;
 
     public MoveableObject(float x, float y, TextureRegion image){
 

@@ -12,23 +12,18 @@ public class Hero extends MoveableObject {
 
     // Jump mechanics
     private float jump_acceleration;
-    private float jump_potential_energy;
-    private float jump_velocity;
-    private float jump_coolDown;
     private boolean inAir;
 
     private float height_var;
-    private float x_var_from_getting_hit;
     private boolean height_anim_interval_status;
     private boolean hide;
-    private boolean in_hit_animation;
 
     private int health_counter;
-    private float bg_reference;
+    private TextureRegion bg_reference;
     private float speed;
 
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
-    public Hero(float x, float y, TextureRegion image, float bg_width_reference){
+    public Hero(float x, float y, TextureRegion image, TextureRegion bg_reference){
 
         super(x, y, image);
 
@@ -37,7 +32,8 @@ public class Hero extends MoveableObject {
         health_counter = 3;
         hide = false;
         speed = 200f;
-        bg_reference = bg_width_reference;
+
+        this.bg_reference = bg_reference;
 
     }
 
@@ -58,20 +54,11 @@ public class Hero extends MoveableObject {
     }
 
     public void hit_animation(float t){
-        in_hit_animation = true;
         if(t%2 == 0){
             hide = false;
         }
         else{
             hide = true;
-        }
-
-        // Slow down a bit
-        if(t > 0f){
-            x_var_from_getting_hit -= 0.1f;
-        }
-        else{
-            in_hit_animation = false;
         }
     }
 
@@ -87,14 +74,6 @@ public class Hero extends MoveableObject {
 
         float init_x = this.position.x;
         float init_y = this.position.y;
-
-
-        if(in_hit_animation == false && x_var_from_getting_hit < 0f){
-            x_var_from_getting_hit += 0.05f;
-            if(x_var_from_getting_hit > 0){ // Reset the variable, to continue normal velocity
-                x_var_from_getting_hit = 0;
-            }
-        }
 
         if(!inAir) {
             if (height_anim_interval_status) {
@@ -113,21 +92,23 @@ public class Hero extends MoveableObject {
             height_var = 0;
         }
 
-        position.x = init_x + speed * dt;
-        if(position.x >= bg_reference){
-            position.x = 0;
+        float final_x = init_x + (speed) * dt;
+        if(final_x >= bg_reference.getRegionWidth()){
+            final_x = 0;
         }
 
-        position.y = init_y + (jump_acceleration) * dt;
-        if(position.y > 0f){
+        float final_y = init_y + (jump_acceleration) * dt;
+        if(final_y > 0f){
             inAir = true;
             jump_acceleration -= 100f * dt;
         }
         else{
             jump_acceleration = 0;
-            position.y = 0;
+            final_y = 0;
             inAir = false;
         }
+
+        this.position.set(final_x,final_y);
 
     }
 
