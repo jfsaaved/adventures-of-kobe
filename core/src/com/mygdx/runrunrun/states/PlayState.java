@@ -148,11 +148,11 @@ public class PlayState extends State{
         }
 
 
-        // Add velocity to the bg, to make bg look further away
-        /*current_bg_x += 3f;
+        //Add velocity to the bg, to make bg look further away
+        current_bg_x += 3f;
         if(current_bg_x >= bg.getRegionWidth()){
             current_bg_x = 0;
-        }*/
+        }
 
     }
 
@@ -161,12 +161,12 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(bg,bg.getRegionWidth(),-20);
-        sb.draw(bg,0,-20);
-        sb.draw(bg,-bg.getRegionWidth(),-20);
-        //sb.draw(bg,current_bg_x,-20);
-        //sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
-        //sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);
+        //sb.draw(bg,bg.getRegionWidth(),-20);
+        //sb.draw(bg,0,-20);
+        //sb.draw(bg,-bg.getRegionWidth(),-20);
+        sb.draw(bg,current_bg_x,-20);
+        sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
+        sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);
 
 
         block.render(sb);
