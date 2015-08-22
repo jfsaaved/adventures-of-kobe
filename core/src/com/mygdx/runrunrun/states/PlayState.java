@@ -1,6 +1,7 @@
 package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.runrunrun.Main;
@@ -66,6 +67,9 @@ public class PlayState extends State{
     public void handleInput(){
         if(Gdx.input.justTouched()){
             hero.jump();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
+            hero.toggleStop();
         }
     }
 
@@ -174,11 +178,6 @@ public class PlayState extends State{
         }
 
 
-
-
-        block.render(sb);
-        hero.render(sb);
-
         hit_splash.render(sb);
         textBox.renderBox(sb);
         textBox.renderText(sb);
@@ -187,6 +186,9 @@ public class PlayState extends State{
         for(int i = 1; i <= hero.getHealth_counter(); i++){
             sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
         }
+
+        block.render(sb);
+        hero.render(sb);
 
         sb.end();
 

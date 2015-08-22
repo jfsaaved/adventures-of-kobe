@@ -22,6 +22,8 @@ public class Hero extends MoveableObject {
     private TextureRegion bg_reference;
     private float speed;
 
+    private boolean isStopped;
+
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
     public Hero(float x, float y, TextureRegion image, TextureRegion bg_reference){
 
@@ -57,6 +59,16 @@ public class Hero extends MoveableObject {
         return speed;
     }
 
+    public void toggleStop(){
+        if(isStopped){
+            speed = 200f;
+            isStopped = false;
+        }else{
+            speed = 0;
+            isStopped = true;
+        }
+
+    }
 
     public void hit_animation(float t){
         if(t%2 == 0){
