@@ -53,6 +53,11 @@ public class Hero extends MoveableObject {
         return inAir;
     }
 
+    public float getSpeed(){
+        return speed;
+    }
+
+
     public void hit_animation(float t){
         if(t%2 == 0){
             hide = false;
@@ -67,6 +72,7 @@ public class Hero extends MoveableObject {
             jump_acceleration = 200f;
         }
     }
+
 
     public void update(float dt){
 

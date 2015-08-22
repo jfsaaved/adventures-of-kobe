@@ -49,6 +49,8 @@ public class PlayState extends State{
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
 
+        current_bg_x = 0;
+
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
@@ -111,8 +113,6 @@ public class PlayState extends State{
             int x_block_pos = rand.nextInt(bg.getRegionWidth() - 20) + 20;
             int y_block_pos = rand.nextInt(200) + 0;
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
-
-            System.out.println(block.getPosition().x);
         }
 
         cam.position.set(hero.getPosition().x + 150, 100, 0);
@@ -149,9 +149,12 @@ public class PlayState extends State{
 
 
         //Add velocity to the bg, to make bg look further away
-        current_bg_x += 3f;
-        if(current_bg_x >= bg.getRegionWidth()){
-            current_bg_x = 0;
+
+        if(hero.getSpeed() > 0) {
+            current_bg_x++;
+            if(current_bg_x >= bg.getRegionWidth()){
+                current_bg_x = 0;
+            }
         }
 
     }
@@ -161,12 +164,16 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        //sb.draw(bg,bg.getRegionWidth(),-20);
-        //sb.draw(bg,0,-20);
-        //sb.draw(bg,-bg.getRegionWidth(),-20);
-        sb.draw(bg,current_bg_x,-20);
-        sb.draw(bg,current_bg_x + bg.getRegionWidth(),-20);
-        sb.draw(bg,current_bg_x - bg.getRegionWidth(),-20);
+        for(int i = 0 ; i < 3 ; i ++) {
+            if(i == 0)
+                sb.draw(bg, current_bg_x - bg.getRegionWidth(), -20);
+            else if(i == 1)
+                sb.draw(bg, current_bg_x, -20);
+            else if (i == 2)
+                sb.draw(bg, current_bg_x + bg.getRegionWidth(), -20);
+        }
+
+
 
 
         block.render(sb);
