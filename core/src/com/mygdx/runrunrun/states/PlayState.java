@@ -8,6 +8,7 @@ import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Hero;
 import com.mygdx.runrunrun.sprites.MoveableObject;
+import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
 
@@ -23,6 +24,7 @@ public class PlayState extends State{
     // Moveable Objects
     private Hero hero;
     private Block block;
+    private Shop shop;
 
     // BGs
     private TextureRegion bg;
@@ -31,6 +33,7 @@ public class PlayState extends State{
     // Text
     private TextImage hit_splash;
     private TextBoxImage textBox;
+    private String currentDialogue;
 
     // UIs
     private TextureRegion health;
@@ -42,6 +45,8 @@ public class PlayState extends State{
     // Events
     private float box_timer;
     private float box_exit_delay;
+    private boolean stopForShop;
+    private boolean enteredShop;
 
     public PlayState(GSM gsm){
         super(gsm);
@@ -49,6 +54,8 @@ public class PlayState extends State{
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        shop = new Shop(300,0, Main.resource.getAtlas("assets").findRegion("house"));
+
 
         current_bg_x = 0;
 
@@ -59,6 +66,9 @@ public class PlayState extends State{
         textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         textBox.setTextHide(true);
         textBox.setTextBox_hide(true);
+        currentDialogue = "Testing";
+
+        enteredShop = false;
 
         box_timer = 100f;
         box_exit_delay = 100f;
@@ -70,6 +80,14 @@ public class PlayState extends State{
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
             hero.toggleStop();
+            if(!enteredShop) {
+                if (stopForShop) {
+                    currentDialogue = shop.getDialogue(0);
+                    textBox.setTextHide(false);
+                    textBox.setTextBox_hide(false);
+                    enteredShop = true;
+                }
+            }
         }
     }
 
@@ -80,12 +98,26 @@ public class PlayState extends State{
         }
     }
 
+    public void shopDetection(){
+        if(shop.contains(hero.getPosition())) {
+            stopForShop = true;
+            System.out.println("Hero: "+hero.getPosition().x+", House: "+shop.getPosition().x);
+        }else{
+            stopForShop = false;
+            enteredShop = false;
+            textBox.setTextHide(true);
+            textBox.setTextBox_hide(true);
+        }
+    }
+
     public void update(float dt){
 
         handleInput();
 
         hero.update(dt);
         block.update(dt);
+
+        shopDetection();
 
         /*if(hero.getHealth_counter() <= 0){
             gsm.set(new GameOverState(gsm));
@@ -122,45 +154,18 @@ public class PlayState extends State{
         cam.position.set(hero.getPosition().x + 150, 100, 0);
         cam.update();
 
-        hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-
         int cam_x_offset = 2;
         int cam_y_offset = 4;
-
-        // sample text "------------------------------------------"
-        String text = "jesus: oh shit!!!!!!                      " +
-                      "jesus: watch out!!                        " +
-                      "duckie: chill.... i got this              ";
-        textBox.update(text,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
-
-        if(box_timer > 0){
-            box_timer--;
-        }
-        else{
-            textBox.setTextBox_hide(false);
-            if(textBox.isTextHidden())
-                textBox.setTextHide(false);
-
-            if(textBox.isFinishDrawing()){
-                box_exit_delay--;
-                if(box_exit_delay <= 0){
-                    textBox.setTextBox_hide(true);
-                    if(!textBox.isTextHidden())
-                        textBox.setTextHide(true);
-                }
-            }
-        }
-
+        textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
+        hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
 
         //Add velocity to the bg, to make bg look further away
-
         if(hero.getSpeed() > 0) {
             current_bg_x++;
             if(current_bg_x >= bg.getRegionWidth()){
                 current_bg_x = 0;
             }
         }
-
     }
 
     public void render(SpriteBatch sb){
@@ -177,7 +182,7 @@ public class PlayState extends State{
                 sb.draw(bg, current_bg_x + bg.getRegionWidth(), -20);
         }
 
-
+        shop.render(sb);
         hit_splash.render(sb);
         textBox.renderBox(sb);
         textBox.renderText(sb);

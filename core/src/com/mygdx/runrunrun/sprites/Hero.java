@@ -106,7 +106,11 @@ public class Hero extends MoveableObject {
                 }
             }
         }
-        else{
+        else {
+            height_var = 0;
+        }
+
+        if(isStopped){
             height_var = 0;
         }
 
