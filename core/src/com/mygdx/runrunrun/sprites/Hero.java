@@ -10,6 +10,8 @@ import com.mygdx.runrunrun.Main;
  */
 public class Hero extends MoveableObject {
 
+    private static float MAX_SPEED = 100f;
+
     // Jump mechanics
     private float jump_acceleration;
     private boolean inAir;
@@ -27,6 +29,9 @@ public class Hero extends MoveableObject {
     private float speed;
     private boolean isStopped;
 
+    // Items
+    private int coins;
+
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
     public Hero(float x, float y, TextureRegion image, TextureRegion bg_reference){
 
@@ -41,7 +46,7 @@ public class Hero extends MoveableObject {
         hide = false;
 
         // Moving mechanics
-        speed = 200f;
+        speed = MAX_SPEED;
         this.bg_reference = bg_reference;
 
     }
@@ -68,7 +73,7 @@ public class Hero extends MoveableObject {
 
     public void toggleStop(){
         if(isStopped){
-            speed = 200f;
+            speed = MAX_SPEED;
             isStopped = false;
         }else{
             speed = 0;
@@ -92,6 +97,13 @@ public class Hero extends MoveableObject {
         }
     }
 
+    public void addCoin(int value){
+        coins += value;
+    }
+
+    public int getCoins(){
+        return coins;
+    }
 
     public void update(float dt){
 

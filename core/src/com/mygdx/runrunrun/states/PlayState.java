@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.sprites.Block;
+import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
 import com.mygdx.runrunrun.sprites.MoveableObject;
 import com.mygdx.runrunrun.sprites.Shop;
@@ -25,6 +26,7 @@ public class PlayState extends State{
     private Hero hero;
     private Block block;
     private Shop shop;
+    private Coin coin;
 
     // BGs
     private TextureRegion bg;
@@ -55,9 +57,10 @@ public class PlayState extends State{
         clouds = Main.resource.getAtlas("assets").findRegion("clouds1");
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
+
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
         shop = new Shop(300,0, Main.resource.getAtlas("assets").findRegion("house"));
-
+        coin = new Coin(200,0, Main.resource.getAtlas("assets").findRegion("coin"));
 
         current_bg_x = 0;
         current_bg_x_clouds = 0;
@@ -102,7 +105,7 @@ public class PlayState extends State{
     }
 
     private void shopDetection(){
-        if(shop.contains(hero.getPosition())) {
+        if(shop.contains(hero.getPosition()) && shop.getHide() == false) {
             stopForShop = true;
             exitShopTimer = 100;
         }else{
@@ -154,29 +157,74 @@ public class PlayState extends State{
         }
     }
 
-    private void boxRespawn(){
+    private void coinDetection(){
+        if(hero.contains(coin.getPosition())){
+            if(coin.getHide() == false) {
+                hero.addCoin(1);
+                coin.setHide(true);
+                System.out.println(hero.getCoins());
+            }
+        }
+    }
+
+    private void objectsRespawn(){
+
+        int x_block_pos = 0;
+        int y_block_pos = 0;
+        int showOrNot = 0;
+
+        int x_coin_pos = 0;
+
         // Position update below
         if(hero.getPosition().x == 0){
             Random rand = new Random();
-            int x_block_pos = rand.nextInt(bg.getRegionWidth() - 20) + 20;
-            int y_block_pos = rand.nextInt(200) + 0;
+
+            // Shop
+            showOrNot = rand.nextInt(10) + 1;
+            if(showOrNot == 5){
+                shop.setHide(false);
+            }
+            else{
+                shop.setHide(true);
+            }
+
+            // Blocks
+            if(shop.getHide() == false)
+                x_block_pos = 1000;
+            else
+                x_block_pos = rand.nextInt(500) + 200;
+
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
+
+            // Coins
+            if(coin.getHide() == true){
+                x_coin_pos = rand.nextInt(500) + 200;
+                coin = new Coin(x_coin_pos, 0, Main.resource.getAtlas("assets").findRegion("coin"));
+                coin.setHide(false);
+            }
         }
     }
 
     private void parallaxBG(float dt){
         //Add velocity to the bg, to make bg look further away
         if(hero.getSpeed() > 0) {
-            current_bg_x += 100f * dt;
+            current_bg_x += 20f * dt;
             if(current_bg_x >= bg.getRegionWidth()){
                 current_bg_x = 0;
             }
+
+            current_bg_x_clouds += 40f * dt;
+            if (current_bg_x_clouds >= clouds.getRegionWidth()) {
+                current_bg_x_clouds = 0;
+            }
+        }
+        else{
+            current_bg_x_clouds += 10f * dt;
+            if (current_bg_x_clouds >= clouds.getRegionWidth()) {
+                current_bg_x_clouds = 0;
+            }
         }
 
-        current_bg_x_clouds += 50f * dt;
-        if(current_bg_x_clouds >= clouds.getRegionWidth()){
-            current_bg_x_clouds = 0;
-        }
     }
 
     private void updateCam(){
@@ -198,10 +246,11 @@ public class PlayState extends State{
         hero.update(dt);
         block.update(dt);
 
+        coinDetection();
         shopDetection();
         onExitShop();
         onHit();
-        boxRespawn();
+        objectsRespawn();
         updateCam();
         updateTexts();
         parallaxBG(dt);
@@ -234,6 +283,7 @@ public class PlayState extends State{
         shop.render(sb);
 
         block.render(sb);
+        coin.render(sb);
         hero.render(sb);
 
         hit_splash.render(sb);

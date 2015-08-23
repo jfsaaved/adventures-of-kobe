@@ -14,6 +14,7 @@ public class Shop extends MoveableObject{
     private float scale;
     private String[] dialogue;
     private Rectangle rect;
+    private boolean hide;
 
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image);
@@ -31,6 +32,14 @@ public class Shop extends MoveableObject{
                       //"duckie: chill.... i got this              ";
     }
 
+    public void setHide(boolean b){
+        hide = b;
+    }
+
+    public boolean getHide(){
+        return hide;
+    }
+
     @Override
     public boolean contains(Vector2 vector){
         return rect.contains(vector);
@@ -45,7 +54,9 @@ public class Shop extends MoveableObject{
     }
 
     public void render(SpriteBatch sb){
-        sb.draw(image,position.x,position.y, width, height);
+        if(hide == false)
+            sb.draw(image,position.x,position.y, width, height);
     }
+
 
 }
