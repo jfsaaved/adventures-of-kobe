@@ -43,10 +43,9 @@ public class PlayState extends State{
     private float hit_splash_cool_down;
 
     // Events
-    private float box_timer;
-    private float box_exit_delay;
     private boolean stopForShop;
     private boolean enteredShop;
+    private float exitShopTimer;
 
     public PlayState(GSM gsm){
         super(gsm);
@@ -69,60 +68,67 @@ public class PlayState extends State{
         currentDialogue = "Testing";
 
         enteredShop = false;
-
-        box_timer = 100f;
-        box_exit_delay = 100f;
+        exitShopTimer = -1;
     }
 
     public void handleInput(){
         if(Gdx.input.justTouched()){
-            hero.jump();
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
-            hero.toggleStop();
-            if(!enteredShop) {
-                if (stopForShop) {
+            //hero.jump();
+
+            if(stopForShop){
+                hero.toggleStop();
+                if(!enteredShop){
                     currentDialogue = shop.getDialogue(0);
                     textBox.setTextHide(false);
                     textBox.setTextBox_hide(false);
                     enteredShop = true;
                 }
             }
+            else{
+                hero.jump();
+            }
         }
     }
 
-    public void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
+    private void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
         if(firstObj.contains(secondObj.getPosition())){
             hit_cool_down = HIT_COOL_DOWN_MAX;
             hit_splash_cool_down = 60f;
         }
     }
 
-    public void shopDetection(){
+    private void shopDetection(){
         if(shop.contains(hero.getPosition())) {
             stopForShop = true;
-            System.out.println("Hero: "+hero.getPosition().x+", House: "+shop.getPosition().x);
+            exitShopTimer = 100;
         }else{
             stopForShop = false;
             enteredShop = false;
-            textBox.setTextHide(true);
-            textBox.setTextBox_hide(true);
         }
     }
 
-    public void update(float dt){
+    private void onExitShop(){
+        if(exitShopTimer > 0) {
+            if (exitShopTimer > 97 && exitShopTimer < 98) {
+                textBox.setTextHide(true);
+                textBox.setTextBox_hide(true);
+            }
+            else if(exitShopTimer < 97 && exitShopTimer > 20){
+                if(currentDialogue.equals(shop.getDialogue(0))) {
+                    currentDialogue = shop.getDialogue(1);
+                    textBox.setTextHide(false);
+                    textBox.setTextBox_hide(false);
+                }
+            }
+            else if(exitShopTimer < 20){
+                textBox.setTextHide(true);
+                textBox.setTextBox_hide(true);
+            }
+            exitShopTimer--;
+        }
+    }
 
-        handleInput();
-
-        hero.update(dt);
-        block.update(dt);
-
-        shopDetection();
-
-        /*if(hero.getHealth_counter() <= 0){
-            gsm.set(new GameOverState(gsm));
-        }*/
-
+    private void onHit(){
         // On hit code below
         if(hit_cool_down > 0f){
             if(hit_cool_down == HIT_COOL_DOWN_MAX){
@@ -142,7 +148,9 @@ public class PlayState extends State{
         else{
             hit_splash.setTextHide(true);
         }
+    }
 
+    private void boxRespawn(){
         // Position update below
         if(hero.getPosition().x == 0){
             Random rand = new Random();
@@ -150,15 +158,9 @@ public class PlayState extends State{
             int y_block_pos = rand.nextInt(200) + 0;
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
         }
+    }
 
-        cam.position.set(hero.getPosition().x + 150, 100, 0);
-        cam.update();
-
-        int cam_x_offset = 2;
-        int cam_y_offset = 4;
-        textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
-        hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-
+    private void parallaxBG(){
         //Add velocity to the bg, to make bg look further away
         if(hero.getSpeed() > 0) {
             current_bg_x++;
@@ -166,6 +168,35 @@ public class PlayState extends State{
                 current_bg_x = 0;
             }
         }
+    }
+
+    private void updateCam(){
+        cam.position.set(hero.getPosition().x + 150, 100, 0);
+        cam.update();
+    }
+
+    private void updateTexts(){
+        int cam_x_offset = 2;
+        int cam_y_offset = 4;
+        textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
+        hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+    }
+
+    public void update(float dt){
+
+        handleInput();
+
+        hero.update(dt);
+        block.update(dt);
+
+        shopDetection();
+        onExitShop();
+        onHit();
+        boxRespawn();
+        updateCam();
+        updateTexts();
+        parallaxBG();
+
     }
 
     public void render(SpriteBatch sb){
@@ -183,6 +214,10 @@ public class PlayState extends State{
         }
 
         shop.render(sb);
+
+        block.render(sb);
+        hero.render(sb);
+
         hit_splash.render(sb);
         textBox.renderBox(sb);
         textBox.renderText(sb);
@@ -191,9 +226,6 @@ public class PlayState extends State{
         for(int i = 1; i <= hero.getHealth_counter(); i++){
             sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
         }
-
-        block.render(sb);
-        hero.render(sb);
 
         sb.end();
 

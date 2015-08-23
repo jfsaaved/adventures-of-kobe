@@ -14,14 +14,17 @@ public class Hero extends MoveableObject {
     private float jump_acceleration;
     private boolean inAir;
 
+    // Moving animations
     private float height_var;
     private boolean height_anim_interval_status;
-    private boolean hide;
 
+    // Hit mechanics
+    private boolean hide;
     private int health_counter;
+
+    // Moving mechanics
     private TextureRegion bg_reference;
     private float speed;
-
     private boolean isStopped;
 
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
@@ -29,12 +32,16 @@ public class Hero extends MoveableObject {
 
         super(x, y, image);
 
+        // Moving animations
         height_var = 0f;
         height_anim_interval_status = true;
+
+        // Hit mechanics
         health_counter = 3;
         hide = false;
-        speed = 200f;
 
+        // Moving mechanics
+        speed = 200f;
         this.bg_reference = bg_reference;
 
     }
@@ -80,7 +87,7 @@ public class Hero extends MoveableObject {
     }
 
     public void jump(){
-        if(inAir == false){
+        if(inAir == false && isStopped == false){
             jump_acceleration = 200f;
         }
     }
