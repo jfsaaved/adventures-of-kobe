@@ -28,7 +28,9 @@ public class PlayState extends State{
 
     // BGs
     private TextureRegion bg;
+    private TextureRegion clouds;
     private float current_bg_x;
+    private float current_bg_x_clouds;
 
     // Text
     private TextImage hit_splash;
@@ -50,6 +52,7 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
+        clouds = Main.resource.getAtlas("assets").findRegion("clouds1");
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
@@ -57,6 +60,7 @@ public class PlayState extends State{
 
 
         current_bg_x = 0;
+        current_bg_x_clouds = 0;
 
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
@@ -160,13 +164,18 @@ public class PlayState extends State{
         }
     }
 
-    private void parallaxBG(){
+    private void parallaxBG(float dt){
         //Add velocity to the bg, to make bg look further away
         if(hero.getSpeed() > 0) {
-            current_bg_x++;
+            current_bg_x += 100f * dt;
             if(current_bg_x >= bg.getRegionWidth()){
                 current_bg_x = 0;
             }
+        }
+
+        current_bg_x_clouds += 50f * dt;
+        if(current_bg_x_clouds >= clouds.getRegionWidth()){
+            current_bg_x_clouds = 0;
         }
     }
 
@@ -195,7 +204,7 @@ public class PlayState extends State{
         boxRespawn();
         updateCam();
         updateTexts();
-        parallaxBG();
+        parallaxBG(dt);
 
     }
 
@@ -206,11 +215,20 @@ public class PlayState extends State{
 
         for(int i = 0 ; i < 3 ; i ++) {
             if(i == 0)
-                sb.draw(bg, current_bg_x - bg.getRegionWidth(), -20);
+                sb.draw(clouds, current_bg_x_clouds - clouds.getRegionWidth(), 0);
             else if(i == 1)
-                sb.draw(bg, current_bg_x, -20);
+                sb.draw(clouds, current_bg_x_clouds, 0);
             else if (i == 2)
-                sb.draw(bg, current_bg_x + bg.getRegionWidth(), -20);
+                sb.draw(clouds, current_bg_x_clouds + clouds.getRegionWidth(), 0);
+        }
+
+        for(int i = 0 ; i < 3 ; i ++) {
+            if(i == 0)
+                sb.draw(bg, current_bg_x - bg.getRegionWidth(), -50);
+            else if(i == 1)
+                sb.draw(bg, current_bg_x, -50);
+            else if (i == 2)
+                sb.draw(bg, current_bg_x + bg.getRegionWidth(), -50);
         }
 
         shop.render(sb);
