@@ -49,6 +49,18 @@ public class Hero extends MoveableObject {
         speed = MAX_SPEED;
         this.bg_reference = bg_reference;
 
+        // Items
+        coins = 0;
+
+    }
+
+
+    public void addCoin(int value){
+        coins += value;
+    }
+
+    public int getCoins(){
+        return coins;
     }
 
     public int getHealth_counter(){
@@ -97,21 +109,7 @@ public class Hero extends MoveableObject {
         }
     }
 
-    public void addCoin(int value){
-        coins += value;
-    }
-
-    public int getCoins(){
-        return coins;
-    }
-
-    public void update(float dt){
-
-        super.update(dt);
-
-        float init_x = this.position.x;
-        float init_y = this.position.y;
-
+    private void updateAnimation(){
         if(!inAir) {
             if (height_anim_interval_status) {
                 height_var++;
@@ -132,6 +130,16 @@ public class Hero extends MoveableObject {
         if(isStopped){
             height_var = 0;
         }
+    }
+
+    public void update(float dt){
+
+        super.update(dt);
+
+        float init_x = this.position.x;
+        float init_y = this.position.y;
+
+        updateAnimation();
 
         float final_x = init_x + (speed) * dt;
         if(final_x >= bg_reference.getRegionWidth()){

@@ -41,6 +41,8 @@ public class PlayState extends State{
 
     // UIs
     private TextureRegion health;
+    private TextImage coinsText;
+    private int coins;
 
     // Cool Downs
     private float hit_cool_down;
@@ -68,6 +70,11 @@ public class PlayState extends State{
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+
+        coins = hero.getCoins();
+        coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
+        coinsText.setTextHide(false);
+
         hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         textBox.setTextHide(true);
@@ -161,6 +168,7 @@ public class PlayState extends State{
         if(hero.contains(coin.getPosition())){
             if(coin.getHide() == false) {
                 hero.addCoin(1);
+                coins = hero.getCoins();
                 coin.setHide(true);
                 System.out.println(hero.getCoins());
             }
@@ -235,8 +243,13 @@ public class PlayState extends State{
     private void updateTexts(){
         int cam_x_offset = 2;
         int cam_y_offset = 4;
+
+        int coin_text_x_offset = 200;
+        int coin_text_y_offset = 24;
+
         textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
         hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
     public void update(float dt){
@@ -294,6 +307,8 @@ public class PlayState extends State{
         for(int i = 1; i <= hero.getHealth_counter(); i++){
             sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
         }
+
+        coinsText.render(sb);
 
         sb.end();
 
