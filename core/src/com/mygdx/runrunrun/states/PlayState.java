@@ -29,6 +29,7 @@ public class PlayState extends State{
     private Coin coin;
 
     // BGs
+    private TextureRegion ground;
     private TextureRegion bg;
     private TextureRegion clouds;
     private float current_bg_x;
@@ -56,13 +57,14 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
+        ground = Main.resource.getAtlas("assets").findRegion("dirt");
         clouds = Main.resource.getAtlas("assets").findRegion("clouds1");
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
 
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
-        shop = new Shop(300,0, Main.resource.getAtlas("assets").findRegion("house"));
-        coin = new Coin(200,0, Main.resource.getAtlas("assets").findRegion("coin"));
+        shop = new Shop(300,32, Main.resource.getAtlas("assets").findRegion("house"));
+        coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         current_bg_x = 0;
         current_bg_x_clouds = 0;
@@ -170,7 +172,6 @@ public class PlayState extends State{
                 hero.addCoin(1);
                 coins = hero.getCoins();
                 coin.setHide(true);
-                System.out.println(hero.getCoins());
             }
         }
     }
@@ -178,10 +179,11 @@ public class PlayState extends State{
     private void objectsRespawn(){
 
         int x_block_pos = 0;
-        int y_block_pos = 0;
+        int y_block_pos = 32;
         int showOrNot = 0;
 
         int x_coin_pos = 0;
+        int y_coin_pos = 32;
 
         // Position update below
         if(hero.getPosition().x == 0){
@@ -207,7 +209,7 @@ public class PlayState extends State{
             // Coins
             if(coin.getHide() == true){
                 x_coin_pos = rand.nextInt(500) + 200;
-                coin = new Coin(x_coin_pos, 0, Main.resource.getAtlas("assets").findRegion("coin"));
+                coin = new Coin(x_coin_pos, y_coin_pos, Main.resource.getAtlas("assets").findRegion("coin"));
                 coin.setHide(false);
             }
         }
@@ -293,8 +295,17 @@ public class PlayState extends State{
                 sb.draw(bg, current_bg_x + bg.getRegionWidth(), -50);
         }
 
-        shop.render(sb);
 
+        for(int i = 0 ; i < 3 ; i ++) {
+            if(i == 0)
+                sb.draw(ground, 0 - ground.getRegionWidth(), 0);
+            else if(i == 1)
+                sb.draw(ground, 0, 0);
+            else if (i == 2)
+                sb.draw(ground, 0 + ground.getRegionWidth(), 0);
+        }
+
+        shop.render(sb);
         block.render(sb);
         coin.render(sb);
         hero.render(sb);
@@ -309,6 +320,8 @@ public class PlayState extends State{
         }
 
         coinsText.render(sb);
+
+
 
         sb.end();
 

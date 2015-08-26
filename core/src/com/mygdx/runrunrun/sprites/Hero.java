@@ -147,13 +147,13 @@ public class Hero extends MoveableObject {
         }
 
         float final_y = init_y + (jump_acceleration) * dt;
-        if(final_y > 0f){
+        if(final_y > 32){
             inAir = true;
             jump_acceleration -= 100f * dt;
         }
         else{
             jump_acceleration = 0;
-            final_y = 0;
+            final_y = 32;
             inAir = false;
         }
 

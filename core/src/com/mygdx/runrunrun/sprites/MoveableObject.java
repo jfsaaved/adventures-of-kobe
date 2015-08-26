@@ -38,7 +38,7 @@ public class MoveableObject {
         //float init_x = this.position.x;
         float init_y = this.position.y;
 
-        if(init_y > 0){
+        if(init_y > 32){
             position.y = init_y + (GRAVITY * free_fall_timer * dt);
 
             if(free_fall_timer <= MAX_ACC) {
@@ -46,7 +46,7 @@ public class MoveableObject {
             }
         }
         else{
-            position.y = 0;
+            position.y = 32;
             free_fall_timer = 0;
         }
 
