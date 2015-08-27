@@ -21,6 +21,7 @@ import java.util.Random;
 public class PlayState extends State{
 
     private static float HIT_COOL_DOWN_MAX = 20f;
+    private static float MAX_CAM_OFFSET = 150f;
 
     // Moveable Objects
     private Hero hero;
@@ -54,6 +55,10 @@ public class PlayState extends State{
     private boolean enteredShop;
     private float exitShopTimer;
 
+    // Camera
+    private float cam_offset;
+    private float cam_acc;
+
     public PlayState(GSM gsm){
         super(gsm);
 
@@ -68,6 +73,8 @@ public class PlayState extends State{
         coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+        cam_offset = 0;
+        cam_acc = 0;
 
         coins = hero.getCoins();
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
@@ -195,8 +202,8 @@ public class PlayState extends State{
             }
 
             // Shop
-            showShopVar = rand.nextInt(6) + 1;
-            if(showShopVar == 5){
+            showShopVar = rand.nextInt(3) + 1;
+            if(showShopVar == 1){
                 shop.setHide(false);
                 x_block_pos = 1000;
             }
@@ -245,20 +252,42 @@ public class PlayState extends State{
 
     }
 
-    private void updateCam(){
-        cam.position.set(hero.getPosition().x + 150, 100, 0);
+    private void updateCam(float dt){
+        if(hero.getSpeed() > 0) {
+            if(cam_offset < Math.abs(MAX_CAM_OFFSET)){
+                cam_offset += 40f * dt;
+                cam_acc = 30f;
+            }
+            if(cam_offset > Math.abs(MAX_CAM_OFFSET)){
+                cam_offset = Math.abs(MAX_CAM_OFFSET);
+            }
+        }else{
+            if(cam_offset > 0){
+                cam_offset -= (10f + cam_acc) * dt;
+                if(cam_acc > 0) {
+                    cam_acc -= 0.5f;
+                }
+            }
+            if(cam_offset < 0){
+                cam_offset = 0;
+            }
+        }
+        cam.position.set(hero.getPosition().x + cam_offset, 100, 0);
         cam.update();
     }
 
     private void updateTexts(){
-        int cam_x_offset = 2;
-        int cam_y_offset = 4;
+        int textBox_x_offset = 2;
+        int textBox_y_offset = 4;
 
         int coin_text_x_offset = 200;
         int coin_text_y_offset = 24;
 
-        textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + cam_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + cam_y_offset),0.20f);
-        hit_splash.update("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        int hit_x_offset = 40;
+        int hit_y_offset = 75;
+
+        textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + textBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + textBox_y_offset),0.20f);
+        hit_splash.update("HIT!",cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight/2 - hit_y_offset,0.5f);
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
@@ -274,7 +303,7 @@ public class PlayState extends State{
         onExitShop();
         onHit();
         objectsRespawn();
-        updateCam();
+        updateCam(dt);
         updateTexts();
         parallaxBG(dt);
 
