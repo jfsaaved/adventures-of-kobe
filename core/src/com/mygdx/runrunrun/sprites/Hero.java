@@ -88,10 +88,12 @@ public class Hero extends MoveableObject {
             speed = MAX_SPEED;
             isStopped = false;
         }else{
-            speed = 0;
             isStopped = true;
         }
+    }
 
+    public boolean getStop(){
+        return isStopped;
     }
 
     public void hit_animation(float t){
@@ -106,6 +108,16 @@ public class Hero extends MoveableObject {
     public void jump(){
         if(inAir == false && isStopped == false){
             jump_acceleration = 200f;
+        }
+    }
+
+
+    private void decelerate(float dt){
+        if(speed > 0){
+            speed -= 300f * dt;
+        }
+        else if(speed <= 0){
+            speed = 0;
         }
     }
 
@@ -140,6 +152,10 @@ public class Hero extends MoveableObject {
         float init_y = this.position.y;
 
         updateAnimation();
+
+        if(isStopped){
+            decelerate(dt);
+        }
 
         float final_x = init_x + (speed) * dt;
         if(final_x >= bg_reference.getRegionWidth()){

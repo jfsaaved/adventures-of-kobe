@@ -128,6 +128,9 @@ public class PlayState extends State{
         }else{
             stopForShop = false;
             enteredShop = false;
+            if(hero.getStop()){
+                hero.toggleStop();
+            }
         }
     }
 
