@@ -11,7 +11,9 @@ public class Coin extends MoveableObject {
     private boolean hide;
 
     public Coin(float x, float y, TextureRegion image){
+
         super(x,y,image);
+
     }
 
     public void setHide(boolean b){

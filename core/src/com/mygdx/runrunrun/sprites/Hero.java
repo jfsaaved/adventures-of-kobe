@@ -10,7 +10,7 @@ import com.mygdx.runrunrun.Main;
  */
 public class Hero extends MoveableObject {
 
-    private static float MAX_SPEED = 100f;
+    private static float MAX_SPEED = 200f;
 
     // Jump mechanics
     private float jump_acceleration;

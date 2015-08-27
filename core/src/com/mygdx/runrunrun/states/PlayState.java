@@ -60,31 +60,32 @@ public class PlayState extends State{
         ground = Main.resource.getAtlas("assets").findRegion("dirt");
         clouds = Main.resource.getAtlas("assets").findRegion("clouds1");
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
-        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
-
-        block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
-        shop = new Shop(300,32, Main.resource.getAtlas("assets").findRegion("house"));
-        coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
-
-        current_bg_x = 0;
-        current_bg_x_clouds = 0;
-
         health = Main.resource.getAtlas("assets").findRegion("Hero");
+
+        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
+        block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
+        coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
 
         coins = hero.getCoins();
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
-        coinsText.setTextHide(false);
-
-        hit_splash = new TextImage("HIT!",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+
+        coinsText.setTextHide(false);
         textBox.setTextHide(true);
         textBox.setTextBox_hide(true);
-        currentDialogue = "Testing";
+
+        currentDialogue = "";
 
         enteredShop = false;
         exitShopTimer = -1;
+
+        current_bg_x = 0;
+        current_bg_x_clouds = 0;
+
     }
 
     public void handleInput(){
@@ -177,41 +178,48 @@ public class PlayState extends State{
     }
 
     private void objectsRespawn(){
-
-        int x_block_pos = 0;
-        int y_block_pos = 32;
-        int showOrNot = 0;
-
-        int x_coin_pos = 0;
-        int y_coin_pos = 32;
-
-        // Position update below
         if(hero.getPosition().x == 0){
             Random rand = new Random();
 
+            int showShopVar = 0;
+
+            int x_block_pos = rand.nextInt(525) + 350;;
+            int y_block_pos = 32;
+            float block_width = block.getWidth();
+
+            int x_coin_pos = rand.nextInt(525) + 350;
+            int y_coin_pos = 32;
+
+            while(x_coin_pos > x_block_pos - block_width/2 && x_coin_pos < x_block_pos + block_width/2){
+                x_coin_pos = rand.nextInt(525) + 350;
+            }
+
             // Shop
-            showOrNot = rand.nextInt(10) + 1;
-            if(showOrNot == 5){
+            showShopVar = rand.nextInt(6) + 1;
+            if(showShopVar == 5){
                 shop.setHide(false);
+                x_block_pos = 1000;
             }
             else{
                 shop.setHide(true);
             }
 
             // Blocks
-            if(shop.getHide() == false)
-                x_block_pos = 1000;
-            else
-                x_block_pos = rand.nextInt(500) + 200;
-
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
+            if(x_block_pos >= bg.getRegionWidth()){
+                block.setHide(true);
+            }
+            else{
+                block.setHide(false);
+            }
 
             // Coins
             if(coin.getHide() == true){
-                x_coin_pos = rand.nextInt(500) + 200;
                 coin = new Coin(x_coin_pos, y_coin_pos, Main.resource.getAtlas("assets").findRegion("coin"));
                 coin.setHide(false);
             }
+
+
         }
     }
 
