@@ -27,6 +27,7 @@ public class PlayState extends State{
     // Moveable Objects
     private Hero hero;
     private Block block;
+    private HitBlock hitblock;
     private Shop shop;
     private Coin coin;
 
@@ -70,6 +71,7 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        hitblock = new HitBlock(700,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
         shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
         coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
@@ -100,7 +102,14 @@ public class PlayState extends State{
 
     public void handleInput(){
         if(Gdx.input.justTouched()){
-            if(stopForShop){
+            mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cam.unproject(mouse);
+
+            if(hitblock.contains(mouse.x, mouse.y)){
+                hitblock.interact();
+            }
+
+            else if(stopForShop){
                 hero.toggleStop();
                 if(!enteredShop){
                     currentDialogue = shop.getDialogue(0);
@@ -111,15 +120,6 @@ public class PlayState extends State{
             }
             else{
                 hero.jump();
-            }
-        }
-    }
-
-    private void blockDetection(MoveableObject firstObj, MoveableObject secondObj){
-        if(firstObj.overlaps(secondObj.getRectangle())){
-            if(hit_cool_down == 0) {
-                hit_cool_down = HIT_COOL_DOWN_MAX;
-                hit_splash_cool_down = 60f;
             }
         }
     }
@@ -147,7 +147,19 @@ public class PlayState extends State{
         }
     }
 
-    private void onHit(){
+
+    private void blockDetection(MoveableObject firstObj, MoveableObject secondObj){
+        if(!firstObj.getHide()) {
+            if (firstObj.overlaps(secondObj.getRectangle())) {
+                if (hit_cool_down == 0) {
+                    hit_cool_down = HIT_COOL_DOWN_MAX;
+                    hit_splash_cool_down = 60f;
+                }
+            }
+        }
+    }
+
+    private void onBlockCollision(){
         // On hit code below
         if(hit_cool_down > 0f){
             if(hit_cool_down == HIT_COOL_DOWN_MAX){
@@ -190,7 +202,7 @@ public class PlayState extends State{
         }
     }
 
-    private void objectsRespawn(){
+    private void onNewCycle(){
         if(hero.getPosition().x == 0){
             Random rand = new Random();
 
@@ -214,7 +226,6 @@ public class PlayState extends State{
             showShopVar = rand.nextInt(3) + 1;
             if(showShopVar == 1){
                 shop.setHide(false);
-                x_block_pos = 1000;
             }
             else{
                 shop.setHide(true);
@@ -222,11 +233,13 @@ public class PlayState extends State{
 
             // Blocks
             block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
-            if(x_block_pos >= bg.getRegionWidth()){
+            if(!shop.getHide()){
                 block.setHide(true);
+                hitblock.setHide(true);
             }
             else{
                 block.setHide(false);
+                hitblock.setHide(false);
             }
 
             // Coins
@@ -234,12 +247,10 @@ public class PlayState extends State{
                 coin = new Coin(x_coin_pos, y_coin_pos, Main.resource.getAtlas("assets").findRegion("coin"));
                 coin.setHide(false);
             }
-
-
         }
     }
 
-    private void parallaxBG(float dt){
+    private void updateBG(float dt){
         //Add velocity to the bg, to make bg look further away
         if(hero.getSpeed() > 0) {
             current_bg_x += 20f * dt;
@@ -306,17 +317,20 @@ public class PlayState extends State{
 
         hero.update(dt);
         block.update(dt);
+        hitblock.update(dt);
 
         coinDetection();
         shopDetection();
         blockDetection(block, hero);
+        blockDetection(hitblock, hero);
 
-        onHit();
+        onBlockCollision();
         onExitShop();
-        objectsRespawn();
+        onNewCycle();
+
         updateCam(dt);
         updateTexts();
-        parallaxBG(dt);
+        updateBG(dt);
 
     }
 
@@ -355,6 +369,7 @@ public class PlayState extends State{
 
         shop.render(sb);
         block.render(sb);
+        hitblock.render(sb);
         coin.render(sb);
         hero.render(sb);
 

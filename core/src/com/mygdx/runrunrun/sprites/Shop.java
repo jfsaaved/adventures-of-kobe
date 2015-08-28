@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 public class Shop extends MoveableObject{
 
     private String[] dialogue;
-    private boolean hide;
 
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image);
@@ -26,14 +25,6 @@ public class Shop extends MoveableObject{
         dialogue[1] = "Shop Owner: Good bye!!                    " ;//+
                       //"Shop Owner: What would you like?          ";// +
                       //"duckie: chill.... i got this              ";
-    }
-
-    public void setHide(boolean b){
-        hide = b;
-    }
-
-    public boolean getHide(){
-        return hide;
     }
 
     public String getDialogue(int i){

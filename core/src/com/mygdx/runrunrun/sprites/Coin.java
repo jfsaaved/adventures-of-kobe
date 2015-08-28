@@ -8,20 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Coin extends MoveableObject {
 
-    private boolean hide;
-
     public Coin(float x, float y, TextureRegion image){
 
         super(x,y,image);
 
-    }
-
-    public void setHide(boolean b){
-        hide = b;
-    }
-
-    public boolean getHide(){
-        return hide;
     }
 
     public void update(float dt){

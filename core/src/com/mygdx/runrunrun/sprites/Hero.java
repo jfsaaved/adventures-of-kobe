@@ -21,7 +21,6 @@ public class Hero extends MoveableObject {
     private boolean height_anim_interval_status;
 
     // Hit mechanics
-    private boolean hide;
     private int health_counter;
 
     // Moving mechanics
@@ -43,7 +42,6 @@ public class Hero extends MoveableObject {
 
         // Hit mechanics
         health_counter = 3;
-        hide = false;
 
         // Moving mechanics
         speed = MAX_SPEED;

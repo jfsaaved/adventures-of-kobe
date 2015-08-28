@@ -10,8 +10,6 @@ import com.mygdx.runrunrun.Main;
  */
 public class Block extends MoveableObject{
 
-    private boolean hide;
-
     public Block(float x, float y, TextureRegion image){
         super(x,y,image);
         hide = false;
@@ -19,14 +17,6 @@ public class Block extends MoveableObject{
 
     public void update(float dt){
         super.update(dt);
-    }
-
-    public boolean getHide(){
-        return hide;
-    }
-
-    public void setHide(boolean b){
-        hide = b;
     }
 
     public void render(SpriteBatch sb){

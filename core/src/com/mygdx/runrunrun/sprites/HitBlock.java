@@ -10,20 +10,13 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class HitBlock extends MoveableObject {
 
-    private boolean hide;
-
     public HitBlock(float x, float y, TextureRegion image){
         super(x, y, image);
-        hide = false;
         rect = new Rectangle(this.position.x, this.position.y, this.width, this.height);
     }
 
-    public void setHide(boolean b){
-        hide = b;
-    }
-
-    public boolean getHide(){
-        return hide;
+    public void interact(){
+        hide = true;
     }
 
     public void update(float dt){
