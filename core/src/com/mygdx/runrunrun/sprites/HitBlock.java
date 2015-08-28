@@ -10,17 +10,36 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class HitBlock extends MoveableObject {
 
+    private float float_value;
+    private boolean interacted;
+
     public HitBlock(float x, float y, TextureRegion image){
         super(x, y, image);
         rect = new Rectangle(this.position.x, this.position.y, this.width, this.height);
     }
 
     public void interact(){
-        hide = true;
+        if(!interacted) {
+            float_value = 350f;
+            interacted = true;
+        }
+    }
+
+    public void floatUP(float dt){
+        if(float_value > 0){
+            this.position.y += float_value * dt;
+            float_value -= 100f * dt;
+        }
+        else{
+            float_value = 0;
+            interacted = false;
+        }
     }
 
     public void update(float dt){
+
         super.update(dt);
+        floatUP(dt);
     }
 
     public void render(SpriteBatch sb){

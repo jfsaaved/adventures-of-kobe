@@ -105,7 +105,7 @@ public class PlayState extends State{
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
-            if(hitblock.contains(mouse.x, mouse.y)){
+            if(hitblock.contains(mouse.x, mouse.y) && !hitblock.getHide()){
                 hitblock.interact();
             }
 
@@ -118,6 +118,7 @@ public class PlayState extends State{
                     enteredShop = true;
                 }
             }
+
             else{
                 hero.jump();
             }
