@@ -11,15 +11,11 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Shop extends MoveableObject{
 
-    private float scale;
     private String[] dialogue;
-    private Rectangle rect;
     private boolean hide;
 
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image);
-
-        rect = new Rectangle(this.position.x, this.position.y, this.width, this.height);
 
         dialogue = new String[15];
 
@@ -38,11 +34,6 @@ public class Shop extends MoveableObject{
 
     public boolean getHide(){
         return hide;
-    }
-
-    @Override
-    public boolean contains(Vector2 vector){
-        return rect.contains(vector);
     }
 
     public String getDialogue(int i){

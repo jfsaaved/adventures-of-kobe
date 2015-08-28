@@ -8,6 +8,7 @@ import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
+import com.mygdx.runrunrun.sprites.HitBlock;
 import com.mygdx.runrunrun.sprites.MoveableObject;
 import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.ui.TextBoxImage;
@@ -73,13 +74,15 @@ public class PlayState extends State{
         coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+
+        coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
+        hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+
         cam_offset = 0;
         cam_acc = 0;
 
         coins = hero.getCoins();
-        coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
-        hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
 
         coinsText.setTextHide(false);
         textBox.setTextHide(true);
@@ -97,8 +100,6 @@ public class PlayState extends State{
 
     public void handleInput(){
         if(Gdx.input.justTouched()){
-            //hero.jump();
-
             if(stopForShop){
                 hero.toggleStop();
                 if(!enteredShop){
@@ -114,10 +115,12 @@ public class PlayState extends State{
         }
     }
 
-    private void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
-        if(firstObj.contains(secondObj.getPosition())){
-            hit_cool_down = HIT_COOL_DOWN_MAX;
-            hit_splash_cool_down = 60f;
+    private void blockDetection(MoveableObject firstObj, MoveableObject secondObj){
+        if(firstObj.overlaps(secondObj.getRectangle())){
+            if(hit_cool_down == 0) {
+                hit_cool_down = HIT_COOL_DOWN_MAX;
+                hit_splash_cool_down = 60f;
+            }
         }
     }
 
@@ -131,6 +134,38 @@ public class PlayState extends State{
             if(hero.getStop()){
                 hero.toggleStop();
             }
+        }
+    }
+
+    private void coinDetection(){
+        if(coin.overlaps(hero.getRectangle())){
+            if(coin.getHide() == false) {
+                hero.addCoin(1);
+                coins = hero.getCoins();
+                coin.setHide(true);
+            }
+        }
+    }
+
+    private void onHit(){
+        // On hit code below
+        if(hit_cool_down > 0f){
+            if(hit_cool_down == HIT_COOL_DOWN_MAX){
+                hero.reduceHealth();
+            }
+            hit_cool_down--;
+            hero.hit_animation(hit_cool_down);
+        }
+        else{
+            hit_cool_down = 0;
+        }
+
+        if(hit_splash_cool_down > 0f){
+            hit_splash.setTextHide(false);
+            hit_splash_cool_down--;
+        }
+        else{
+            hit_splash.setTextHide(true);
         }
     }
 
@@ -155,45 +190,16 @@ public class PlayState extends State{
         }
     }
 
-    private void onHit(){
-        // On hit code below
-        if(hit_cool_down > 0f){
-            if(hit_cool_down == HIT_COOL_DOWN_MAX){
-                hero.reduceHealth();
-            }
-            hit_cool_down--;
-            hero.hit_animation(hit_cool_down);
-        }
-        else{
-            collisionDetection(hero,block);
-        }
-
-        if(hit_splash_cool_down > 0f){
-            hit_splash.setTextHide(false);
-            hit_splash_cool_down--;
-        }
-        else{
-            hit_splash.setTextHide(true);
-        }
-    }
-
-    private void coinDetection(){
-        if(hero.contains(coin.getPosition())){
-            if(coin.getHide() == false) {
-                hero.addCoin(1);
-                coins = hero.getCoins();
-                coin.setHide(true);
-            }
-        }
-    }
-
     private void objectsRespawn(){
         if(hero.getPosition().x == 0){
             Random rand = new Random();
 
             int showShopVar = 0;
 
-            int x_block_pos = rand.nextInt(525) + 350;;
+            int x_hitblock_pos = rand.nextInt(525) + 350;
+            int y_hitblock_pos = 32;
+
+            int x_block_pos = rand.nextInt(525) + 350;
             int y_block_pos = 32;
             float block_width = block.getWidth();
 
@@ -303,8 +309,10 @@ public class PlayState extends State{
 
         coinDetection();
         shopDetection();
-        onExitShop();
+        blockDetection(block, hero);
+
         onHit();
+        onExitShop();
         objectsRespawn();
         updateCam(dt);
         updateTexts();

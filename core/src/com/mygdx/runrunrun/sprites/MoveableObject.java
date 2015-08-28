@@ -2,6 +2,7 @@ package com.mygdx.runrunrun.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
 
 /**
@@ -18,6 +19,7 @@ public class MoveableObject {
     // The move-able object properties
     protected Vector2 position;
     protected TextureRegion image;
+    protected Rectangle rect;
     protected float width;
     protected float height;
 
@@ -30,6 +32,8 @@ public class MoveableObject {
             width = image.getRegionWidth();
             height = image.getRegionHeight();
         }
+
+        rect = new Rectangle(position.x, position.y, width, height);
 
     }
 
@@ -50,17 +54,28 @@ public class MoveableObject {
             free_fall_timer = 0;
         }
 
+        rect.set(position.x, position.y, width, height);
+
     }
 
     public boolean contains(Vector2 vector){
-        return vector.x > this.position.x - width / 2 &&
-                vector.x < this.position.x + width / 2 &&
-                vector.y > this.position.y - height / 2 &&
-                vector.y < this.position.y + height / 2;
+        return rect.contains(vector);
     }
 
     public Vector2 getPosition(){
         return position;
+    }
+
+    public boolean contains(Rectangle newRect){
+        return rect.contains(newRect);
+    }
+
+    public Rectangle getRectangle(){
+        return this.rect;
+    }
+
+    public boolean overlaps(Rectangle newRect){
+        return rect.overlaps(newRect);
     }
 
     public float getWidth(){
