@@ -32,6 +32,7 @@ public class PlayState extends State{
     private HitBlock hitblock;
     private Shop shop;
     private Coin coin;
+    private Vector<MoveableObject> objects;
 
     // BGs
     private TextureRegion ground;
@@ -236,7 +237,7 @@ public class PlayState extends State{
             }
 
             // Blocks
-            block = new Block(x_block_pos, y_block_pos, Main.resource.getAtlas("assets").findRegion("block"));
+            block.changePosition(x_block_pos, y_block_pos);
             if(!shop.getHide()){
                 block.setHide(true);
                 hitblock.setHide(true);
@@ -247,8 +248,8 @@ public class PlayState extends State{
             }
 
             // Coins
-            if(coin.getHide() == true){
-                coin = new Coin(x_coin_pos, y_coin_pos, Main.resource.getAtlas("assets").findRegion("coin"));
+            if(coin.getHide() == true) {
+                coin.changePosition(x_coin_pos, y_coin_pos);
                 coin.setHide(false);
             }
         }
@@ -266,7 +267,7 @@ public class PlayState extends State{
                 if(newPos_x >= 960){
                     newPos_x = newPos_x - 960;
                 }
-                block2 = new Block(newPos_x, 32, Main.resource.getAtlas("assets").findRegion("block"));
+                block2.changePosition(newPos_x, 32);
                 block2.setSpawned(true);
             }
         }

@@ -43,7 +43,7 @@ public class MoveableObject {
         float init_y = this.position.y;
 
         if(init_y > 32){
-            position.y = init_y + (GRAVITY * free_fall_timer * dt);
+            this.position.y = init_y + (GRAVITY * free_fall_timer * dt);
 
             if(free_fall_timer <= MAX_ACC) {
                 free_fall_timer += 50f * dt;
@@ -55,6 +55,11 @@ public class MoveableObject {
         }
 
         rect.set(position.x, position.y, width, height);
+    }
+
+    public void changePosition(float x, float y){
+        this.position.set(x,y);
+        this.rect.setPosition(x,y);
     }
 
     public boolean contains(Vector2 vector){
