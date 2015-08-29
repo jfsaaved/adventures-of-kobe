@@ -13,7 +13,7 @@ public class Block extends MoveableObject{
     private boolean spawned;
 
     public Block(float x, float y, TextureRegion image){
-        super(x,y,image);
+        super(x,y,image, "block");
         hide = false;
         spawned = false;
     }

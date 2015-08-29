@@ -34,7 +34,7 @@ public class Hero extends MoveableObject {
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
     public Hero(float x, float y, TextureRegion image, TextureRegion bg_reference){
 
-        super(x, y, image);
+        super(x, y, image, "hero");
 
         // Moving animations
         height_var = 0f;

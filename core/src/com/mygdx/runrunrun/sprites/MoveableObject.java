@@ -23,8 +23,9 @@ public class MoveableObject {
     protected float width;
     protected float height;
     protected boolean hide;
+    protected String type;
 
-    public MoveableObject(float x, float y, TextureRegion image){
+    public MoveableObject(float x, float y, TextureRegion image, String type){
 
         position = new Vector2(x, y);
 
@@ -36,6 +37,7 @@ public class MoveableObject {
 
         hide = false;
         rect = new Rectangle(position.x, position.y, width, height);
+        this.type = type;
 
     }
 
@@ -62,6 +64,10 @@ public class MoveableObject {
         this.rect.setPosition(x,y);
     }
 
+    public void setHide(boolean b){
+        hide = b;
+    }
+
     public boolean contains(Vector2 vector){
         return rect.contains(vector);
     }
@@ -76,6 +82,10 @@ public class MoveableObject {
 
     public boolean overlaps(Rectangle newRect){
         return rect.overlaps(newRect);
+    }
+
+    public String getType(){
+        return type;
     }
 
     public Vector2 getPosition(){
@@ -98,10 +108,6 @@ public class MoveableObject {
 
     public boolean getHide(){
         return hide;
-    }
-
-    public void setHide(boolean b){
-        hide = b;
     }
 
 }

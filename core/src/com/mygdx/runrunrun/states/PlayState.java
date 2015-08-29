@@ -129,8 +129,20 @@ public class PlayState extends State{
         }
     }
 
-    private void shopDetection(){
-        if(shop.contains(hero.getPosition()) && shop.getHide() == false) {
+    private void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
+        if(firstObj.getType().equals("shop")){
+            shopDetection(firstObj);
+        }else if(firstObj.getType().equals("coin")){
+            coinDetection(firstObj);
+        }else if(firstObj.getType().equals("block")){
+            blockDetection(firstObj, secondObj);
+        }else if(firstObj.getType().equals("hitblock")){
+            blockDetection(firstObj, secondObj);
+        }
+    }
+
+    private void shopDetection(MoveableObject firstObj){
+        if(firstObj.contains(hero.getPosition()) && firstObj.getHide() == false) {
             stopForShop = true;
             exitShopTimer = 100;
         }else{
@@ -142,16 +154,15 @@ public class PlayState extends State{
         }
     }
 
-    private void coinDetection(){
-        if(coin.overlaps(hero.getRectangle())){
-            if(coin.getHide() == false) {
+    private void coinDetection(MoveableObject firstObj){
+        if(firstObj.overlaps(hero.getRectangle())){
+            if(firstObj.getHide() == false) {
                 hero.addCoin(1);
                 coins = hero.getCoins();
-                coin.setHide(true);
+                firstObj.setHide(true);
             }
         }
     }
-
 
     private void blockDetection(MoveableObject firstObj, MoveableObject secondObj){
         if(!firstObj.getHide()) {
@@ -339,15 +350,16 @@ public class PlayState extends State{
         handleInput();
 
         hero.update(dt);
+        coin.update(dt);
         block.update(dt);
         block2.update(dt);
         hitblock.update(dt);
 
-        coinDetection();
-        shopDetection();
-        blockDetection(block, hero);
-        blockDetection(block2, hero);
-        blockDetection(hitblock, hero);
+        collisionDetection(coin,hero);
+        collisionDetection(shop,hero);
+        collisionDetection(block,hero);
+        collisionDetection(block2,hero);
+        collisionDetection(hitblock,hero);
 
         onBlockCollision();
         onExitShop();

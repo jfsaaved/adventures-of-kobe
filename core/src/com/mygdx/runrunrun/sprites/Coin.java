@@ -10,8 +10,7 @@ public class Coin extends MoveableObject {
 
     public Coin(float x, float y, TextureRegion image){
 
-        super(x,y,image);
-
+        super(x,y,image, "coin");
     }
 
     public void update(float dt){

@@ -14,7 +14,7 @@ public class HitBlock extends MoveableObject {
     private boolean interacted;
 
     public HitBlock(float x, float y, TextureRegion image){
-        super(x, y, image);
+        super(x, y, image, "hitblock");
         rect = new Rectangle(this.position.x, this.position.y, this.width, this.height);
     }
 
