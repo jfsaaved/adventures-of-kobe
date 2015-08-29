@@ -10,7 +10,7 @@ import com.mygdx.runrunrun.Main;
  */
 public class Hero extends MoveableObject {
 
-    private static float MAX_SPEED = 100f;
+    private static float MAX_SPEED = 150f;
 
     // Jump mechanics
     private float jump_acceleration;
@@ -27,6 +27,7 @@ public class Hero extends MoveableObject {
     private TextureRegion bg_reference;
     private float speed;
     private boolean isStopped;
+    private boolean isInNewCycle;
 
     // Items
     private int coins;
@@ -46,6 +47,7 @@ public class Hero extends MoveableObject {
         // Moving mechanics
         speed = MAX_SPEED;
         this.bg_reference = bg_reference;
+        isInNewCycle = false;
 
         // Items
         coins = 0;
@@ -92,6 +94,10 @@ public class Hero extends MoveableObject {
 
     public boolean getStop(){
         return isStopped;
+    }
+
+    public boolean hasEnteredNewCycle(){
+        return isInNewCycle;
     }
 
     public void hit_animation(float t){
@@ -157,7 +163,10 @@ public class Hero extends MoveableObject {
 
         float final_x = init_x + (speed) * dt;
         if(final_x >= bg_reference.getRegionWidth()){
-            final_x = 0;
+            final_x -= bg_reference.getRegionWidth();
+            isInNewCycle = true;
+        }else{
+            isInNewCycle = false;
         }
 
         float final_y = init_y + (jump_acceleration) * dt;

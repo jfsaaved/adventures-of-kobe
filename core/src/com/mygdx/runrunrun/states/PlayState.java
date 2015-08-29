@@ -72,10 +72,10 @@ public class PlayState extends State{
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
-        block = new Block(100, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        block = new Block(800, 150, Main.resource.getAtlas("assets").findRegion("block"));
         hitblock = new HitBlock(700,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
         shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
-        coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
+        coin = new Coin(300,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
@@ -239,7 +239,7 @@ public class PlayState extends State{
     }
 
     private void onNewCycle(){
-        if(hero.getPosition().x == 0){
+        if(hero.hasEnteredNewCycle()){
             Random rand = new Random();
             int showShopVar = rand.nextInt(3) + 1;
 
@@ -352,7 +352,7 @@ public class PlayState extends State{
 
         onBlockCollision();
         onExitShop();
-        onNewCamCycle();
+        //onNewCamCycle();
         onNewCycle();
 
         updateCam(dt);

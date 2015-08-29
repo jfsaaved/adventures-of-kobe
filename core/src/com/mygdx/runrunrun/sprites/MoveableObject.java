@@ -29,17 +29,17 @@ public class MoveableObject {
 
     public MoveableObject(float x, float y, TextureRegion image, String type){
 
-        position = new Vector2(x, y);
-
         if(image != null) {
             this.image = image;
             width = image.getRegionWidth();
             height = image.getRegionHeight();
         }
 
+        position = new Vector2(x, y);
+        rect = new Rectangle(position.x, position.y, width, height);
+
         hide = false;
         spawned = false;
-        rect = new Rectangle(position.x, position.y, width, height);
         this.type = type;
 
     }
