@@ -10,9 +10,20 @@ import com.mygdx.runrunrun.Main;
  */
 public class Block extends MoveableObject{
 
+    private boolean spawned;
+
     public Block(float x, float y, TextureRegion image){
         super(x,y,image);
         hide = false;
+        spawned = false;
+    }
+
+    public void setSpawned(boolean b){
+        spawned = b;
+    }
+
+    public boolean getSpawned(){
+        return spawned;
     }
 
     public void update(float dt){

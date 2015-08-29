@@ -22,11 +22,12 @@ import java.util.Random;
 public class PlayState extends State{
 
     private static float HIT_COOL_DOWN_MAX = 20f;
-    private static float MAX_CAM_OFFSET = 150f;
+    private static float MAX_CAM_OFFSET = 150;
 
     // Moveable Objects
     private Hero hero;
     private Block block;
+    private Block block2;
     private HitBlock hitblock;
     private Shop shop;
     private Coin coin;
@@ -71,6 +72,7 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        block2 = new Block(100, 150, Main.resource.getAtlas("assets").findRegion("block"));
         hitblock = new HitBlock(700,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
         shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
         coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
@@ -251,6 +253,24 @@ public class PlayState extends State{
         }
     }
 
+    private void onNewCamCycle(){
+        if(cam_offset == Math.abs(MAX_CAM_OFFSET)){
+            if(block2.getSpawned()){
+                if(block2.getPosition().x < hero.getPosition().x - (50 + block2.getWidth())){
+                    block2.setSpawned(false);
+                }
+            }
+            else  {
+                float newPos_x = hero.getPosition().x + 350;
+                if(newPos_x >= 960){
+                    newPos_x = newPos_x - 960;
+                }
+                block2 = new Block(newPos_x, 32, Main.resource.getAtlas("assets").findRegion("block"));
+                block2.setSpawned(true);
+            }
+        }
+    }
+
     private void updateBG(float dt){
         //Add velocity to the bg, to make bg look further away
         if(hero.getSpeed() > 0) {
@@ -318,16 +338,19 @@ public class PlayState extends State{
 
         hero.update(dt);
         block.update(dt);
+        block2.update(dt);
         hitblock.update(dt);
 
         coinDetection();
         shopDetection();
         blockDetection(block, hero);
+        blockDetection(block2, hero);
         blockDetection(hitblock, hero);
 
         onBlockCollision();
         onExitShop();
         onNewCycle();
+        onNewCamCycle();
 
         updateCam(dt);
         updateTexts();
@@ -370,6 +393,7 @@ public class PlayState extends State{
 
         shop.render(sb);
         block.render(sb);
+        block2.render(sb);
         hitblock.render(sb);
         coin.render(sb);
         hero.render(sb);
