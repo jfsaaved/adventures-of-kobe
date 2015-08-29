@@ -1,5 +1,6 @@
 package com.mygdx.runrunrun.sprites;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,6 +25,7 @@ public class MoveableObject {
     protected float height;
     protected boolean hide;
     protected String type;
+    protected boolean spawned;
 
     public MoveableObject(float x, float y, TextureRegion image, String type){
 
@@ -36,27 +38,10 @@ public class MoveableObject {
         }
 
         hide = false;
+        spawned = false;
         rect = new Rectangle(position.x, position.y, width, height);
         this.type = type;
 
-    }
-
-    public void update(float dt){
-        float init_y = this.position.y;
-
-        if(init_y > 32){
-            this.position.y = init_y + (GRAVITY * free_fall_timer * dt);
-
-            if(free_fall_timer <= MAX_ACC) {
-                free_fall_timer += 50f * dt;
-            }
-        }
-        else{
-            position.y = 32;
-            free_fall_timer = 0;
-        }
-
-        rect.set(position.x, position.y, width, height);
     }
 
     public void changePosition(float x, float y){
@@ -108,6 +93,37 @@ public class MoveableObject {
 
     public boolean getHide(){
         return hide;
+    }
+
+    public void setSpawned(boolean b){
+        spawned = b;
+    }
+
+    public boolean getSpawned(){
+        return spawned;
+    }
+
+    public void update(float dt){
+        float init_y = this.position.y;
+
+        if(init_y > 32){
+            this.position.y = init_y + (GRAVITY * free_fall_timer * dt);
+
+            if(free_fall_timer <= MAX_ACC) {
+                free_fall_timer += 50f * dt;
+            }
+        }
+        else{
+            position.y = 32;
+            free_fall_timer = 0;
+        }
+
+        rect.set(position.x, position.y, width, height);
+    }
+
+    public void render(SpriteBatch sb){
+        if(hide == false)
+            sb.draw(image,position.x,position.y);
     }
 
 }

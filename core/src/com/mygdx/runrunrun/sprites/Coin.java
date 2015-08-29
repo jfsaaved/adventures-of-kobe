@@ -13,12 +13,16 @@ public class Coin extends MoveableObject {
         super(x,y,image, "coin");
     }
 
+    @Override
+    public void changePosition(float x, float y){
+        super.changePosition(x,y);
+    }
+
     public void update(float dt){
         super.update(dt);
     }
 
     public void render(SpriteBatch sb){
-        if(hide == false)
-            sb.draw(image,position.x,position.y);
+        super.render(sb);
     }
 }

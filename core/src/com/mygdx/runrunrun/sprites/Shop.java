@@ -35,6 +35,7 @@ public class Shop extends MoveableObject{
         super.update(dt);
     }
 
+    @Override
     public void render(SpriteBatch sb){
         if(hide == false)
             sb.draw(image,position.x,position.y, width, height);

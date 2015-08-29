@@ -36,12 +36,20 @@ public class HitBlock extends MoveableObject {
         }
     }
 
+    @Override
+    public void changePosition(float x, float y){
+        super.changePosition(x,y);
+        float_value = 0;
+        interacted = false;
+    }
+
     public void update(float dt){
 
         super.update(dt);
         floatUP(dt);
     }
 
+    @Override
     public void render(SpriteBatch sb){
         if(hide == false)
             sb.draw(image, position.x, position.y, width, height);

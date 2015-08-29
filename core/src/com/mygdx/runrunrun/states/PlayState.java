@@ -28,7 +28,6 @@ public class PlayState extends State{
     // Moveable Objects
     private Hero hero;
     private Block block;
-    private Block block2;
     private HitBlock hitblock;
     private Shop shop;
     private Coin coin;
@@ -73,11 +72,16 @@ public class PlayState extends State{
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
-        block = new Block(200, 150, Main.resource.getAtlas("assets").findRegion("block"));
-        block2 = new Block(100, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        block = new Block(100, 150, Main.resource.getAtlas("assets").findRegion("block"));
         hitblock = new HitBlock(700,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
         shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
         coin = new Coin(150,32, Main.resource.getAtlas("assets").findRegion("coin"));
+
+        objects = new Vector<MoveableObject>();
+        objects.add(hitblock);
+        objects.add(block);
+        objects.add(shop);
+        objects.add(coin);
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
 
@@ -218,68 +222,55 @@ public class PlayState extends State{
         }
     }
 
+    private void setHideNonShopObjects(boolean b){
+        for(MoveableObject object : objects){
+            if(!object.getType().equals("shop")){
+                object.setHide(b);
+            }
+        }
+    }
+
+    private void setHideShopObjects(boolean b){
+        for(MoveableObject object : objects){
+            if(object.getType().equals("shop")){
+                object.setHide(b);
+            }
+        }
+    }
+
     private void onNewCycle(){
         if(hero.getPosition().x == 0){
             Random rand = new Random();
+            int showShopVar = rand.nextInt(3) + 1;
 
-            int showShopVar = 0;
-
-            int x_hitblock_pos = rand.nextInt(525) + 350;
-            int y_hitblock_pos = 32;
-
-            int x_block_pos = rand.nextInt(525) + 350;
-            int y_block_pos = 32;
-            float block_width = block.getWidth();
-
-            int x_coin_pos = rand.nextInt(525) + 350;
-            int y_coin_pos = 32;
-
-            while(x_coin_pos > x_block_pos - block_width/2 && x_coin_pos < x_block_pos + block_width/2){
-                x_coin_pos = rand.nextInt(525) + 350;
-            }
-
-            // Shop
-            showShopVar = rand.nextInt(3) + 1;
             if(showShopVar == 1){
-                shop.setHide(false);
+                setHideShopObjects(false);
+                setHideNonShopObjects(true);
             }
             else{
-                shop.setHide(true);
-            }
-
-            // Blocks
-            block.changePosition(x_block_pos, y_block_pos);
-            if(!shop.getHide()){
-                block.setHide(true);
-                hitblock.setHide(true);
-            }
-            else{
-                block.setHide(false);
-                hitblock.setHide(false);
-            }
-
-            // Coins
-            if(coin.getHide() == true) {
-                coin.changePosition(x_coin_pos, y_coin_pos);
-                coin.setHide(false);
+                setHideShopObjects(true);
+                setHideNonShopObjects(false);
             }
         }
     }
 
     private void onNewCamCycle(){
         if(cam_offset == Math.abs(MAX_CAM_OFFSET)){
-            if(block2.getSpawned()){
-                if(block2.getPosition().x < hero.getPosition().x - (50 + block2.getWidth())){
-                    block2.setSpawned(false);
+            for(MoveableObject object : objects){
+                if(!object.getType().equals("shop")) {
+                    if (object.getSpawned()) {
+                        if (object.getPosition().x < hero.getPosition().x - (50 + object.getRectangle().getWidth())) {
+                            object.setSpawned(false);
+                        }
+                    } else {
+                        float newPosX = hero.getPosition().x + 350;
+                        if (newPosX >= 910) {
+                            newPosX = newPosX - 910;
+                        }
+                        object.changePosition(newPosX, 32);
+                        object.setSpawned(true);
+                    }
                 }
-            }
-            else  {
-                float newPos_x = hero.getPosition().x + 350;
-                if(newPos_x >= 960){
-                    newPos_x = newPos_x - 960;
-                }
-                block2.changePosition(newPos_x, 32);
-                block2.setSpawned(true);
             }
         }
     }
@@ -350,21 +341,19 @@ public class PlayState extends State{
         handleInput();
 
         hero.update(dt);
-        coin.update(dt);
-        block.update(dt);
-        block2.update(dt);
-        hitblock.update(dt);
 
-        collisionDetection(coin,hero);
-        collisionDetection(shop,hero);
-        collisionDetection(block,hero);
-        collisionDetection(block2,hero);
-        collisionDetection(hitblock,hero);
+        for(MoveableObject object : objects){
+            object.update(dt);
+        }
+
+        for(MoveableObject object : objects){
+            collisionDetection(object,hero);
+        }
 
         onBlockCollision();
         onExitShop();
-        onNewCycle();
         onNewCamCycle();
+        onNewCycle();
 
         updateCam(dt);
         updateTexts();
@@ -405,11 +394,9 @@ public class PlayState extends State{
                 sb.draw(ground, 0 + ground.getRegionWidth(), 0);
         }
 
-        shop.render(sb);
-        block.render(sb);
-        block2.render(sb);
-        hitblock.render(sb);
-        coin.render(sb);
+        for(MoveableObject object : objects){
+            object.render(sb);
+        }
         hero.render(sb);
 
         hit_splash.render(sb);
