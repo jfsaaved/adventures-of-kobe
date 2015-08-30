@@ -73,9 +73,9 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
         block = new Block(800, 150, Main.resource.getAtlas("assets").findRegion("block"));
-        hitblock = new HitBlock(700,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
+        hitblock = new HitBlock(400,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
         shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
-        coin = new Coin(300,32, Main.resource.getAtlas("assets").findRegion("coin"));
+        coin = new Coin(910,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
@@ -243,6 +243,21 @@ public class PlayState extends State{
             Random rand = new Random();
             int showShopVar = rand.nextInt(3) + 1;
 
+
+            float newX = rand.nextInt((int) (bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET + cam.viewportWidth))) + cam.viewportWidth;
+            float newY = 32;
+
+            for(MoveableObject object : objects){
+                if(!object.getType().equals("shop")) {
+                    if(newX >= bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET)){
+                        newX = bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET) - object.getWidth();
+                    }
+                    object.changePosition(newX, newY);
+                    newX = rand.nextInt((int) (bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET + cam.viewportWidth))) + cam.viewportWidth;
+                }
+            }
+
+
             if(showShopVar == 1){
                 setHideShopObjects(false);
                 setHideNonShopObjects(true);
@@ -250,27 +265,6 @@ public class PlayState extends State{
             else{
                 setHideShopObjects(true);
                 setHideNonShopObjects(false);
-            }
-        }
-    }
-
-    private void onNewCamCycle(){
-        if(cam_offset == Math.abs(MAX_CAM_OFFSET)){
-            for(MoveableObject object : objects){
-                if(!object.getType().equals("shop")) {
-                    if (object.getSpawned()) {
-                        if (object.getPosition().x < hero.getPosition().x - (50 + object.getRectangle().getWidth())) {
-                            object.setSpawned(false);
-                        }
-                    } else {
-                        float newPosX = hero.getPosition().x + 350;
-                        if (newPosX >= 910) {
-                            newPosX = newPosX - 910;
-                        }
-                        object.changePosition(newPosX, 32);
-                        object.setSpawned(true);
-                    }
-                }
             }
         }
     }
@@ -352,7 +346,6 @@ public class PlayState extends State{
 
         onBlockCollision();
         onExitShop();
-        //onNewCamCycle();
         onNewCycle();
 
         updateCam(dt);
