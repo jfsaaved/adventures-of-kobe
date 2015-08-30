@@ -25,7 +25,6 @@ public class MoveableObject {
     protected float height;
     protected boolean hide;
     protected String type;
-    protected boolean spawned;
 
     public MoveableObject(float x, float y, TextureRegion image, String type){
 
@@ -39,7 +38,6 @@ public class MoveableObject {
         rect = new Rectangle(position.x, position.y, width, height);
 
         hide = false;
-        spawned = false;
         this.type = type;
 
     }
@@ -93,14 +91,6 @@ public class MoveableObject {
 
     public boolean getHide(){
         return hide;
-    }
-
-    public void setSpawned(boolean b){
-        spawned = b;
-    }
-
-    public boolean getSpawned(){
-        return spawned;
     }
 
     public void update(float dt){

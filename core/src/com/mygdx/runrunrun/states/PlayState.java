@@ -72,15 +72,15 @@ public class PlayState extends State{
         health = Main.resource.getAtlas("assets").findRegion("Hero");
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
-        block = new Block(800, 150, Main.resource.getAtlas("assets").findRegion("block"));
-        hitblock = new HitBlock(400,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
         shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
-        coin = new Coin(910,32, Main.resource.getAtlas("assets").findRegion("coin"));
+        block = new Block(-200, 150, Main.resource.getAtlas("assets").findRegion("block"));
+        hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
+        coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin"));
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
-        objects.add(block);
         objects.add(shop);
+        objects.add(block);
         objects.add(coin);
 
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
@@ -249,7 +249,7 @@ public class PlayState extends State{
 
             for(MoveableObject object : objects){
                 if(!object.getType().equals("shop")) {
-                    if(newX >= bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET)){
+                    if((newX + object.getWidth()) >= bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET)){
                         newX = bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET) - object.getWidth();
                     }
                     object.changePosition(newX, newY);
