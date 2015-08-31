@@ -96,7 +96,7 @@ public class MoveableObject {
     public void update(float dt){
         float init_y = this.position.y;
 
-        if(init_y > 32){
+        if(init_y > Main.GROUND_LEVEL){
             this.position.y = init_y + (GRAVITY * free_fall_timer * dt);
 
             if(free_fall_timer <= MAX_ACC) {
@@ -104,7 +104,7 @@ public class MoveableObject {
             }
         }
         else{
-            position.y = 32;
+            position.y = Main.GROUND_LEVEL;
             free_fall_timer = 0;
         }
 

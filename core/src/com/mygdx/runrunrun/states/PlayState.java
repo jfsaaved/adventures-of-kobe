@@ -39,6 +39,7 @@ public class PlayState extends State{
     private TextureRegion clouds;
     private float current_bg_x;
     private float current_bg_x_clouds;
+    private float mapSize;
 
     // Text
     private TextImage hit_splash;
@@ -58,6 +59,8 @@ public class PlayState extends State{
     private boolean stopForShop;
     private boolean enteredShop;
     private float exitShopTimer;
+    private int currentCycle;
+    private boolean newCycle;
 
     // Camera
     private float cam_offset;
@@ -66,16 +69,16 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
-        ground = Main.resource.getAtlas("assets").findRegion("dirt");
+        ground = Main.resource.getAtlas("assets").findRegion("ground1");
         clouds = Main.resource.getAtlas("assets").findRegion("clouds1");
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
-        health = Main.resource.getAtlas("assets").findRegion("Hero");
+        health = Main.resource.getAtlas("assets").findRegion("player");
 
-        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("Hero"), bg);
-        shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("house"));
-        block = new Block(-200, 150, Main.resource.getAtlas("assets").findRegion("block"));
-        hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("bigblock"));
-        coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin"));
+        hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
+        shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("building1"));
+        block = new Block(-200, 150, Main.resource.getAtlas("assets").findRegion("block1"));
+        hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("block2"));
+        coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
@@ -105,6 +108,10 @@ public class PlayState extends State{
 
         current_bg_x = 0;
         current_bg_x_clouds = 0;
+        mapSize = bg.getRegionWidth() * 5;
+
+        currentCycle = 0;
+        newCycle = false;
 
     }
 
@@ -239,10 +246,8 @@ public class PlayState extends State{
     }
 
     private void onNewCycle(){
-        if(hero.hasEnteredNewCycle()){
+        if(newCycle){
             Random rand = new Random();
-            int showShopVar = rand.nextInt(3) + 1;
-
 
             float newX = rand.nextInt((int) (bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET + cam.viewportWidth))) + cam.viewportWidth;
             float newY = 32;
@@ -258,37 +263,18 @@ public class PlayState extends State{
             }
 
 
-            if(showShopVar == 1){
+            if(currentCycle == 5){
                 setHideShopObjects(false);
                 setHideNonShopObjects(true);
+                currentCycle = 0;
             }
             else{
                 setHideShopObjects(true);
                 setHideNonShopObjects(false);
             }
-        }
-    }
 
-    private void updateBG(float dt){
-        //Add velocity to the bg, to make bg look further away
-        if(hero.getSpeed() > 0) {
-            current_bg_x += 20f * dt;
-            if(current_bg_x >= bg.getRegionWidth()){
-                current_bg_x = 0;
-            }
-
-            current_bg_x_clouds += 40f * dt;
-            if (current_bg_x_clouds >= clouds.getRegionWidth()) {
-                current_bg_x_clouds = 0;
-            }
+            currentCycle++;
         }
-        else{
-            current_bg_x_clouds += 10f * dt;
-            if (current_bg_x_clouds >= clouds.getRegionWidth()) {
-                current_bg_x_clouds = 0;
-            }
-        }
-
     }
 
     private void updateCam(float dt){
@@ -326,8 +312,38 @@ public class PlayState extends State{
         int hit_y_offset = 75;
 
         textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + textBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + textBox_y_offset),0.20f);
-        hit_splash.update("HIT!",cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight/2 - hit_y_offset,0.5f);
+        hit_splash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
+    }
+
+    private void updateBG(float dt){
+
+        //Update the player position
+        if(hero.getPosition().x >= mapSize){
+            hero.changePosition(hero.getPosition().x - mapSize,hero.getPosition().y);
+            newCycle = true;
+        }else{
+            newCycle = false;
+        }
+
+        //Add velocity to the bg, to make bg look further away
+        if(hero.getSpeed() > 0) {
+            current_bg_x += 20f * dt;
+            if(current_bg_x >= mapSize){
+                current_bg_x = 0;
+            }
+
+            current_bg_x_clouds += 40f * dt;
+            if (current_bg_x_clouds >= mapSize) {
+                current_bg_x_clouds = 0;
+            }
+        }
+        else{
+            current_bg_x_clouds += 10f * dt;
+            if (current_bg_x_clouds >= mapSize) {
+                current_bg_x_clouds = 0;
+            }
+        }
     }
 
     public void update(float dt){
@@ -336,7 +352,7 @@ public class PlayState extends State{
 
         hero.update(dt);
 
-        for(MoveableObject object : objects){
+        /*for(MoveableObject object : objects){
             object.update(dt);
         }
 
@@ -346,12 +362,51 @@ public class PlayState extends State{
 
         onBlockCollision();
         onExitShop();
-        onNewCycle();
+        onNewCycle();*/
 
-        updateCam(dt);
-        updateTexts();
         updateBG(dt);
+        updateCam(dt);
+        //updateTexts();
 
+
+    }
+
+    private void currentRenderBG(SpriteBatch sb, TextureRegion texture, float x1, float x2){
+        for(int i = 0; i < 2 ; i++){
+            if(i == 0)
+                sb.draw(texture,x1,0);
+            else
+                sb.draw(texture,x2,0);
+        }
+    }
+
+    private void renderGround(SpriteBatch sb){
+        //   0   1   2    3     4     5     6
+        // -400, 0, 400, 800, 1200, 1600, 2000
+        float[] area = new float[7];
+        float areaStartingPoint = -400;
+        float heroPosX = hero.getPosition().x;
+
+        for(int i = 0; i < 7; i ++){
+            area[i] = areaStartingPoint;
+            areaStartingPoint += 400;
+        }
+
+        for(int i = 1; i <= 5; i++){
+            if(heroPosX >= area[i] && heroPosX <= area[i+1]){
+                if(cam_offset < 125) { // Om hero accelerating
+                    if (heroPosX < area[i] + MAX_CAM_OFFSET)
+                        currentRenderBG(sb, ground, area[i - 1], area[i]);
+                    else
+                        currentRenderBG(sb, ground, area[i], area[i + 1]);
+                }else{ // On hero max acceleration
+                    if (heroPosX < area[i] + 50)
+                        currentRenderBG(sb, ground, area[i - 1], area[i]);
+                    else
+                        currentRenderBG(sb, ground, area[i], area[i + 1]);
+                }
+            }
+        }
     }
 
     public void render(SpriteBatch sb){
@@ -359,38 +414,32 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
+        renderGround(sb);
+        /*
         for(int i = 0 ; i < 3 ; i ++) {
             if(i == 0)
-                sb.draw(clouds, current_bg_x_clouds - clouds.getRegionWidth(), 0);
+                sb.draw(clouds, current_bg_x_clouds - clouds.getRegionWidth(), 30);
             else if(i == 1)
-                sb.draw(clouds, current_bg_x_clouds, 0);
+                sb.draw(clouds, current_bg_x_clouds, 30);
             else if (i == 2)
-                sb.draw(clouds, current_bg_x_clouds + clouds.getRegionWidth(), 0);
+                sb.draw(clouds, current_bg_x_clouds + clouds.getRegionWidth(), 30);
         }
 
         for(int i = 0 ; i < 3 ; i ++) {
             if(i == 0)
-                sb.draw(bg, current_bg_x - bg.getRegionWidth(), -50);
+                sb.draw(bg, current_bg_x - bg.getRegionWidth(), 30);
             else if(i == 1)
-                sb.draw(bg, current_bg_x, -50);
+                sb.draw(bg, current_bg_x, 30);
             else if (i == 2)
-                sb.draw(bg, current_bg_x + bg.getRegionWidth(), -50);
+                sb.draw(bg, current_bg_x + bg.getRegionWidth(), 30);
         }
+           */
 
-
-        for(int i = 0 ; i < 3 ; i ++) {
-            if(i == 0)
-                sb.draw(ground, 0 - ground.getRegionWidth(), 0);
-            else if(i == 1)
-                sb.draw(ground, 0, 0);
-            else if (i == 2)
-                sb.draw(ground, 0 + ground.getRegionWidth(), 0);
-        }
-
+        /*
         for(MoveableObject object : objects){
             object.render(sb);
         }
-        hero.render(sb);
+
 
         hit_splash.render(sb);
         textBox.renderBox(sb);
@@ -401,9 +450,9 @@ public class PlayState extends State{
             sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
         }
 
-        coinsText.render(sb);
+        coinsText.render(sb);*/
 
-
+        hero.render(sb);
 
         sb.end();
 

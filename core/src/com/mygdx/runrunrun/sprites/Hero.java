@@ -24,16 +24,14 @@ public class Hero extends MoveableObject {
     private int health_counter;
 
     // Moving mechanics
-    private TextureRegion bg_reference;
     private float speed;
     private boolean isStopped;
-    private boolean isInNewCycle;
 
     // Items
     private int coins;
 
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
-    public Hero(float x, float y, TextureRegion image, TextureRegion bg_reference){
+    public Hero(float x, float y, TextureRegion image){
 
         super(x, y, image, "hero");
 
@@ -46,8 +44,6 @@ public class Hero extends MoveableObject {
 
         // Moving mechanics
         speed = MAX_SPEED;
-        this.bg_reference = bg_reference;
-        isInNewCycle = false;
 
         // Items
         coins = 0;
@@ -94,10 +90,6 @@ public class Hero extends MoveableObject {
 
     public boolean getStop(){
         return isStopped;
-    }
-
-    public boolean hasEnteredNewCycle(){
-        return isInNewCycle;
     }
 
     public void hit_animation(float t){
@@ -162,21 +154,15 @@ public class Hero extends MoveableObject {
         }
 
         float final_x = init_x + (speed) * dt;
-        if(final_x >= bg_reference.getRegionWidth()){
-            final_x -= bg_reference.getRegionWidth();
-            isInNewCycle = true;
-        }else{
-            isInNewCycle = false;
-        }
-
         float final_y = init_y + (jump_acceleration) * dt;
-        if(final_y > 32){
+
+        if(final_y > Main.GROUND_LEVEL){
             inAir = true;
             jump_acceleration -= 100f * dt;
         }
         else{
             jump_acceleration = 0;
-            final_y = 32;
+            final_y = Main.GROUND_LEVEL;
             inAir = false;
         }
 
