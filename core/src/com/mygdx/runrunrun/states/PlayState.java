@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.runrunrun.Main;
+import com.mygdx.runrunrun.backgrounds.Clouds;
+import com.mygdx.runrunrun.backgrounds.Ground;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
@@ -34,9 +36,10 @@ public class PlayState extends State{
     private Vector<MoveableObject> objects;
 
     // BGs
-    private TextureRegion ground;
+    private Ground ground;
+    private Clouds clouds;
     private TextureRegion bg;
-    private TextureRegion clouds;
+
     private float current_bg_x;
     private float current_bg_x_clouds;
     private float mapSize;
@@ -69,8 +72,9 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
-        ground = Main.resource.getAtlas("assets").findRegion("ground1");
-        clouds = Main.resource.getAtlas("assets").findRegion("clouds1");
+        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"));
+        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"));
+
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         health = Main.resource.getAtlas("assets").findRegion("player");
 
@@ -316,6 +320,12 @@ public class PlayState extends State{
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
+    private void updateParallaxBG(float dt, float scrollSpeed, float bgIndexX){
+        if(hero.getSpeed() > 0){
+            bgIndexX += scrollSpeed * dt;
+        }
+    }
+
     private void updateBG(float dt){
 
         //Update the player position
@@ -326,6 +336,9 @@ public class PlayState extends State{
             newCycle = false;
         }
 
+
+
+        /*
         //Add velocity to the bg, to make bg look further away
         if(hero.getSpeed() > 0) {
             current_bg_x += 20f * dt;
@@ -343,7 +356,7 @@ public class PlayState extends State{
             if (current_bg_x_clouds >= mapSize) {
                 current_bg_x_clouds = 0;
             }
-        }
+        }*/
     }
 
     public void update(float dt){
@@ -371,69 +384,14 @@ public class PlayState extends State{
 
     }
 
-    private void currentRenderBG(SpriteBatch sb, TextureRegion texture, float x1, float x2){
-        for(int i = 0; i < 2 ; i++){
-            if(i == 0)
-                sb.draw(texture,x1,0);
-            else
-                sb.draw(texture,x2,0);
-        }
-    }
-
-    private void renderGround(SpriteBatch sb){
-        //   0   1   2    3     4     5     6
-        // -400, 0, 400, 800, 1200, 1600, 2000
-        float[] area = new float[7];
-        float areaStartingPoint = -400;
-        float heroPosX = hero.getPosition().x;
-
-        for(int i = 0; i < 7; i ++){
-            area[i] = areaStartingPoint;
-            areaStartingPoint += 400;
-        }
-
-        for(int i = 1; i <= 5; i++){
-            if(heroPosX >= area[i] && heroPosX <= area[i+1]){
-                if(cam_offset < 125) { // Om hero accelerating
-                    if (heroPosX < area[i] + MAX_CAM_OFFSET)
-                        currentRenderBG(sb, ground, area[i - 1], area[i]);
-                    else
-                        currentRenderBG(sb, ground, area[i], area[i + 1]);
-                }else{ // On hero max acceleration
-                    if (heroPosX < area[i] + 50)
-                        currentRenderBG(sb, ground, area[i - 1], area[i]);
-                    else
-                        currentRenderBG(sb, ground, area[i], area[i + 1]);
-                }
-            }
-        }
-    }
-
     public void render(SpriteBatch sb){
 
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        renderGround(sb);
-        /*
-        for(int i = 0 ; i < 3 ; i ++) {
-            if(i == 0)
-                sb.draw(clouds, current_bg_x_clouds - clouds.getRegionWidth(), 30);
-            else if(i == 1)
-                sb.draw(clouds, current_bg_x_clouds, 30);
-            else if (i == 2)
-                sb.draw(clouds, current_bg_x_clouds + clouds.getRegionWidth(), 30);
-        }
+        clouds.render(sb, hero.getPosition().x,cam_offset,MAX_CAM_OFFSET);
+        ground.render(sb, hero.getPosition().x,cam_offset,MAX_CAM_OFFSET);
 
-        for(int i = 0 ; i < 3 ; i ++) {
-            if(i == 0)
-                sb.draw(bg, current_bg_x - bg.getRegionWidth(), 30);
-            else if(i == 1)
-                sb.draw(bg, current_bg_x, 30);
-            else if (i == 2)
-                sb.draw(bg, current_bg_x + bg.getRegionWidth(), 30);
-        }
-           */
 
         /*
         for(MoveableObject object : objects){
