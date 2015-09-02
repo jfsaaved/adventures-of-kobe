@@ -72,9 +72,6 @@ public class PlayState extends State{
     public PlayState(GSM gsm){
         super(gsm);
 
-        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"));
-        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"));
-
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
         health = Main.resource.getAtlas("assets").findRegion("player");
 
@@ -83,6 +80,10 @@ public class PlayState extends State{
         block = new Block(-200, 150, Main.resource.getAtlas("assets").findRegion("block1"));
         hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("block2"));
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
+
+
+        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"),hero.getPosition().x);
+        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"), hero.getPosition().x);
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
@@ -391,8 +392,8 @@ public class PlayState extends State{
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        clouds.render(sb, hero.getPosition().x,cam_offset,MAX_CAM_OFFSET);
-        ground.render(sb, hero.getPosition().x,cam_offset,MAX_CAM_OFFSET);
+        clouds.render(sb);
+        ground.render(sb);
 
 
         /*
