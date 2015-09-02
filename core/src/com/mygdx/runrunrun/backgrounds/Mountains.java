@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Mountains extends Background {
 
 
-    public Mountains(float x, float y, TextureRegion image, float heroPosX, int mapLength){
-        super(x,y,image, heroPosX, mapLength);
+    public Mountains(float x, float y, TextureRegion image, int mapLength){
+        super(x,y,image, mapLength);
+        parallaxSpeed = 30f;
     }
 
     public void currentRender(SpriteBatch sb, float x1, float x2){

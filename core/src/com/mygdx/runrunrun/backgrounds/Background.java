@@ -16,15 +16,15 @@ public abstract class Background {
     protected float parallax_bg;
     protected float x,y;
     protected float x1, x2, x0;
+    protected float parallaxSpeed;
     protected TextureRegion image;
 
 
-    public Background(float x, float y, TextureRegion image, float heroPosX, int mapLength){
+
+    public Background(float x, float y, TextureRegion image, int mapLength){
         this.x = x;
         this.y = y;
         this.image = image;
-        this.heroPosX = heroPosX;
-
 
         area = new float[7];
         float areaStartingPoint = -image.getRegionWidth();
@@ -37,7 +37,8 @@ public abstract class Background {
         this.x0 = area[0];
         this.x1 = area[1];
         this.x2 = area[2];
-
+        this.heroPosX = 0;
+        this.parallaxSpeed = 0 ;
 
     }
 
@@ -55,18 +56,19 @@ public abstract class Background {
     }
 
     protected void currentRender(SpriteBatch sb, float x0, float x1, float x2){
-
         for(int i = 0; i < 3 ; i++){
             if(i == 0) {
-                this.x0 = x0;
-                sb.draw(image, x0 + parallax_bg, y);
-            }
-            else if(i == 1){
-                this.x1 = x1;
-                sb.draw(image, x1 + parallax_bg, y);
+                this.x0 = x0 + parallax_bg;
+                sb.draw(image, this.x0, y);
+                if(parallaxSpeed > 0) {
+                    sb.draw(image, this.x0 - image.getRegionWidth(), y);
+                }
+            } else if(i == 1){
+                this.x1 = x1 + parallax_bg;
+                sb.draw(image, this.x1, y);
             } else {
-                this.x2 = x2;
-                sb.draw(image, x2 + parallax_bg, y);
+                this.x2 = x2 + parallax_bg;
+                sb.draw(image, this.x2, y);
             }
         }
     }
@@ -75,10 +77,9 @@ public abstract class Background {
         this.heroPosX = heroPosX;
     }
 
-    public void update(float dt, float heroPosX, float playerSpeed, float parallaxSpeed){
+    public void update(float dt, float heroPosX, float playerSpeed){
         //Add velocity to the bg, to make bg look further away
         this.heroPosX = heroPosX;
-
         if(playerSpeed > 0) {
             parallax_bg += parallaxSpeed * dt;
         }
@@ -86,13 +87,9 @@ public abstract class Background {
             parallax_bg += (parallaxSpeed - 30f) * dt;
         }
 
-        if (parallax_bg >= image.getRegionWidth()) {
-            x0 = x1;
-            x1 = x2;
-            x2 = (x1 * 2) - x2;
+        if(parallax_bg >= image.getRegionWidth()){
             parallax_bg = 0;
         }
-
     }
 
     public void render(SpriteBatch sb) {

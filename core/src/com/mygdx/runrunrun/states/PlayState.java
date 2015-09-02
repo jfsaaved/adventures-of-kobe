@@ -83,9 +83,9 @@ public class PlayState extends State{
         hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("block2"));
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
 
-        mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"),hero.getPosition().x, mapLength);
-        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"),hero.getPosition().x, mapLength);
-        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"), hero.getPosition().x ,mapLength);
+        mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
+        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
+        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
@@ -93,7 +93,7 @@ public class PlayState extends State{
         objects.add(block);
         objects.add(coin);
 
-        cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT  * 2);
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
@@ -382,10 +382,12 @@ public class PlayState extends State{
         onNewCycle();*/
 
         updateBG(dt);
-        mountains.update(dt, hero.getPosition().x, hero.getSpeed(), 30f);
-        clouds.update(dt, hero.getPosition().x, hero.getSpeed(), 40f);
+
         ground.update(dt,hero.getPosition().x);
-        updateCam(dt);
+        mountains.update(dt, hero.getPosition().x, hero.getSpeed());
+        clouds.update(dt, hero.getPosition().x, hero.getSpeed());
+
+        //updateCam(dt);
         //updateTexts();
 
 

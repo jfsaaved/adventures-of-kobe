@@ -10,8 +10,9 @@ import com.mygdx.runrunrun.Main;
 public class Clouds extends Background {
 
 
-    public Clouds(float x, float y, TextureRegion image, float heroPosX, int mapLength){
-        super(x,y,image, heroPosX, mapLength);
+    public Clouds(float x, float y, TextureRegion image, int mapLength){
+        super(x,y,image, mapLength);
+        parallaxSpeed = 40f;
     }
 
     public void currentRender(SpriteBatch sb, float x1, float x2){
