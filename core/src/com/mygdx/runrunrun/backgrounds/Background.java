@@ -19,7 +19,7 @@ public abstract class Background {
     protected TextureRegion image;
 
 
-    public Background(float x, float y, TextureRegion image, float heroPosX){
+    public Background(float x, float y, TextureRegion image, float heroPosX, int mapLength){
         this.x = x;
         this.y = y;
         this.image = image;
@@ -27,20 +27,21 @@ public abstract class Background {
 
 
         area = new float[7];
-        float areaStartingPoint = -400;
+        float areaStartingPoint = -image.getRegionWidth();
 
-        for(int i = 0; i < 7; i ++){
+        for(int i = 0; i < mapLength + 2; i ++){
             area[i] = areaStartingPoint;
-            areaStartingPoint += 400;
+            areaStartingPoint += image.getRegionWidth();
         }
 
-        this.x1 = area[0];
-        this.x2 = area[1];
-        this.x0 = area[2];
+        this.x0 = area[0];
+        this.x1 = area[1];
+        this.x2 = area[2];
+
 
     }
 
-    public void currentRender(SpriteBatch sb, float x1, float x2){
+    protected void currentRender(SpriteBatch sb, float x1, float x2){
         for(int i = 0; i < 2 ; i++){
             if(i == 0) {
                 sb.draw(image, x1 + parallax_bg, Main.GROUND_LEVEL);
@@ -53,8 +54,7 @@ public abstract class Background {
         }
     }
 
-    public void currentRender(SpriteBatch sb, float x0, float x1, float x2){
-        float deltaPos;
+    protected void currentRender(SpriteBatch sb, float x0, float x1, float x2){
 
         for(int i = 0; i < 3 ; i++){
             if(i == 0) {
@@ -71,17 +71,22 @@ public abstract class Background {
         }
     }
 
-    public void update(float dt, float playerSpeed){
+    public void update(float dt, float heroPosX){
+        this.heroPosX = heroPosX;
+    }
 
+    public void update(float dt, float heroPosX, float playerSpeed, float parallaxSpeed){
         //Add velocity to the bg, to make bg look further away
+        this.heroPosX = heroPosX;
+
         if(playerSpeed > 0) {
-            parallax_bg += 40f * dt;
+            parallax_bg += parallaxSpeed * dt;
         }
         else{
-            parallax_bg += 10f * dt;
+            parallax_bg += (parallaxSpeed - 30f) * dt;
         }
 
-        if (parallax_bg >= 400) {
+        if (parallax_bg >= image.getRegionWidth()) {
             x0 = x1;
             x1 = x2;
             x2 = (x1 * 2) - x2;

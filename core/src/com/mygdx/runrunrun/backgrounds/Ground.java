@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Ground extends Background{
 
 
-    public Ground(float x, float y, TextureRegion image, float heroPosX){
-        super(x,y,image, heroPosX);
+    public Ground(float x, float y, TextureRegion image, float heroPosX, int mapLength){
+        super(x,y,image, heroPosX, mapLength);
     }
 
     public void currentRender(SpriteBatch sb, float x1, float x2){

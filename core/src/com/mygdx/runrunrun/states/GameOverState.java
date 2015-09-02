@@ -20,7 +20,7 @@ public class GameOverState extends State {
 
     public void handleInput(){
         if(Gdx.input.isTouched()){
-            gsm.set(new PlayState(gsm));
+            gsm.set(new PlayState(gsm, 5));
         }
     }
 

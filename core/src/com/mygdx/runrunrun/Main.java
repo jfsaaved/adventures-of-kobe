@@ -30,7 +30,7 @@ public class Main extends ApplicationAdapter {
 
         sb = new SpriteBatch();
         gsm = new GSM();
-        gsm.push(new PlayState(gsm));
+        gsm.push(new PlayState(gsm,5));
 
 	}
 

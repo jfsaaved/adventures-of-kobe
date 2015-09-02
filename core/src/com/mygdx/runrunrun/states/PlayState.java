@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.backgrounds.Clouds;
 import com.mygdx.runrunrun.backgrounds.Ground;
+import com.mygdx.runrunrun.backgrounds.Mountains;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
@@ -38,6 +39,7 @@ public class PlayState extends State{
     // BGs
     private Ground ground;
     private Clouds clouds;
+    private Mountains mountains;
     private TextureRegion bg;
 
     private float current_bg_x;
@@ -69,7 +71,7 @@ public class PlayState extends State{
     private float cam_offset;
     private float cam_acc;
 
-    public PlayState(GSM gsm){
+    public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
         bg = Main.resource.getAtlas("assets").findRegion("bg1");
@@ -81,9 +83,9 @@ public class PlayState extends State{
         hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("block2"));
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
 
-
-        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"),hero.getPosition().x);
-        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"), hero.getPosition().x);
+        mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"),hero.getPosition().x, mapLength);
+        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"),hero.getPosition().x, mapLength);
+        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"), hero.getPosition().x ,mapLength);
 
         objects = new Vector<MoveableObject>();
         objects.add(hitblock);
@@ -113,7 +115,7 @@ public class PlayState extends State{
 
         current_bg_x = 0;
         current_bg_x_clouds = 0;
-        mapSize = bg.getRegionWidth() * 5;
+        mapSize = bg.getRegionWidth() * mapLength;
 
         currentCycle = 0;
         newCycle = false;
@@ -380,7 +382,9 @@ public class PlayState extends State{
         onNewCycle();*/
 
         updateBG(dt);
-        clouds.update(dt, hero.getSpeed());
+        mountains.update(dt, hero.getPosition().x, hero.getSpeed(), 30f);
+        clouds.update(dt, hero.getPosition().x, hero.getSpeed(), 40f);
+        ground.update(dt,hero.getPosition().x);
         updateCam(dt);
         //updateTexts();
 
@@ -393,6 +397,7 @@ public class PlayState extends State{
         sb.begin();
 
         clouds.render(sb);
+        mountains.render(sb);
         ground.render(sb);
 
 
