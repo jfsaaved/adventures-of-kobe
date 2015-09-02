@@ -139,7 +139,8 @@ public class PlayState extends State{
             }
 
             else{
-                hero.jump();
+                //hero.jump();
+                hero.toggleStop();
             }
         }
     }
@@ -378,6 +379,7 @@ public class PlayState extends State{
         onNewCycle();*/
 
         updateBG(dt);
+        clouds.update(dt, hero.getSpeed());
         updateCam(dt);
         //updateTexts();
 

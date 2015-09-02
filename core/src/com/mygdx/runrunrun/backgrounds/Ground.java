@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Ground extends Background{
 
     public Ground(float x, float y, TextureRegion image){
+
         super(x,y,image);
+
     }
 
     @Override
@@ -38,6 +40,7 @@ public class Ground extends Background{
     public void render(SpriteBatch sb, float playerPosX, float camOffset, float maxOffset){
         //   0   1   2    3     4     5     6
         // -400, 0, 400, 800, 1200, 1600, 2000
+
         float[] area = new float[7];
         float areaStartingPoint = -400;
         float heroPosX = playerPosX;
