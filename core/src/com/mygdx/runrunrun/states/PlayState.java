@@ -30,7 +30,7 @@ public class PlayState extends State{
 
     // Moveable Objects
     private Hero hero;
-    private Block block;
+    private Block[] block;
     private HitBlock hitblock;
     private Shop shop;
     private Coin coin;
@@ -40,7 +40,6 @@ public class PlayState extends State{
     private Ground ground;
     private Clouds clouds;
     private Mountains mountains;
-    private TextureRegion bg;
 
     private float current_bg_x;
     private float current_bg_x_clouds;
@@ -74,12 +73,16 @@ public class PlayState extends State{
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
-        bg = Main.resource.getAtlas("assets").findRegion("bg1");
         health = Main.resource.getAtlas("assets").findRegion("player");
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
-        shop = new Shop(480,32, Main.resource.getAtlas("assets").findRegion("building1"));
-        block = new Block(-200, 150, Main.resource.getAtlas("assets").findRegion("block1"));
+        shop = new Shop(1950 - 199,32, Main.resource.getAtlas("assets").findRegion("building1"));
+
+        block = new Block[5];
+        for(int i = 0 ; i < block.length ; i++){
+            block[i] = new Block(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block1"));
+        }
+
         hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("block2"));
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
 
@@ -88,12 +91,17 @@ public class PlayState extends State{
         clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
 
         objects = new Vector<MoveableObject>();
-        objects.add(hitblock);
-        objects.add(shop);
-        objects.add(block);
-        objects.add(coin);
+        //objects.add(hitblock);
+        //objects.add(shop);
 
-        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT  * 2);
+        for(int i = 0; i < block.length ; i++){
+            objects.add(block[i]);
+        }
+
+        //objects.add(coin);
+
+        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT/2);
+        cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
@@ -115,7 +123,7 @@ public class PlayState extends State{
 
         current_bg_x = 0;
         current_bg_x_clouds = 0;
-        mapSize = bg.getRegionWidth() * mapLength;
+        mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
 
         currentCycle = 0;
         newCycle = false;
@@ -142,8 +150,7 @@ public class PlayState extends State{
             }
 
             else{
-                //hero.jump();
-                hero.toggleStop();
+                hero.jump();
             }
         }
     }
@@ -255,34 +262,33 @@ public class PlayState extends State{
 
     private void onNewCycle(){
         if(newCycle){
-            Random rand = new Random();
-
-            float newX = rand.nextInt((int) (bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET + cam.viewportWidth))) + cam.viewportWidth;
-            float newY = 32;
-
+            int i = 0;
             for(MoveableObject object : objects){
-                if(!object.getType().equals("shop")) {
-                    if((newX + object.getWidth()) >= bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET)){
-                        newX = bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET) - object.getWidth();
-                    }
-                    object.changePosition(newX, newY);
-                    newX = rand.nextInt((int) (bg.getRegionWidth() - (cam.viewportWidth/2 - MAX_CAM_OFFSET + cam.viewportWidth))) + cam.viewportWidth;
+                if(object.getType().equals("block")){
+                    object.changePosition(350 + (i * 100),object.getPosition().y);
+                    i++;
                 }
             }
-
-
-            if(currentCycle == 5){
-                setHideShopObjects(false);
-                setHideNonShopObjects(true);
-                currentCycle = 0;
-            }
-            else{
-                setHideShopObjects(true);
-                setHideNonShopObjects(false);
-            }
-
             currentCycle++;
         }
+    }
+
+    private void onNewArea(){
+
+        for(MoveableObject object : objects){
+            if(object.getType().equals("block")){
+                if(object.getPosition().x < hero.getPosition().x -  ( 50 + object.getWidth()) ) {
+
+                    float newPos = object.getPosition().x + 500;
+                    if(newPos <= 1950){
+                        object.changePosition(newPos,object.getPosition().y);
+                    }
+
+                }
+            }
+        }
+
+
     }
 
     private void updateCam(float dt){
@@ -369,6 +375,11 @@ public class PlayState extends State{
 
         hero.update(dt);
 
+        for(MoveableObject object : objects){
+            object.update(dt);
+        }
+
+
         /*for(MoveableObject object : objects){
             object.update(dt);
         }
@@ -387,7 +398,10 @@ public class PlayState extends State{
         mountains.update(dt, hero.getPosition().x, hero.getSpeed());
         clouds.update(dt, hero.getPosition().x, hero.getSpeed());
 
-        //updateCam(dt);
+        onNewArea();
+        onNewCycle();
+
+        updateCam(dt);
         //updateTexts();
 
 
@@ -402,6 +416,9 @@ public class PlayState extends State{
         mountains.render(sb);
         ground.render(sb);
 
+        for(MoveableObject object : objects){
+            object.render(sb);
+        }
 
         /*
         for(MoveableObject object : objects){

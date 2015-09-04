@@ -73,6 +73,10 @@ public abstract class Background {
         }
     }
 
+    public TextureRegion getTextureRegion(){
+        return image;
+    }
+
     public void update(float dt, float heroPosX){
         this.heroPosX = heroPosX;
     }
