@@ -274,21 +274,14 @@ public class PlayState extends State{
     }
 
     private void onNewArea(){
-
         for(MoveableObject object : objects){
-            if(object.getType().equals("block")){
-                if(object.getPosition().x < hero.getPosition().x -  ( 50 + object.getWidth()) ) {
-
-                    float newPos = object.getPosition().x + 500;
-                    if(newPos <= 1950){
-                        object.changePosition(newPos,object.getPosition().y);
-                    }
-
-                }
+            if(object.getType().equals("block")
+            && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
+                float newPos = object.getPosition().x + 500;
+                if(newPos < 1950)
+                    object.changePosition(newPos ,object.getPosition().y);
             }
         }
-
-
     }
 
     private void updateCam(float dt){
@@ -330,13 +323,7 @@ public class PlayState extends State{
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
-    private void updateParallaxBG(float dt, float scrollSpeed, float bgIndexX){
-        if(hero.getSpeed() > 0){
-            bgIndexX += scrollSpeed * dt;
-        }
-    }
-
-    private void updateBG(float dt){
+    private void onExitCycle(){
 
         //Update the player position
         if(hero.getPosition().x >= mapSize){
@@ -346,27 +333,6 @@ public class PlayState extends State{
             newCycle = false;
         }
 
-
-
-        /*
-        //Add velocity to the bg, to make bg look further away
-        if(hero.getSpeed() > 0) {
-            current_bg_x += 20f * dt;
-            if(current_bg_x >= mapSize){
-                current_bg_x = 0;
-            }
-
-            current_bg_x_clouds += 40f * dt;
-            if (current_bg_x_clouds >= mapSize) {
-                current_bg_x_clouds = 0;
-            }
-        }
-        else{
-            current_bg_x_clouds += 10f * dt;
-            if (current_bg_x_clouds >= mapSize) {
-                current_bg_x_clouds = 0;
-            }
-        }*/
     }
 
     public void update(float dt){
@@ -380,30 +346,23 @@ public class PlayState extends State{
         }
 
 
-        /*for(MoveableObject object : objects){
-            object.update(dt);
-        }
-
         for(MoveableObject object : objects){
             collisionDetection(object,hero);
         }
 
-        onBlockCollision();
-        onExitShop();
-        onNewCycle();*/
+        /*onExitShop();*/
 
-        updateBG(dt);
+        onBlockCollision();
+        onNewArea();
+        onNewCycle();
+        onExitCycle();
 
         ground.update(dt,hero.getPosition().x);
         mountains.update(dt, hero.getPosition().x, hero.getSpeed());
         clouds.update(dt, hero.getPosition().x, hero.getSpeed());
 
-        onNewArea();
-        onNewCycle();
-
         updateCam(dt);
-        //updateTexts();
-
+        updateTexts();
 
     }
 
@@ -420,11 +379,9 @@ public class PlayState extends State{
             object.render(sb);
         }
 
-        /*
-        for(MoveableObject object : objects){
+        /*for(MoveableObject object : objects){
             object.render(sb);
-        }
-
+        }*/
 
         hit_splash.render(sb);
         textBox.renderBox(sb);
@@ -435,7 +392,7 @@ public class PlayState extends State{
             sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
         }
 
-        coinsText.render(sb);*/
+        coinsText.render(sb);
 
         hero.render(sb);
 
