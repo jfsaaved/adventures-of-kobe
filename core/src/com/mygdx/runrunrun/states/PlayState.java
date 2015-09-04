@@ -244,22 +244,6 @@ public class PlayState extends State{
         }
     }
 
-    private void setHideNonShopObjects(boolean b){
-        for(MoveableObject object : objects){
-            if(!object.getType().equals("shop")){
-                object.setHide(b);
-            }
-        }
-    }
-
-    private void setHideShopObjects(boolean b){
-        for(MoveableObject object : objects){
-            if(object.getType().equals("shop")){
-                object.setHide(b);
-            }
-        }
-    }
-
     private void onNewCycle(){
         if(newCycle){
             int i = 0;
@@ -324,15 +308,11 @@ public class PlayState extends State{
     }
 
     private void onExitCycle(){
-
-        //Update the player position
         if(hero.getPosition().x >= mapSize){
             hero.changePosition(hero.getPosition().x - mapSize,hero.getPosition().y);
             newCycle = true;
-        }else{
+        }else
             newCycle = false;
-        }
-
     }
 
     public void update(float dt){
@@ -340,15 +320,8 @@ public class PlayState extends State{
         handleInput();
 
         hero.update(dt);
-
-        for(MoveableObject object : objects){
-            object.update(dt);
-        }
-
-
-        for(MoveableObject object : objects){
-            collisionDetection(object,hero);
-        }
+        for(MoveableObject object : objects) object.update(dt);
+        for(MoveableObject object : objects) collisionDetection(object,hero);
 
         /*onExitShop();*/
 
@@ -366,6 +339,13 @@ public class PlayState extends State{
 
     }
 
+    private void renderHealth(SpriteBatch sb){
+        int health_y_offset = 4;
+        for(int i = 1; i <= hero.getHealth_counter(); i++){
+            sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
+        }
+    }
+
     public void render(SpriteBatch sb){
 
         sb.setProjectionMatrix((cam.combined));
@@ -374,10 +354,8 @@ public class PlayState extends State{
         clouds.render(sb);
         mountains.render(sb);
         ground.render(sb);
-
-        for(MoveableObject object : objects){
-            object.render(sb);
-        }
+        for(MoveableObject object : objects) object.render(sb);
+        hero.render(sb);
 
         /*for(MoveableObject object : objects){
             object.render(sb);
@@ -386,17 +364,9 @@ public class PlayState extends State{
         hit_splash.render(sb);
         textBox.renderBox(sb);
         textBox.renderText(sb);
-
-        int health_y_offset = 4;
-        for(int i = 1; i <= hero.getHealth_counter(); i++){
-            sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
-        }
-
         coinsText.render(sb);
-
-        hero.render(sb);
+        renderHealth(sb);
 
         sb.end();
-
     }
 }
