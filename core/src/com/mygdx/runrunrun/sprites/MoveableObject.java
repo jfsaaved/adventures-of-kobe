@@ -47,6 +47,10 @@ public class MoveableObject {
         this.rect.setPosition(x,y);
     }
 
+    public void interact(){
+
+    }
+
     public void setHide(boolean b){
         hide = b;
     }

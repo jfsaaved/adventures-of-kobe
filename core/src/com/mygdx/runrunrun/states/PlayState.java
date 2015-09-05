@@ -31,7 +31,7 @@ public class PlayState extends State{
     // Moveable Objects
     private Hero hero;
     private Block[] block;
-    private HitBlock hitblock;
+    private HitBlock[] hitblock;
     private Shop shop;
     private Coin coin;
     private Vector<MoveableObject> objects;
@@ -83,7 +83,11 @@ public class PlayState extends State{
             block[i] = new Block(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block1"));
         }
 
-        hitblock = new HitBlock(-200,100,Main.resource.getAtlas("assets").findRegion("block2"));
+        hitblock = new  HitBlock[5];
+        for(int i = 0 ; i < block.length ; i++){
+            hitblock[i] = new HitBlock(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block2"));
+        }
+
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
 
         mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
@@ -96,6 +100,10 @@ public class PlayState extends State{
 
         for(int i = 0; i < block.length ; i++){
             objects.add(block[i]);
+        }
+
+        for(int i = 0; i < hitblock.length ; i++){
+            objects.add(hitblock[i]);
         }
 
         //objects.add(coin);
@@ -135,11 +143,18 @@ public class PlayState extends State{
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
-            if(hitblock.contains(mouse.x, mouse.y) && !hitblock.getHide()){
-                hitblock.interact();
+            boolean jump = true;
+
+            for(MoveableObject object : objects){
+                if(object.getType().equals("hitblock")) {
+                    if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
+                        object.interact();
+                        jump = false;
+                    }
+                }
             }
 
-            else if(stopForShop){
+            if(stopForShop){
                 hero.toggleStop();
                 if(!enteredShop){
                     currentDialogue = shop.getDialogue(0);
@@ -147,11 +162,11 @@ public class PlayState extends State{
                     textBox.setTextBox_hide(false);
                     enteredShop = true;
                 }
-            }
-
-            else{
+            }else if(jump){
                 hero.jump();
             }
+
+
         }
     }
 
@@ -246,11 +261,27 @@ public class PlayState extends State{
 
     private void onNewCycle(){
         if(newCycle){
+
+            Random rand = new Random();
             int i = 0;
             for(MoveableObject object : objects){
+
+                int randVal = 1;
+                if(object.getHide() == true)
+                    object.setHide(false);
+
                 if(object.getType().equals("block")){
                     object.changePosition(350 + (i * 100),object.getPosition().y);
                     i++;
+                    if(randVal == 2)
+                        object.setHide(true);
+                }
+
+                else if(object.getType().equals("hitblock")){
+                    object.changePosition(350 + (i * 100),object.getPosition().y);
+                    i++;
+                    if(randVal == 1)
+                        object.setHide(true);
                 }
             }
             currentCycle++;
@@ -258,14 +289,34 @@ public class PlayState extends State{
     }
 
     private void onNewArea(){
+
+        Random rand = new Random();
+
         for(MoveableObject object : objects){
+
+            int randVal = 1;
+            if(object.getHide() == true)
+                object.setHide(false);
+
             if(object.getType().equals("block")
             && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
                     object.changePosition(newPos ,object.getPosition().y);
+                if(randVal == 2)
+                    object.setHide(true);
+            }
+            else if(object.getType().equals("hitblock")
+            && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
+                float newPos = object.getPosition().x + 500;
+                if(newPos < 1950)
+                    object.changePosition(newPos ,object.getPosition().y);
+                if(randVal == 1)
+                    object.setHide(true);
             }
         }
+
+
     }
 
     private void updateCam(float dt){

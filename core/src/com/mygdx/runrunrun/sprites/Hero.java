@@ -103,7 +103,7 @@ public class Hero extends MoveableObject {
 
     public void jump(){
         if(inAir == false && isStopped == false){
-            jump_acceleration = 200f;
+            jump_acceleration = 225f;
         }
     }
 
