@@ -79,34 +79,29 @@ public class PlayState extends State{
         shop = new Shop(1950 - 199,32, Main.resource.getAtlas("assets").findRegion("building1"));
 
         block = new Block[5];
-        for(int i = 0 ; i < block.length ; i++){
+        for(int i = 0 ; i < block.length ; i++)
             block[i] = new Block(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block1"));
-        }
 
         hitblock = new  HitBlock[5];
-        for(int i = 0 ; i < block.length ; i++){
+        for(int i = 0 ; i < block.length ; i++)
             hitblock[i] = new HitBlock(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block2"));
-        }
 
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
+
+        objects = new Vector<MoveableObject>();
+        //objects.add(shop);
+
+        for(int i = 0; i < block.length ; i++)
+            objects.add(block[i]);
+
+        for(int i = 0; i < hitblock.length ; i++)
+            objects.add(hitblock[i]);
+
+        //objects.add(coin);
 
         mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
         ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
         clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
-
-        objects = new Vector<MoveableObject>();
-        //objects.add(hitblock);
-        //objects.add(shop);
-
-        for(int i = 0; i < block.length ; i++){
-            objects.add(block[i]);
-        }
-
-        for(int i = 0; i < hitblock.length ; i++){
-            objects.add(hitblock[i]);
-        }
-
-        //objects.add(coin);
 
         cam.setToOrtho(false, mapLength * 400, Main.HEIGHT/2);
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
@@ -392,9 +387,8 @@ public class PlayState extends State{
 
     private void renderHealth(SpriteBatch sb){
         int health_y_offset = 4;
-        for(int i = 1; i <= hero.getHealth_counter(); i++){
+        for(int i = 1; i <= hero.getHealth_counter(); i++)
             sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
-        }
     }
 
     public void render(SpriteBatch sb){
@@ -407,10 +401,6 @@ public class PlayState extends State{
         ground.render(sb);
         for(MoveableObject object : objects) object.render(sb);
         hero.render(sb);
-
-        /*for(MoveableObject object : objects){
-            object.render(sb);
-        }*/
 
         hit_splash.render(sb);
         textBox.renderBox(sb);
