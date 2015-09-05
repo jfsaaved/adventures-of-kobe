@@ -259,23 +259,29 @@ public class PlayState extends State{
 
             Random rand = new Random();
             int i = 0;
+            int j = 0;
             for(MoveableObject object : objects){
 
-                int randVal = 1;
+                int randVal = rand.nextInt(4) + 1;
+
                 if(object.getHide() == true)
                     object.setHide(false);
 
                 if(object.getType().equals("block")){
                     object.changePosition(350 + (i * 100),object.getPosition().y);
                     i++;
-                    if(randVal == 2)
+                    if(randVal == 1)
+                        object.setHide(false);
+                    else
                         object.setHide(true);
                 }
 
                 else if(object.getType().equals("hitblock")){
-                    object.changePosition(350 + (i * 100),object.getPosition().y);
-                    i++;
-                    if(randVal == 1)
+                    object.changePosition(350 + (j * 100),object.getPosition().y);
+                    j++;
+                    if(randVal == 2)
+                        object.setHide(false);
+                    else
                         object.setHide(true);
                 }
             }
@@ -289,16 +295,16 @@ public class PlayState extends State{
 
         for(MoveableObject object : objects){
 
-            int randVal = 1;
-            if(object.getHide() == true)
-                object.setHide(false);
+            int randVal = rand.nextInt(4) + 1;
 
             if(object.getType().equals("block")
             && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
                     object.changePosition(newPos ,object.getPosition().y);
-                if(randVal == 2)
+                if(randVal == 1)
+                    object.setHide(false);
+                else
                     object.setHide(true);
             }
             else if(object.getType().equals("hitblock")
@@ -306,9 +312,12 @@ public class PlayState extends State{
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
                     object.changePosition(newPos ,object.getPosition().y);
-                if(randVal == 1)
+                if(randVal == 2)
+                    object.setHide(false);
+                else
                     object.setHide(true);
             }
+
         }
 
 
@@ -399,7 +408,8 @@ public class PlayState extends State{
         clouds.render(sb);
         mountains.render(sb);
         ground.render(sb);
-        for(MoveableObject object : objects) object.render(sb);
+        for(MoveableObject object : objects)
+            object.render(sb);
         hero.render(sb);
 
         hit_splash.render(sb);
