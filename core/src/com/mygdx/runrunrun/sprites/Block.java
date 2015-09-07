@@ -12,7 +12,7 @@ public class Block extends MoveableObject{
 
 
     public Block(float x, float y, TextureRegion image){
-        super(x,y,image, "block");
+        super(x,y,image, Types.Block);
     }
 
     public void update(float dt){

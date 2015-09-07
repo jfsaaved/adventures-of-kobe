@@ -10,7 +10,7 @@ public class Coin extends MoveableObject {
 
     public Coin(float x, float y, TextureRegion image){
 
-        super(x,y,image, "coin");
+        super(x,y,image, Types.Coin);
     }
 
     @Override

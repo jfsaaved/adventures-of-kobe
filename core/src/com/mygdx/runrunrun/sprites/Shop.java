@@ -14,7 +14,7 @@ public class Shop extends MoveableObject{
     private String[] dialogue;
 
     public Shop(float x, float y, TextureRegion image){
-        super(x,y,image, "shop");
+        super(x,y,image, Types.Shop);
 
         dialogue = new String[15];
 

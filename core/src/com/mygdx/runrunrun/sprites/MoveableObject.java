@@ -24,9 +24,9 @@ public class MoveableObject {
     protected float width;
     protected float height;
     protected boolean hide;
-    protected String type;
+    protected Types type;
 
-    public MoveableObject(float x, float y, TextureRegion image, String type){
+    public MoveableObject(float x, float y, TextureRegion image, Types type){
 
         if(image != null) {
             this.image = image;
@@ -71,7 +71,7 @@ public class MoveableObject {
         return rect.overlaps(newRect);
     }
 
-    public String getType(){
+    public Types getType(){
         return type;
     }
 

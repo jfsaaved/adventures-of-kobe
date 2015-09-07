@@ -14,6 +14,7 @@ import com.mygdx.runrunrun.sprites.Hero;
 import com.mygdx.runrunrun.sprites.HitBlock;
 import com.mygdx.runrunrun.sprites.MoveableObject;
 import com.mygdx.runrunrun.sprites.Shop;
+import com.mygdx.runrunrun.sprites.Types;
 import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
 
@@ -141,7 +142,7 @@ public class PlayState extends State{
             boolean jump = true;
 
             for(MoveableObject object : objects){
-                if(object.getType().equals("hitblock")) {
+                if(object.getType().equals(Types.HitBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.interact();
                         jump = false;
@@ -166,13 +167,13 @@ public class PlayState extends State{
     }
 
     private void collisionDetection(MoveableObject firstObj, MoveableObject secondObj){
-        if(firstObj.getType().equals("shop")){
+        if(firstObj.getType().equals(Types.Shop)){
             shopDetection(firstObj);
-        }else if(firstObj.getType().equals("coin")){
+        }else if(firstObj.getType().equals(Types.Coin)){
             coinDetection(firstObj);
-        }else if(firstObj.getType().equals("block")){
+        }else if(firstObj.getType().equals(Types.Block)){
             blockDetection(firstObj, secondObj);
-        }else if(firstObj.getType().equals("hitblock")){
+        }else if(firstObj.getType().equals(Types.HitBlock)){
             blockDetection(firstObj, secondObj);
         }
     }
@@ -267,7 +268,7 @@ public class PlayState extends State{
                 if(object.getHide() == true)
                     object.setHide(false);
 
-                if(object.getType().equals("block")){
+                if(object.getType().equals(Types.Block)){
                     object.changePosition(350 + (i * 100),object.getPosition().y);
                     i++;
                     if(randVal == 1)
@@ -276,7 +277,7 @@ public class PlayState extends State{
                         object.setHide(true);
                 }
 
-                else if(object.getType().equals("hitblock")){
+                else if(object.getType().equals(Types.HitBlock)){
                     object.changePosition(350 + (j * 100),object.getPosition().y);
                     j++;
                     if(randVal == 2)
@@ -293,13 +294,13 @@ public class PlayState extends State{
 
         for(MoveableObject object : objects){
             object.setHide(false);
-            if(object.getType().equals("block")
+            if(object.getType().equals(Types.Block)
             && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
                     object.changePosition(newPos, object.getPosition().y);
             }
-            else if(object.getType().equals("hitblock")
+            else if(object.getType().equals(Types.HitBlock)
             && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
