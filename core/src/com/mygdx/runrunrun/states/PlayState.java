@@ -291,36 +291,22 @@ public class PlayState extends State{
 
     private void onNewArea(){
 
-        Random rand = new Random();
-
         for(MoveableObject object : objects){
-
-            int randVal = rand.nextInt(4) + 1;
-
+            object.setHide(false);
             if(object.getType().equals("block")
             && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
-                    object.changePosition(newPos ,object.getPosition().y);
-                if(randVal == 1)
-                    object.setHide(false);
-                else
-                    object.setHide(true);
+                    object.changePosition(newPos, object.getPosition().y);
             }
             else if(object.getType().equals("hitblock")
             && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
                 float newPos = object.getPosition().x + 500;
                 if(newPos < 1950)
-                    object.changePosition(newPos ,object.getPosition().y);
-                if(randVal == 2)
-                    object.setHide(false);
-                else
-                    object.setHide(true);
+                    object.changePosition(newPos, object.getPosition().y);
             }
 
         }
-
-
     }
 
     private void updateCam(float dt){

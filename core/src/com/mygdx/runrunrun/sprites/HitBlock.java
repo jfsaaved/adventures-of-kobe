@@ -40,7 +40,6 @@ public class HitBlock extends MoveableObject {
     public void changePosition(float x, float y){
         super.changePosition(x,y);
         float_value = 0;
-        interacted = false;
     }
 
     public void update(float dt){
