@@ -77,27 +77,20 @@ public class PlayState extends State{
         health = Main.resource.getAtlas("assets").findRegion("player");
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
-        shop = new Shop(1950 - 199,32, Main.resource.getAtlas("assets").findRegion("building1"));
-
-        block = new Block[5];
-        for(int i = 0 ; i < block.length ; i++)
-            block[i] = new Block(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block1"));
-
-        hitblock = new  HitBlock[5];
-        for(int i = 0 ; i < block.length ; i++)
-            hitblock[i] = new HitBlock(350 + (i * 100), 150, Main.resource.getAtlas("assets").findRegion("block2"));
-
-        coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));
+        /*shop = new Shop(1950 - 199,32, Main.resource.getAtlas("assets").findRegion("building1"));
+        coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));*/
 
         objects = new Vector<MoveableObject>();
+        for(int i = 0 ; i < 10 ; i ++){
+            if(i <= 4){
+                objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
+            }else{
+                objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
+            }
+            objects.elementAt(i).setHide(true);
+        }
+
         //objects.add(shop);
-
-        for(int i = 0; i < block.length ; i++)
-            objects.add(block[i]);
-
-        for(int i = 0; i < hitblock.length ; i++)
-            objects.add(hitblock[i]);
-
         //objects.add(coin);
 
         mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
@@ -261,29 +254,12 @@ public class PlayState extends State{
             Random rand = new Random();
             int i = 0;
             int j = 0;
+
             for(MoveableObject object : objects){
-
-                int randVal = rand.nextInt(4) + 1;
-
-                if(object.getHide() == true)
+                if(object.getHide()) {
+                    int newValX = rand.nextInt(1650) + 350;
+                    object.changePosition(newValX, object.getPosition().y);
                     object.setHide(false);
-
-                if(object.getType().equals(Types.Block)){
-                    object.changePosition(350 + (i * 100),object.getPosition().y);
-                    i++;
-                    if(randVal == 1)
-                        object.setHide(false);
-                    else
-                        object.setHide(true);
-                }
-
-                else if(object.getType().equals(Types.HitBlock)){
-                    object.changePosition(350 + (j * 100),object.getPosition().y);
-                    j++;
-                    if(randVal == 2)
-                        object.setHide(false);
-                    else
-                        object.setHide(true);
                 }
             }
             currentCycle++;
@@ -292,22 +268,13 @@ public class PlayState extends State{
 
     private void onNewArea(){
 
-        for(MoveableObject object : objects){
-            object.setHide(false);
-            if(object.getType().equals(Types.Block)
-            && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
-                float newPos = object.getPosition().x + 500;
-                if(newPos < 1950)
-                    object.changePosition(newPos, object.getPosition().y);
-            }
-            else if(object.getType().equals(Types.HitBlock)
-            && object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()) ){
-                float newPos = object.getPosition().x + 500;
-                if(newPos < 1950)
-                    object.changePosition(newPos, object.getPosition().y);
-            }
 
+        for(MoveableObject object : objects){
+            if(object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth())){
+                object.setHide((true));
+            }
         }
+
     }
 
     private void updateCam(float dt){
