@@ -97,8 +97,8 @@ public class PlayState extends State{
         ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
         clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
 
-        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT/2);
-        cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT);
+        //cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
@@ -257,8 +257,11 @@ public class PlayState extends State{
 
             for(MoveableObject object : objects){
                 if(object.getHide()) {
-                    int newValX = rand.nextInt(1650) + 350;
-                    object.changePosition(newValX, object.getPosition().y);
+                    int newValX = rand.nextInt(1600) + 350;
+                    if(newValX == 1950)
+                        object.changePosition(newValX - object.getWidth(), object.getPosition().y);
+                    else
+                        object.changePosition(newValX, object.getPosition().y);
                     object.setHide(false);
                 }
             }
@@ -271,7 +274,7 @@ public class PlayState extends State{
 
         for(MoveableObject object : objects){
             if(object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth())){
-                object.setHide((true));
+                object.setHide(true);
             }
         }
 
@@ -343,7 +346,7 @@ public class PlayState extends State{
         mountains.update(dt, hero.getPosition().x, hero.getSpeed());
         clouds.update(dt, hero.getPosition().x, hero.getSpeed());
 
-        updateCam(dt);
+        //updateCam(dt);
         updateTexts();
 
     }
