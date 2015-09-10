@@ -260,8 +260,15 @@ public class PlayState extends State{
                     int newValX = rand.nextInt(1600) + 350;
                     if(newValX == 1950)
                         object.changePosition(newValX - object.getWidth(), object.getPosition().y);
-                    else
+                    else {
+
+                        for(MoveableObject object2 : objects){
+                            if(object.overlaps(object2.getRectangle()))
+                                System.out.println("Overlapping");
+                        }
+
                         object.changePosition(newValX, object.getPosition().y);
+                    }
                     object.setHide(false);
                 }
             }
@@ -270,14 +277,10 @@ public class PlayState extends State{
     }
 
     private void onNewArea(){
-
-
         for(MoveableObject object : objects){
-            if(object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth())){
+            if(object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()))
                 object.setHide(true);
-            }
         }
-
     }
 
     private void updateCam(float dt){
