@@ -83,9 +83,9 @@ public class PlayState extends State{
         objects = new Vector<MoveableObject>();
         for(int i = 0 ; i < 10 ; i ++){
             if(i <= 4){
-                objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
-            }else{
                 objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
+            }else{
+                objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
             }
             objects.elementAt(i).setHide(true);
         }
@@ -98,7 +98,7 @@ public class PlayState extends State{
         clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
 
         cam.setToOrtho(false, mapLength * 400, Main.HEIGHT);
-        //cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+        cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
@@ -138,7 +138,7 @@ public class PlayState extends State{
                 if(object.getType().equals(Types.HitBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.interact();
-                        jump = false;
+                        return;
                     }
                 }
             }
@@ -252,26 +252,24 @@ public class PlayState extends State{
         if(newCycle){
 
             Random rand = new Random();
-            int i = 0;
-            int j = 0;
 
             for(MoveableObject object : objects){
                 if(object.getHide()) {
                     int newValX = rand.nextInt(1600) + 350;
-                    if(newValX == 1950)
-                        object.changePosition(newValX - object.getWidth(), object.getPosition().y);
-                    else {
-
-                        for(MoveableObject object2 : objects){
-                            if(object.overlaps(object2.getRectangle()))
-                                System.out.println("Overlapping");
-                        }
-
+                    if(newValX + object.getWidth() >= 1950) {
+                        newValX = rand.nextInt(1600 - (int) object.getWidth()) + 350;
                         object.changePosition(newValX, object.getPosition().y);
+                        object.setHide(false);
                     }
-                    object.setHide(false);
+                    else if(newValX < 1950) {
+                        object.changePosition(newValX, object.getPosition().y);
+                        object.setHide(false);
+                    }else {
+                        object.setHide(true);
+                    }
                 }
             }
+
             currentCycle++;
         }
     }
@@ -349,7 +347,7 @@ public class PlayState extends State{
         mountains.update(dt, hero.getPosition().x, hero.getSpeed());
         clouds.update(dt, hero.getPosition().x, hero.getSpeed());
 
-        //updateCam(dt);
+        updateCam(dt);
         updateTexts();
 
     }
@@ -368,8 +366,11 @@ public class PlayState extends State{
         clouds.render(sb);
         mountains.render(sb);
         ground.render(sb);
-        for(MoveableObject object : objects)
-            object.render(sb);
+
+        for(int i = objects.size() - 1 ; i >= 0 ; i --){
+            objects.elementAt(i).render(sb);
+        }
+
         hero.render(sb);
 
         hit_splash.render(sb);

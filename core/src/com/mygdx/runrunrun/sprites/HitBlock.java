@@ -20,7 +20,8 @@ public class HitBlock extends MoveableObject {
 
     public void interact(){
         if(!interacted) {
-            float_value = 350f;
+            //float_value = 350f;
+            float_value = 400f;
             interacted = true;
         }
     }
