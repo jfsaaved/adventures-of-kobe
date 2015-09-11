@@ -88,7 +88,10 @@ public abstract class Background {
             parallax_bg += parallaxSpeed * dt;
         }
         else{
-            parallax_bg += (parallaxSpeed - 30f) * dt;
+            if(parallaxSpeed > 35)
+                parallax_bg += (parallaxSpeed - 30f) * dt;
+            else
+                parallax_bg = 0;
         }
 
         if(parallax_bg >= image.getRegionWidth()){

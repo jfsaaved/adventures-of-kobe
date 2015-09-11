@@ -15,7 +15,6 @@ public class HitBlock extends MoveableObject {
 
     public HitBlock(float x, float y, TextureRegion image){
         super(x, y, image, Types.HitBlock);
-        rect = new Rectangle(this.position.x, this.position.y, this.width, this.height);
     }
 
     public void interact(){
@@ -44,14 +43,11 @@ public class HitBlock extends MoveableObject {
     }
 
     public void update(float dt){
-
         super.update(dt);
         floatUP(dt);
     }
 
     @Override
     public void render(SpriteBatch sb){
-        if(hide == false)
-            sb.draw(image, position.x, position.y, width, height);
     }
 }

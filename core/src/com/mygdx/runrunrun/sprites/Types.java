@@ -5,5 +5,5 @@ package com.mygdx.runrunrun.sprites;
  */
 public enum Types {
 
-    Hero, Block, Coin, HitBlock, Shop;
+    Hero, Block, Coin, HitBlock, MovingBlock, Shop;
 }
