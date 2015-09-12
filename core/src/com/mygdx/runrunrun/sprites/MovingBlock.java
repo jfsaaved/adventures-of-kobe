@@ -8,13 +8,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class MovingBlock extends MoveableObject {
 
-    public MovingBlock(float x, float y, TextureRegion image){
+    private float speed;
+
+    public MovingBlock(float x, float y, TextureRegion image, float speed){
         super(x,y,image, Types.MovingBlock);
+        this.speed = speed;
     }
 
     public void update(float dt){
         super.update(dt);
-        this.position.x += 5f;
+        float init_pos_x = this.position.x;
+        float init_pos_y = this.position.y;
+
+        float final_position_x = init_pos_x - (speed) * dt;
+        float final_position_y = init_pos_y;
+
+        this.position.set(final_position_x, final_position_y);
     }
 
     public void render(SpriteBatch sb){

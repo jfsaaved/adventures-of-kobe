@@ -49,5 +49,6 @@ public class HitBlock extends MoveableObject {
 
     @Override
     public void render(SpriteBatch sb){
+        super.render(sb);
     }
 }

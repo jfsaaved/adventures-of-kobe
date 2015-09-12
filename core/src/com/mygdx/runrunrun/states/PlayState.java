@@ -13,6 +13,7 @@ import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
 import com.mygdx.runrunrun.sprites.HitBlock;
 import com.mygdx.runrunrun.sprites.MoveableObject;
+import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.sprites.Types;
 import com.mygdx.runrunrun.ui.TextBoxImage;
@@ -31,8 +32,6 @@ public class PlayState extends State{
 
     // Moveable Objects
     private Hero hero;
-    private Block[] block;
-    private HitBlock[] hitblock;
     private Shop shop;
     private Coin coin;
     private Vector<MoveableObject> objects;
@@ -79,7 +78,6 @@ public class PlayState extends State{
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
         /*shop = new Shop(1950 - 199,32, Main.resource.getAtlas("assets").findRegion("building1"));
         coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));*/
-
         objects = new Vector<MoveableObject>();
         for(int i = 0 ; i < 10 ; i ++){
             if(i <= 4){
@@ -89,6 +87,12 @@ public class PlayState extends State{
             }
             objects.elementAt(i).setHide(true);
         }
+
+        objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
+        objects.lastElement().setHide(true);
+
+        objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
+        objects.lastElement().setHide(true);
 
         //objects.add(shop);
         //objects.add(coin);
@@ -164,7 +168,7 @@ public class PlayState extends State{
             shopDetection(firstObj);
         }else if(firstObj.getType().equals(Types.Coin)){
             coinDetection(firstObj);
-        }else if(firstObj.getType().equals(Types.Block)){
+        }else if(firstObj.getType().equals(Types.Block) || firstObj.getType().equals(Types.MovingBlock)){
             blockDetection(firstObj, secondObj);
         }else if(firstObj.getType().equals(Types.HitBlock)){
             blockDetection(firstObj, secondObj);
@@ -172,6 +176,7 @@ public class PlayState extends State{
     }
 
     private void shopDetection(MoveableObject firstObj){
+        shop = (Shop) firstObj;
         if(firstObj.contains(hero.getPosition()) && firstObj.getHide() == false) {
             stopForShop = true;
             exitShopTimer = 100;
@@ -249,27 +254,37 @@ public class PlayState extends State{
     }
 
     private void onNewCycle(){
+        Random rand = new Random();
+
+        int areaType = 1;
+
         if(newCycle){
-
-            Random rand = new Random();
-
-            for(MoveableObject object : objects){
-                if(object.getHide()) {
-                    int newValX = rand.nextInt(1600) + 350;
-                    if(newValX + object.getWidth() >= 1950) {
-                        newValX = rand.nextInt(1600 - (int) object.getWidth()) + 350;
-                        object.changePosition(newValX, object.getPosition().y);
-                        object.setHide(false);
+            for (MoveableObject object : objects) {
+                if(areaType == 1) {
+                    if (object.getHide()) {
+                        int newValX = rand.nextInt(1600) + 350;
+                        if (newValX + object.getWidth() >= 1950) {
+                            newValX = rand.nextInt(1600 - (int) object.getWidth()) + 350;
+                            object.changePosition(newValX, object.getPosition().y);
+                            object.setHide(false);
+                        } else if (newValX < 1950) {
+                            object.changePosition(newValX, object.getPosition().y);
+                            object.setHide(false);
+                        } else {
+                            object.setHide(true);
+                        }
+                        if(object.getType().equals(Types.Shop))
+                            object.setHide(true);
                     }
-                    else if(newValX < 1950) {
-                        object.changePosition(newValX, object.getPosition().y);
-                        object.setHide(false);
-                    }else {
-                        object.setHide(true);
+                }else{
+                    if(object.getHide()){
+                        if(object.getType().equals(Types.Shop))
+                            object.setHide(false);
+                        else
+                            object.setHide(true);
                     }
                 }
             }
-
             currentCycle++;
         }
     }
@@ -336,8 +351,7 @@ public class PlayState extends State{
         for(MoveableObject object : objects) object.update(dt);
         for(MoveableObject object : objects) collisionDetection(object,hero);
 
-        /*onExitShop();*/
-
+        onExitShop();
         onBlockCollision();
         onNewArea();
         onNewCycle();
