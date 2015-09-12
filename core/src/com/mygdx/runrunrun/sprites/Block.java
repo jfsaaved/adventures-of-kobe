@@ -10,13 +10,36 @@ import com.mygdx.runrunrun.Main;
  */
 public class Block extends MoveableObject{
 
+    private float interactValue;
+    private boolean interacted;
 
     public Block(float x, float y, TextureRegion image){
         super(x,y,image, Types.Block);
     }
 
+    public void interact(){
+        if(!interacted){
+            interactValue = 400f;
+            interacted = true;
+        }
+    }
+
+    @Override
+    public void changePosition(float x, float y){
+        super.changePosition(x,y);
+        interactValue = 0;
+    }
+
     public void update(float dt){
+
         super.update(dt);
+        if(interactValue > 0){
+            this.position.y += interactValue * dt;
+            interactValue -= 100f * dt;
+        }else{
+            interactValue = 0;
+            interacted = false;
+        }
     }
 
     public void render(SpriteBatch sb){

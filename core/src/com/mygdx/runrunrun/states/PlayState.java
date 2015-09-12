@@ -40,9 +40,6 @@ public class PlayState extends State{
     private Ground ground;
     private Clouds clouds;
     private Mountains mountains;
-
-    private float current_bg_x;
-    private float current_bg_x_clouds;
     private float mapSize;
 
     // Text
@@ -74,10 +71,8 @@ public class PlayState extends State{
         super(gsm);
 
         health = Main.resource.getAtlas("assets").findRegion("player");
-
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
-        /*shop = new Shop(1950 - 199,32, Main.resource.getAtlas("assets").findRegion("building1"));
-        coin = new Coin(-200,32, Main.resource.getAtlas("assets").findRegion("coin1"));*/
+
         objects = new Vector<MoveableObject>();
         for(int i = 0 ; i < 10 ; i ++){
             if(i <= 4){
@@ -93,9 +88,6 @@ public class PlayState extends State{
 
         objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
         objects.lastElement().setHide(true);
-
-        //objects.add(shop);
-        //objects.add(coin);
 
         mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
         ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
@@ -122,8 +114,6 @@ public class PlayState extends State{
         enteredShop = false;
         exitShopTimer = -1;
 
-        current_bg_x = 0;
-        current_bg_x_clouds = 0;
         mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
 
         currentCycle = 0;
@@ -139,7 +129,7 @@ public class PlayState extends State{
             boolean jump = true;
 
             for(MoveableObject object : objects){
-                if(object.getType().equals(Types.HitBlock)) {
+                if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.interact();
                         return;
