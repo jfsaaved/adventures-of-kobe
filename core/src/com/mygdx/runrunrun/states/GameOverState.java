@@ -2,6 +2,7 @@ package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.ui.TextImage;
 
@@ -35,5 +36,9 @@ public class GameOverState extends State {
         game_over_text.render(sb);
 
         sb.end();
+    }
+
+    public void shapeRender(ShapeRenderer sr){
+
     }
 }

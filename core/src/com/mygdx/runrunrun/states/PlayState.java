@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.backgrounds.Clouds;
 import com.mygdx.runrunrun.backgrounds.Ground;
@@ -16,6 +17,8 @@ import com.mygdx.runrunrun.sprites.MoveableObject;
 import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.sprites.Types;
+import com.mygdx.runrunrun.ui.Item;
+import com.mygdx.runrunrun.ui.ItemButton;
 import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
 
@@ -44,10 +47,13 @@ public class PlayState extends State{
 
     // Text
     private TextImage hit_splash;
+
+    // Shop Stuff
     private TextBoxImage shopTextBox;
     private TextBoxImage shopTextBoxOptions;
     private String currentDialogue;
     private String currentOption;
+    private ItemButton sushi;
 
     // UIs
     private TextureRegion health;
@@ -108,25 +114,24 @@ public class PlayState extends State{
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
         shopTextBoxOptions.setRow(12);
 
+        sushi = new ItemButton(cam.position.x + cam.viewportWidth/2,cam.position.y + cam.viewportHeight/2,100,100, Item.SUSHI);
+
+        mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
+        currentCycle = 0;
+        newCycle = false;
+
         cam_offset = 0;
         cam_acc = 0;
 
         coins = hero.getCoins();
-
         coinsText.setTextHide(false);
+
         shopTextBox.setTextHide(true);
         shopTextBox.setTextBox_hide(true);
-
         currentDialogue = "";
         currentOption = "";
-
         enteredShop = false;
         exitShopTimer = -1;
-
-        mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
-
-        currentCycle = 0;
-        newCycle = false;
 
     }
 
@@ -162,6 +167,8 @@ public class PlayState extends State{
                     shopTextBoxOptions.setTextHide(false);
                     shopTextBoxOptions.setTextBox_hide(false);
                     enteredShop = true;
+
+
                 }
             }else if(jump){
                 hero.jump();
@@ -353,6 +360,10 @@ public class PlayState extends State{
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
+    private void updateButtons(){
+        sushi.update(cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4 + 10, 120, 80, 10);
+    }
+
     private void onExitCycle(){
         if(hero.getPosition().x >= mapSize){
             hero.changePosition(hero.getPosition().x - mapSize,hero.getPosition().y);
@@ -381,6 +392,7 @@ public class PlayState extends State{
 
         updateCam(dt);
         updateTexts();
+        updateButtons();
 
     }
 
@@ -415,5 +427,13 @@ public class PlayState extends State{
         renderHealth(sb);
 
         sb.end();
+    }
+
+    public void shapeRender(ShapeRenderer sr){
+        sr.setProjectionMatrix(cam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(1, 1, 0, 1);
+        sr.rect(sushi.getX(), sushi.getY(), sushi.getWidth(), sushi.getHeight());
+        sr.end();
     }
 }

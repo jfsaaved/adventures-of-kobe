@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.runrunrun.handler.Content;
 import com.mygdx.runrunrun.states.GSM;
 import com.mygdx.runrunrun.states.PlayState;
@@ -18,6 +19,7 @@ public class Main extends ApplicationAdapter {
 
     private GSM gsm;
     private SpriteBatch sb;
+    private ShapeRenderer sr;
 
     public static Content resource;
 
@@ -29,6 +31,7 @@ public class Main extends ApplicationAdapter {
         resource.loadAtlas("pack1.pack","assets");
 
         sb = new SpriteBatch();
+        sr = new ShapeRenderer();
         gsm = new GSM();
         gsm.push(new PlayState(gsm,5));
 
@@ -41,6 +44,7 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gsm.update(Gdx.graphics.getDeltaTime());
         gsm.render(sb);
+        gsm.shapeRender(sr);
 
 	}
 }

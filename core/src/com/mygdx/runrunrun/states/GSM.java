@@ -1,6 +1,7 @@
 package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.Stack;
 
@@ -34,6 +35,10 @@ public class GSM {
 
     public void render(SpriteBatch sb){
         states.peek().render(sb);
+    }
+
+    public void shapeRender(ShapeRenderer sr){
+        states.peek().shapeRender(sr);
     }
 
 }

@@ -2,6 +2,7 @@ package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.runrunrun.Main;
 
@@ -26,5 +27,6 @@ public abstract class State {
     protected abstract void handleInput();
     protected abstract void update(float dt);
     protected abstract void render(SpriteBatch sb);
+    protected abstract void shapeRender(ShapeRenderer sr);
 
 }
