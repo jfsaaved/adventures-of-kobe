@@ -162,7 +162,7 @@ public class Hero extends MoveableObject {
         }
 
         if(boostValue > 0){
-            boostValue -= 200 * dt;
+            boostValue -= 300 * dt;
         }else{
             boostValue = 0;
             boostActivated = false;
