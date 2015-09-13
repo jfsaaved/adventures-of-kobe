@@ -38,8 +38,8 @@ public class HitBlock extends MoveableObject {
 
     @Override
     public void changePosition(float x, float y){
-        super.changePosition(x,y);
         float_value = 0;
+        super.changePosition(x,y);
     }
 
     public void update(float dt){

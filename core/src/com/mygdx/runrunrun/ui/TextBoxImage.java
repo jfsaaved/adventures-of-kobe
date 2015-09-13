@@ -75,6 +75,10 @@ public class TextBoxImage extends TextImage {
 
     }
 
+    public void setRow(int row){
+        this.box_rows = row;
+    }
+
     @Override
     public void setTextHide(boolean b){
         text_hidden = b;

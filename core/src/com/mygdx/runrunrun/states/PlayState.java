@@ -44,8 +44,10 @@ public class PlayState extends State{
 
     // Text
     private TextImage hit_splash;
-    private TextBoxImage textBox;
+    private TextBoxImage shopTextBox;
+    private TextBoxImage shopTextBoxOptions;
     private String currentDialogue;
+    private String currentOption;
 
     // UIs
     private TextureRegion health;
@@ -85,12 +87,13 @@ public class PlayState extends State{
             }else{
                 objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
             }
-            objects.elementAt(i).setHide(true);
+
+            objects.lastElement().setHide(true);
         }
 
 
         objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
-        objects.lastElement().setHide(true);
+        objects.lastElement().setHide(false);
 
         mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
         ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
@@ -101,7 +104,9 @@ public class PlayState extends State{
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        textBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+        shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+        shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/2);
+        shopTextBoxOptions.setRow(12);
 
         cam_offset = 0;
         cam_acc = 0;
@@ -109,10 +114,11 @@ public class PlayState extends State{
         coins = hero.getCoins();
 
         coinsText.setTextHide(false);
-        textBox.setTextHide(true);
-        textBox.setTextBox_hide(true);
+        shopTextBox.setTextHide(true);
+        shopTextBox.setTextBox_hide(true);
 
         currentDialogue = "";
+        currentOption = "";
 
         enteredShop = false;
         exitShopTimer = -1;
@@ -149,8 +155,12 @@ public class PlayState extends State{
                 hero.toggleStop();
                 if(!enteredShop){
                     currentDialogue = shop.getDialogue(0);
-                    textBox.setTextHide(false);
-                    textBox.setTextBox_hide(false);
+                    currentOption = shop.getOptions(0);
+                    shopTextBox.setTextHide(false);
+                    shopTextBox.setTextBox_hide(false);
+
+                    shopTextBoxOptions.setTextHide(false);
+                    shopTextBoxOptions.setTextBox_hide(false);
                     enteredShop = true;
                 }
             }else if(jump){
@@ -233,19 +243,28 @@ public class PlayState extends State{
     private void onExitShop(){
         if(exitShopTimer > 0) {
             if (exitShopTimer > 97 && exitShopTimer < 98) {
-                textBox.setTextHide(true);
-                textBox.setTextBox_hide(true);
+                shopTextBox.setTextHide(true);
+                shopTextBox.setTextBox_hide(true);
+
+                shopTextBoxOptions.setTextHide(true);
+                shopTextBoxOptions.setTextBox_hide(true);
             }
             else if(exitShopTimer < 97 && exitShopTimer > 20){
                 if(currentDialogue.equals(shop.getDialogue(0))) {
                     currentDialogue = shop.getDialogue(1);
-                    textBox.setTextHide(false);
-                    textBox.setTextBox_hide(false);
+                    shopTextBox.setTextHide(false);
+                    shopTextBox.setTextBox_hide(false);
+
+                    shopTextBoxOptions.setTextHide(true);
+                    shopTextBoxOptions.setTextBox_hide(true);
                 }
             }
             else if(exitShopTimer < 20){
-                textBox.setTextHide(true);
-                textBox.setTextBox_hide(true);
+                shopTextBox.setTextHide(true);
+                shopTextBox.setTextBox_hide(true);
+
+                shopTextBoxOptions.setTextHide(true);
+                shopTextBoxOptions.setTextBox_hide(true);
             }
             exitShopTimer--;
         }
@@ -254,7 +273,7 @@ public class PlayState extends State{
     private void onNewCycle(){
         Random rand = new Random();
 
-        int areaType = 1;
+        int areaType = 2;
 
         if(newCycle){
             for (MoveableObject object : objects) {
@@ -319,8 +338,8 @@ public class PlayState extends State{
     }
 
     private void updateTexts(){
-        int textBox_x_offset = 2;
-        int textBox_y_offset = 4;
+        int shopTextBox_x_offset = 2;
+        int shopTextBox_y_offset = 4;
 
         int coin_text_x_offset = 200;
         int coin_text_y_offset = 24;
@@ -328,7 +347,8 @@ public class PlayState extends State{
         int hit_x_offset = 40;
         int hit_y_offset = 75;
 
-        textBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + textBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + textBox_y_offset),0.20f);
+        shopTextBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + shopTextBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + shopTextBox_y_offset),0.20f);
+        shopTextBoxOptions.update(currentOption,cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - (70),0.20f);
         hit_splash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -386,8 +406,11 @@ public class PlayState extends State{
         hero.render(sb);
 
         hit_splash.render(sb);
-        textBox.renderBox(sb);
-        textBox.renderText(sb);
+        shopTextBox.renderBox(sb);
+        shopTextBox.renderText(sb);
+
+        shopTextBoxOptions.renderBox(sb);
+        shopTextBoxOptions.renderText(sb);
         coinsText.render(sb);
         renderHealth(sb);
 
