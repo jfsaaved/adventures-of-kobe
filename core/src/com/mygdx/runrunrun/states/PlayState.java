@@ -74,17 +74,20 @@ public class PlayState extends State{
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
         objects = new Vector<MoveableObject>();
+
+        objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
+        objects.lastElement().setHide(true);
+
         for(int i = 0 ; i < 10 ; i ++){
-            if(i <= 2){
-                objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
-            }else{
+
+            if(i < 7){
                 objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
+            }else{
+                objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
             }
             objects.elementAt(i).setHide(true);
         }
 
-        objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
-        objects.lastElement().setHide(true);
 
         objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
         objects.lastElement().setHide(true);

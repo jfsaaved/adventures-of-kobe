@@ -54,7 +54,7 @@ public class Hero extends MoveableObject {
 
     public void interact(){
         if(!boostActivated){
-            boostValue = 200f;
+            boostValue = 250f;
             boostActivated = true;
         }
     }
@@ -162,7 +162,7 @@ public class Hero extends MoveableObject {
         }
 
         if(boostValue > 0){
-            boostValue -= 100 * dt;
+            boostValue -= 200 * dt;
         }else{
             boostValue = 0;
             boostActivated = false;
