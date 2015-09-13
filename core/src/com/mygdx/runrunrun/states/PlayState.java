@@ -75,7 +75,7 @@ public class PlayState extends State{
 
         objects = new Vector<MoveableObject>();
         for(int i = 0 ; i < 10 ; i ++){
-            if(i <= 4){
+            if(i <= 2){
                 objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
             }else{
                 objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
@@ -135,6 +135,11 @@ public class PlayState extends State{
                         return;
                     }
                 }
+            }
+
+            if(hero.contains(mouse.x, mouse.y)){
+                hero.interact();
+                return;
             }
 
             if(stopForShop){

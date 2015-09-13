@@ -19,6 +19,8 @@ public class Hero extends MoveableObject {
     // Moving animations
     private float height_var;
     private boolean height_anim_interval_status;
+    private boolean boostActivated;
+    private float boostValue;
 
     // Hit mechanics
     private int health_counter;
@@ -50,6 +52,12 @@ public class Hero extends MoveableObject {
 
     }
 
+    public void interact(){
+        if(!boostActivated){
+            boostValue = 200f;
+            boostActivated = true;
+        }
+    }
 
     public void addCoin(int value){
         coins += value;
@@ -153,7 +161,14 @@ public class Hero extends MoveableObject {
             decelerate(dt);
         }
 
-        float final_x = init_x + (speed) * dt;
+        if(boostValue > 0){
+            boostValue -= 100 * dt;
+        }else{
+            boostValue = 0;
+            boostActivated = false;
+        }
+
+        float final_x = init_x + (speed + boostValue) * dt;
         float final_y = init_y + (jump_acceleration) * dt;
 
         if(final_y > Main.GROUND_LEVEL){
