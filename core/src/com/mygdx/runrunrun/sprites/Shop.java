@@ -28,9 +28,12 @@ public class Shop extends MoveableObject{
                       //"Shop Owner: What would you like?          ";// +
                       //"duckie: chill.... i got this              ";
 
-        //"Shop Owner: Hi there"
-        options[0] = "Sleep     :     $100" +
-                     "Eat       :     $100";
+        //"Sleep     $100"
+        options[0] = "Sleep$100" +
+                     "Soup $100" +
+                     "Sushi$100" +
+                     "Bread$100" +
+                     "Soda $100" ;
     }
 
     public String getDialogue(int i){

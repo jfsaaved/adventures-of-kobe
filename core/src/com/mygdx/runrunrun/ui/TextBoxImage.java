@@ -52,6 +52,10 @@ public class TextBoxImage extends TextImage {
                 textBox[rows][cols] = new TextureRegion(box_sheet,size*cols, size*rows, size, size);
         }
 
+        createTextToBoxIndex();
+    }
+
+    private void createTextToBoxIndex(){
         row_text_to_box_index = new LinkedList<Integer>();
         col_text_to_box_index = new LinkedList<Integer>();
 
@@ -72,11 +76,11 @@ public class TextBoxImage extends TextImage {
                 }
             }
         }
-
     }
 
     public void setRow(int row){
         this.box_rows = row;
+        createTextToBoxIndex();
     }
 
     @Override
