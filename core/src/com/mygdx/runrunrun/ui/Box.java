@@ -52,6 +52,10 @@ public class Box {
         return this.height;
     }
 
+    public boolean containsRect(float x, float y){
+        return rect.contains(x,y);
+    }
+
     public boolean contains(float x, float y){
         return x > this.x - width / 2 &&
                x < this.x + width / 2 &&

@@ -156,6 +156,11 @@ public class PlayState extends State{
                 return;
             }
 
+            if(sushi.containsRect(mouse.x,mouse.y)){
+                sushi.itemTest();
+                return;
+            }
+
             if(stopForShop){
                 hero.toggleStop();
                 if(!enteredShop){
@@ -168,7 +173,7 @@ public class PlayState extends State{
                     shopTextBoxOptions.setTextBox_hide(false);
                     enteredShop = true;
 
-
+                    sushi.setHide(false);
                 }
             }else if(jump){
                 hero.jump();
@@ -255,6 +260,8 @@ public class PlayState extends State{
 
                 shopTextBoxOptions.setTextHide(true);
                 shopTextBoxOptions.setTextBox_hide(true);
+
+                sushi.setHide(true);
             }
             else if(exitShopTimer < 97 && exitShopTimer > 20){
                 if(currentDialogue.equals(shop.getDialogue(0))) {
@@ -264,6 +271,8 @@ public class PlayState extends State{
 
                     shopTextBoxOptions.setTextHide(true);
                     shopTextBoxOptions.setTextBox_hide(true);
+
+                    sushi.setHide(true);
                 }
             }
             else if(exitShopTimer < 20){
@@ -272,6 +281,8 @@ public class PlayState extends State{
 
                 shopTextBoxOptions.setTextHide(true);
                 shopTextBoxOptions.setTextBox_hide(true);
+
+                sushi.setHide(true);
             }
             exitShopTimer--;
         }

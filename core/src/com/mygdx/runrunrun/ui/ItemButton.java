@@ -6,16 +6,24 @@ package com.mygdx.runrunrun.ui;
 public class ItemButton extends Box{
 
     private Item item;
+    private boolean hide;
 
     public ItemButton(float x, float y, float width, float height, Item item){
 
         super(x,y,width,height);
         this.item = item;
+        hide = true;
+    }
+
+    public void setHide(boolean b){
+        this.hide = b;
     }
 
     public void itemTest(){
-        if(this.item.equals(Item.SUSHI)){
-            System.out.println("You pressed Sushi!");
+        if(!hide) {
+            if (this.item.equals(Item.SUSHI)) {
+                System.out.println("You pressed Sushi!");
+            }
         }
     }
 

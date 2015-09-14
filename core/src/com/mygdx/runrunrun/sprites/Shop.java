@@ -13,12 +13,14 @@ public class Shop extends MoveableObject{
 
     private String[] dialogue;
     private String[] options;
+    private String[] output;
 
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image, Types.Shop);
 
         dialogue = new String[15];
         options = new String[15];
+        output = new String[15];
 
         dialogue[0] = "Shop Owner: Hi there!                     " +
                    "Shop Owner: What would you like?          ";// +
@@ -29,18 +31,22 @@ public class Shop extends MoveableObject{
                       //"duckie: chill.... i got this              ";
 
         //"Sleep     $100"
-        options[0] = "Sleep$100" +
-                     "Soup $100" +
-                     "Sushi$100" +
-                     "Bread$100" +
-                     "Soda $100" ;
+        options[0] = "Sleep$100";
+        options[1] = "Soup $100";
+        options[2] = "Sushi$100";
+        options[3] = "Bread$100";
+        options[4] = "Soda $100";
+
+        output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" + options[3] + "" + options[4];
     }
 
     public String getDialogue(int i){
         return dialogue[i];
     }
 
-    public String getOptions(int i){return options[i];}
+    public String getOption(int i){return options[i];}
+
+    public String getOptions(int i){return output[i];}
 
     public void update(float dt){
         super.update(dt);
