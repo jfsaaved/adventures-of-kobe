@@ -46,7 +46,7 @@ public class PlayState extends State{
     private float mapSize;
 
     // Text
-    private TextImage hit_splash;
+    private TextImage textSplash;
 
     // Shop Stuff
     private TextBoxImage shopTextBox;
@@ -82,7 +82,6 @@ public class PlayState extends State{
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
         objects = new Vector<MoveableObject>();
-        itemButtons = new Vector<ItemButton>();
 
         objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
         objects.lastElement().setHide(true);
@@ -110,13 +109,13 @@ public class PlayState extends State{
         cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
-        hit_splash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
         shopTextBoxOptions.setRow(12);
 
-
         // ORDER IS SLEEP, BREAD, SOUP, SUSHI, SODA
+        itemButtons = new Vector<ItemButton>();
         itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,122, 80, 9, Item.SLEEP));
         itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,113, 80, 9, Item.BREAD));
         itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,104, 80, 9, Item.SOUP));
@@ -255,11 +254,11 @@ public class PlayState extends State{
         }
 
         if(hit_splash_cool_down > 0f){
-            hit_splash.setTextHide(false);
+            textSplash.setTextHide(false);
             hit_splash_cool_down--;
         }
         else{
-            hit_splash.setTextHide(true);
+            textSplash.setTextHide(true);
         }
     }
 
@@ -339,9 +338,11 @@ public class PlayState extends State{
     }
 
     private void onNewArea(){
-        for(MoveableObject object : objects){
-            if(object.getPosition().x < hero.getPosition().x - ( 50 + object.getWidth()))
-                object.setHide(true);
+        if((cam.position.x - hero.getPosition().x) > 147) {
+            for (MoveableObject object : objects) {
+                if (object.getPosition().x < hero.getPosition().x - (50 + object.getWidth()))
+                    object.setHide(true);
+            }
         }
     }
 
@@ -381,7 +382,7 @@ public class PlayState extends State{
 
         shopTextBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + shopTextBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + shopTextBox_y_offset),0.20f);
         shopTextBoxOptions.update(currentOption,cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4, cam.position.y + cam.viewportHeight/2 - (70),0.20f);
-        hit_splash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
+        textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
@@ -443,7 +444,7 @@ public class PlayState extends State{
 
         hero.render(sb);
 
-        hit_splash.render(sb);
+        textSplash.render(sb);
         shopTextBox.renderBox(sb);
         shopTextBox.renderText(sb);
 

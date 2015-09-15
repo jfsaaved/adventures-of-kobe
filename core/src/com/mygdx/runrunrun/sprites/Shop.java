@@ -36,8 +36,15 @@ public class Shop extends MoveableObject{
         options[2] = "Soup $100";
         options[3] = "Sushi$100";
         options[4] = "Soda $100";
+        options[5] = "Soda $100";
+        options[6] = "Soda $100";
+        options[7] = "Soda $100";
+        options[8] = "Soda $100";
+        options[9] = "Soda $100";
 
-        output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" + options[3] + "" + options[4];
+        output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" +
+                    options[3] + "" + options[4] + "" + options[5] + "" +
+                    options[6] + "" + options[7] + "" + options[8] + "" + options[9] ;
     }
 
     public String getDialogue(int i){
