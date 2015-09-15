@@ -27,13 +27,11 @@ public class Box {
         rect = new Rectangle(x,y,width,height);
     }
 
-    public void update(float x, float y, float width, float height){
+    public void update(float x, float y){
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
 
-        rect = new Rectangle(x,y,width,height);
+        rect = new Rectangle(this.x,this.y,this.width,this.height);
     }
 
     public float getX(){

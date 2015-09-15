@@ -32,9 +32,9 @@ public class Shop extends MoveableObject{
 
         //"Sleep     $100"
         options[0] = "Sleep$100";
-        options[1] = "Soup $100";
-        options[2] = "Sushi$100";
-        options[3] = "Bread$100";
+        options[1] = "Bread$100";
+        options[2] = "Soup $100";
+        options[3] = "Sushi$100";
         options[4] = "Soda $100";
 
         output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" + options[3] + "" + options[4];

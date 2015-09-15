@@ -53,7 +53,7 @@ public class PlayState extends State{
     private TextBoxImage shopTextBoxOptions;
     private String currentDialogue;
     private String currentOption;
-    private ItemButton sushi;
+    private Vector<ItemButton> itemButtons;
 
     // UIs
     private TextureRegion health;
@@ -82,6 +82,7 @@ public class PlayState extends State{
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
         objects = new Vector<MoveableObject>();
+        itemButtons = new Vector<ItemButton>();
 
         objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
         objects.lastElement().setHide(true);
@@ -114,7 +115,13 @@ public class PlayState extends State{
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
         shopTextBoxOptions.setRow(12);
 
-        sushi = new ItemButton(cam.position.x + cam.viewportWidth/2,cam.position.y + cam.viewportHeight/2,100,100, Item.SUSHI);
+
+        // ORDER IS SLEEP, BREAD, SOUP, SUSHI, SODA
+        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,122, 80, 9, Item.SLEEP));
+        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,113, 80, 9, Item.BREAD));
+        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,104, 80, 9, Item.SOUP));
+        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,95,  80, 9, Item.SUSHI));
+        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,86,  80, 9, Item.SODA));
 
         mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
         currentCycle = 0;
@@ -156,10 +163,13 @@ public class PlayState extends State{
                 return;
             }
 
-            if(sushi.containsRect(mouse.x,mouse.y)){
-                sushi.itemTest();
-                return;
+            for(ItemButton itemButton : itemButtons){
+                if(itemButton.containsRect(mouse.x,mouse.y)){
+                    itemButton.interact();
+                    return;
+                }
             }
+
 
             if(stopForShop){
                 hero.toggleStop();
@@ -173,7 +183,8 @@ public class PlayState extends State{
                     shopTextBoxOptions.setTextBox_hide(false);
                     enteredShop = true;
 
-                    sushi.setHide(false);
+                    for(ItemButton itemButton : itemButtons)
+                        itemButton.setHide(false);
                 }
             }else if(jump){
                 hero.jump();
@@ -261,7 +272,8 @@ public class PlayState extends State{
                 shopTextBoxOptions.setTextHide(true);
                 shopTextBoxOptions.setTextBox_hide(true);
 
-                sushi.setHide(true);
+                for(ItemButton itemButton : itemButtons)
+                    itemButton.setHide(true);
             }
             else if(exitShopTimer < 97 && exitShopTimer > 20){
                 if(currentDialogue.equals(shop.getDialogue(0))) {
@@ -272,7 +284,8 @@ public class PlayState extends State{
                     shopTextBoxOptions.setTextHide(true);
                     shopTextBoxOptions.setTextBox_hide(true);
 
-                    sushi.setHide(true);
+                    for(ItemButton itemButton : itemButtons)
+                        itemButton.setHide(true);
                 }
             }
             else if(exitShopTimer < 20){
@@ -282,7 +295,8 @@ public class PlayState extends State{
                 shopTextBoxOptions.setTextHide(true);
                 shopTextBoxOptions.setTextBox_hide(true);
 
-                sushi.setHide(true);
+                for(ItemButton itemButton : itemButtons)
+                    itemButton.setHide(true);
             }
             exitShopTimer--;
         }
@@ -372,7 +386,8 @@ public class PlayState extends State{
     }
 
     private void updateButtons(){
-        sushi.update(cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4 + 10, 120, 80, 10);
+        for(ItemButton itemButton : itemButtons)
+            itemButton.update(cam.position.x - cam.viewportWidth / 2 + cam.viewportWidth / 2 + cam.viewportWidth / 4 + 10, itemButton.getY());
     }
 
     private void onExitCycle(){
@@ -444,7 +459,10 @@ public class PlayState extends State{
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(1, 1, 0, 1);
-        sr.rect(sushi.getX(), sushi.getY(), sushi.getWidth(), sushi.getHeight());
+
+        for(ItemButton itemButton : itemButtons)
+            sr.rect(itemButton.getX(),itemButton.getY(),itemButton.getWidth(), itemButton.getHeight());
+
         sr.end();
     }
 }

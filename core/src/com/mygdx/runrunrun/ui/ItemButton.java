@@ -19,10 +19,24 @@ public class ItemButton extends Box{
         this.hide = b;
     }
 
-    public void itemTest(){
+    public void interact(){
         if(!hide) {
-            if (this.item.equals(Item.SUSHI)) {
-                System.out.println("You pressed Sushi!");
+            switch (this.item){
+                case SLEEP:
+                    System.out.println("You picked sleep");
+                    break;
+                case BREAD:
+                    System.out.println("You picked bread");
+                    break;
+                case SOUP:
+                    System.out.println("You picked soup");
+                    break;
+                case SUSHI:
+                    System.out.println("You picked sushi");
+                break;
+                case SODA:
+                    System.out.println("You picked soda");
+                break;
             }
         }
     }
