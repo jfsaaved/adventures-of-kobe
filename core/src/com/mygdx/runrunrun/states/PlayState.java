@@ -116,11 +116,14 @@ public class PlayState extends State{
 
         // ORDER IS SLEEP, BREAD, SOUP, SUSHI, SODA
         itemButtons = new Vector<ItemButton>();
-        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,122, 80, 9, Item.SLEEP));
-        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,113, 80, 9, Item.BREAD));
-        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,104, 80, 9, Item.SOUP));
-        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,95,  80, 9, Item.SUSHI));
-        itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,86,  80, 9, Item.SODA));
+
+        int initX = 122;
+        Shop temp = (Shop) objects.lastElement();
+        for(int i = 0; i < 5 ; i++){
+            itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,initX, 80, 9, temp.getItem(i)));
+            initX -= 9;
+        }
+
 
         mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
         currentCycle = 0;

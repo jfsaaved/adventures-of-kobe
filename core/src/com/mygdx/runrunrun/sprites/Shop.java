@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.runrunrun.ui.Item;
 
 /**
  * Created by 343076 on 22/08/2015.
@@ -12,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Shop extends MoveableObject{
 
     private String[] dialogue;
+    private Item[] item;
     private String[] options;
     private String[] output;
 
@@ -21,6 +23,7 @@ public class Shop extends MoveableObject{
         dialogue = new String[15];
         options = new String[15];
         output = new String[15];
+        item = new Item[15];
 
         dialogue[0] = "Shop Owner: Hi there!                     " +
                    "Shop Owner: What would you like?          ";// +
@@ -42,6 +45,13 @@ public class Shop extends MoveableObject{
         options[8] = "Soda $100";
         options[9] = "Soda $100";
 
+        item[0] = Item.SLEEP;
+        item[1] = Item.BREAD;
+        item[2] = Item.SOUP;
+        item[3] = Item.SUSHI;
+        item[4] = Item.SODA;
+
+
         output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" +
                     options[3] + "" + options[4] + "" + options[5] + "" +
                     options[6] + "" + options[7] + "" + options[8] + "" + options[9] ;
@@ -54,6 +64,10 @@ public class Shop extends MoveableObject{
     public String getOption(int i){return options[i];}
 
     public String getOptions(int i){return output[i];}
+
+    public Item getItem(int i){
+        return item[i];
+    }
 
     public void update(float dt){
         super.update(dt);
