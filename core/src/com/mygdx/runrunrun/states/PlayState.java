@@ -119,10 +119,11 @@ public class PlayState extends State{
 
         int initX = 122;
         Shop temp = (Shop) objects.lastElement();
-        for(int i = 0; i < 5 ; i++){
+        for(int i = 0; i < temp.getItemSize() ; i++){
             itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,initX, 80, 9, temp.getItem(i)));
             initX -= 9;
         }
+        temp = null;
 
 
         mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;

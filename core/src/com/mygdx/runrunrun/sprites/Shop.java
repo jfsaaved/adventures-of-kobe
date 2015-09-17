@@ -16,6 +16,7 @@ public class Shop extends MoveableObject{
     private Item[] item;
     private String[] options;
     private String[] output;
+    private int itemSize;
 
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image, Types.Shop);
@@ -23,7 +24,8 @@ public class Shop extends MoveableObject{
         dialogue = new String[15];
         options = new String[15];
         output = new String[15];
-        item = new Item[15];
+        item = new Item[10];
+        itemSize = item.length;
 
         dialogue[0] = "Shop Owner: Hi there!                     " +
                    "Shop Owner: What would you like?          ";// +
@@ -50,6 +52,11 @@ public class Shop extends MoveableObject{
         item[2] = Item.SOUP;
         item[3] = Item.SUSHI;
         item[4] = Item.SODA;
+        item[5] = Item.SODA;
+        item[6] = Item.SODA;
+        item[7] = Item.SODA;
+        item[8] = Item.SODA;
+        item[9] = Item.SODA;
 
 
         output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" +
@@ -67,6 +74,10 @@ public class Shop extends MoveableObject{
 
     public Item getItem(int i){
         return item[i];
+    }
+
+    public int getItemSize(){
+        return itemSize;
     }
 
     public void update(float dt){
