@@ -308,11 +308,9 @@ public class PlayState extends State{
     private void onNewCycle(){
         Random rand = new Random();
 
-        int areaType = 2;
-
         if(newCycle){
             for (MoveableObject object : objects) {
-                if(areaType == 1) {
+                if(currentCycle > 0) {
                     if (object.getHide()) {
                         int newValX = rand.nextInt(1600) + 350;
                         if (newValX + object.getWidth() >= 1950) {

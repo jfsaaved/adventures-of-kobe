@@ -5,6 +5,6 @@ package com.mygdx.runrunrun.ui;
  */
 public enum Item {
 
-    SLEEP,SOUP,SUSHI,BREAD,SODA;
+    SLEEP,SOUP,SUSHI,BREAD,SODA, ITEM1, ITEM2, ITEM3, ITEM4, ITEM5;
 
 }

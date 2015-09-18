@@ -41,22 +41,22 @@ public class Shop extends MoveableObject{
         options[2] = "Soup $100";
         options[3] = "Sushi$100";
         options[4] = "Soda $100";
-        options[5] = "Soda $100";
-        options[6] = "Soda $100";
-        options[7] = "Soda $100";
-        options[8] = "Soda $100";
-        options[9] = "Soda $100";
+        options[5] = "ITEM1$100";
+        options[6] = "ITEM2$100";
+        options[7] = "ITEM3$100";
+        options[8] = "ITEM4$100";
+        options[9] = "ITEM5$100";
 
         item[0] = Item.SLEEP;
         item[1] = Item.BREAD;
         item[2] = Item.SOUP;
         item[3] = Item.SUSHI;
         item[4] = Item.SODA;
-        item[5] = Item.SODA;
-        item[6] = Item.SODA;
-        item[7] = Item.SODA;
-        item[8] = Item.SODA;
-        item[9] = Item.SODA;
+        item[5] = Item.ITEM1;
+        item[6] = Item.ITEM2;
+        item[7] = Item.ITEM3;
+        item[8] = Item.ITEM4;
+        item[9] = Item.ITEM5;
 
 
         output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" +
