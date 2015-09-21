@@ -78,60 +78,17 @@ public class PlayState extends State{
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
-        health = Main.resource.getAtlas("assets").findRegion("player");
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
-        objects = new Vector<MoveableObject>();
-
-        objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
-        objects.lastElement().setHide(true);
-
-        for(int i = 0 ; i < 10 ; i ++){
-
-            if(i < 7){
-                objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
-            }else{
-                objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
-            }
-
-            objects.lastElement().setHide(true);
-        }
+        initLevelObj(0);
+        initBGs(mapLength);
+        initCamera(mapLength);
+        initUI();
+        initShopButtons();
 
 
-        objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
-        objects.lastElement().setHide(false);
-
-        mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
-        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
-        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
-
-        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT);
-        cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
-
-        coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
-        textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
-        shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
-        shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
-        shopTextBoxOptions.setRow(12);
-
-        // ORDER IS SLEEP, BREAD, SOUP, SUSHI, SODA
-        itemButtons = new Vector<ItemButton>();
-
-        int initX = 122;
-        Shop temp = (Shop) objects.lastElement();
-        for(int i = 0; i < temp.getItemSize() ; i++){
-            itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,initX, 80, 9, temp.getItem(i)));
-            initX -= 9;
-        }
-        temp = null;
 
 
-        mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
-        currentCycle = 0;
-        newCycle = false;
-
-        cam_offset = 0;
-        cam_acc = 0;
 
         coins = hero.getCoins();
         coinsText.setTextHide(false);
@@ -143,6 +100,72 @@ public class PlayState extends State{
         enteredShop = false;
         exitShopTimer = -1;
 
+    }
+
+    private void initCamera(int mapLength){
+        cam.setToOrtho(false, mapLength * 400, Main.HEIGHT);
+        cam.setToOrtho(false, Main.WIDTH/2, Main.HEIGHT/2);
+
+        cam_offset = 0;
+        cam_acc = 0;
+    }
+
+    private void initBGs(int mapLength){
+        mountains = new Mountains(0,0,Main.resource.getAtlas("assets").findRegion("bg1"), mapLength);
+        ground = new Ground(0,0,Main.resource.getAtlas("assets").findRegion("ground1"), mapLength);
+        clouds = new Clouds(0,Main.GROUND_LEVEL,Main.resource.getAtlas("assets").findRegion("clouds1"),mapLength);
+
+        mapSize = ground.getTextureRegion().getRegionWidth() * mapLength;
+        currentCycle = 0;
+        newCycle = false;
+    }
+
+    private void initUI(){
+        health = Main.resource.getAtlas("assets").findRegion("player");
+
+        coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
+        textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+
+        shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
+        shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
+        shopTextBoxOptions.setRow(12);
+    }
+
+    private void initLevelObj(int level){
+        if(level == 0){
+            objects = new Vector<MoveableObject>();
+
+            objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
+            objects.lastElement().setHide(true);
+
+            for(int i = 0 ; i < 10 ; i ++){
+
+                if(i < 7){
+                    objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
+                }else{
+                    objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
+                }
+
+                objects.lastElement().setHide(true);
+            }
+
+
+            objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
+            objects.lastElement().setHide(false);
+        }
+    }
+
+    private void initShopButtons(){
+        // ORDER IS SLEEP, BREAD, SOUP, SUSHI, SODA
+        itemButtons = new Vector<ItemButton>();
+
+        int initX = 122;
+        Shop temp = (Shop) objects.lastElement();
+        for(int i = 0; i < temp.getItemSize() ; i++){
+            itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,initX, 80, 9, temp.getItem(i)));
+            initX -= 9;
+        }
+        temp = null;
     }
 
     public void handleInput(){
