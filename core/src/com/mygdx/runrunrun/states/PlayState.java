@@ -47,6 +47,7 @@ public class PlayState extends State{
 
     // Text
     private TextImage textSplash;
+    private TextImage goToTown;
 
     // Shop Stuff
     private TextBoxImage shopTextBox;
@@ -80,15 +81,11 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
-        initLevelObj(0);
+        initLevelObj(10);
         initBGs(mapLength);
         initCamera(mapLength);
         initUI();
         initShopButtons();
-
-
-
-
 
         coins = hero.getCoins();
         coinsText.setTextHide(false);
@@ -125,47 +122,51 @@ public class PlayState extends State{
 
         coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
+        goToTown = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2,0.25f);
 
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
         shopTextBoxOptions.setRow(12);
+
+        goToTown.setTextHide(false);
     }
 
     private void initLevelObj(int level){
-        if(level == 0){
-            objects = new Vector<MoveableObject>();
 
-            objects.add(new MovingBlock(0,0,Main.resource.getAtlas("assets").findRegion("coin1"), 20f));
-            objects.lastElement().setHide(true);
+        objects = new Vector<MoveableObject>();
 
-            for(int i = 0 ; i < 10 ; i ++){
+        // Moving objects
+        objects.add(new MovingBlock(0, 0, Main.resource.getAtlas("assets").findRegion("block1"), 20f));
+        objects.lastElement().setHide(true);
 
-                if(i < 7){
-                    objects.add(new Block(0,0,Main.resource.getAtlas("assets").findRegion("block1")));
-                }else{
-                    objects.add(new HitBlock(0,0,Main.resource.getAtlas("assets").findRegion("block2")));
-                }
+        // Blocks
+        for (int i = 0; i < level; i++) {
 
-                objects.lastElement().setHide(true);
+            if (i < (level / 2) + 2) {
+                objects.add(new Block(0, 0, Main.resource.getAtlas("assets").findRegion("block1")));
+            } else {
+                objects.add(new HitBlock(0, 0, Main.resource.getAtlas("assets").findRegion("block2")));
             }
 
-
-            objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
-            objects.lastElement().setHide(false);
+            objects.lastElement().setHide(true);
         }
+
+        // Shops
+        objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
+        objects.lastElement().setHide(false);
+
     }
 
     private void initShopButtons(){
         // ORDER IS SLEEP, BREAD, SOUP, SUSHI, SODA
         itemButtons = new Vector<ItemButton>();
-
         int initX = 122;
         Shop temp = (Shop) objects.lastElement();
         for(int i = 0; i < temp.getItemSize() ; i++){
             itemButtons.add(new ItemButton(cam.position.x + cam.viewportWidth/2,initX, 80, 9, temp.getItem(i)));
             initX -= 9;
         }
-        temp = null;
+
     }
 
     public void handleInput(){
@@ -408,6 +409,9 @@ public class PlayState extends State{
         shopTextBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + shopTextBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + shopTextBox_y_offset),0.20f);
         shopTextBoxOptions.update(currentOption,cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4, cam.position.y + cam.viewportHeight/2 - (70),0.20f);
         textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
+
+        goToTown.update("TOWN", cam.position.x - 190, 32, 0.25f);
+
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
@@ -470,6 +474,7 @@ public class PlayState extends State{
         hero.render(sb);
 
         textSplash.render(sb);
+        goToTown.render(sb);
         shopTextBox.renderBox(sb);
         shopTextBox.renderText(sb);
 
