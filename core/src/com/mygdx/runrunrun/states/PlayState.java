@@ -137,19 +137,21 @@ public class PlayState extends State{
 
         objects = new Vector<MoveableObject>();
 
+        // Coins
+        objects.add(new Coin(0,0, Main.resource.getAtlas("assets").findRegion("coin1")));
+        objects.lastElement().setHide(true);
+
         // Moving objects
         objects.add(new MovingBlock(0, 0, Main.resource.getAtlas("assets").findRegion("block1"), 20f));
         objects.lastElement().setHide(true);
 
         // Blocks
         for (int i = 0; i < level; i++) {
-
             if (i < (level / 2) + 2) {
                 objects.add(new Block(0, 0, Main.resource.getAtlas("assets").findRegion("block1")));
             } else {
                 objects.add(new HitBlock(0, 0, Main.resource.getAtlas("assets").findRegion("block2")));
             }
-
             objects.lastElement().setHide(true);
         }
 
@@ -410,8 +412,8 @@ public class PlayState extends State{
         int shopTextBox_x_offset = 2;
         int shopTextBox_y_offset = 4;
 
-        int coin_text_x_offset = 200;
-        int coin_text_y_offset = 24;
+        int coin_text_x_offset = 18;
+        int coin_text_y_offset = 40;
 
         int hit_x_offset = 40;
         int hit_y_offset = 75;
@@ -422,12 +424,12 @@ public class PlayState extends State{
 
         goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
 
-        coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
+        coinsText.update(coins + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
     private void updateButtons(){
         for(ItemButton itemButton : itemButtons)
-            itemButton.update(cam.position.x - cam.viewportWidth / 2 + cam.viewportWidth / 2 + cam.viewportWidth / 4 + 10, itemButton.getY());
+            itemButton.update(cam.position.x - cam.viewportWidth/2 + cam.viewportWidth / 2 + cam.viewportWidth / 4 + 10, itemButton.getY());
     }
 
     private void onExitCycle(){
