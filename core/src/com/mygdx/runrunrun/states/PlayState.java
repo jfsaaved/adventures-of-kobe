@@ -128,7 +128,9 @@ public class PlayState extends State{
 
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
-        shopTextBoxOptions.setRow(12);
+
+        int options = 3;
+        shopTextBoxOptions.setRow(options + 2);
 
         goToTown.setTextHide(false);
     }
