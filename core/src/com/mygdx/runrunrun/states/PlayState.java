@@ -359,7 +359,6 @@ public class PlayState extends State{
                             object.setHide(true);
                     }
                 }else{
-                    toTown = false;
                     if(object.getHide()){
                         if(object.getType().equals(Types.Shop))
                             object.setHide(false);
@@ -368,6 +367,8 @@ public class PlayState extends State{
                     }
                 }
             }
+            if(toTown)
+                toTown = false;
             currentCycle++;
         }
     }
