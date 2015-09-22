@@ -1,5 +1,7 @@
 package com.mygdx.runrunrun.ui;
 
+import com.mygdx.runrunrun.sprites.Hero;
+
 /**
  * Created by 343076 on 13/09/2015.
  */
@@ -19,11 +21,11 @@ public class ItemButton extends Box{
         this.hide = b;
     }
 
-    public void interact(){
+    public void interact(Hero hero){
         if(!hide) {
             switch (this.item){
                 case SLEEP:
-                    System.out.println("You picked sleep");
+                    hero.addHealth();
                     break;
                 case BREAD:
                     System.out.println("You picked bread");

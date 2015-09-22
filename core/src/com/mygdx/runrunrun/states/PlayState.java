@@ -200,7 +200,7 @@ public class PlayState extends State{
 
             for(ItemButton itemButton : itemButtons){
                 if(itemButton.containsRect(mouse.x,mouse.y)){
-                    itemButton.interact();
+                    itemButton.interact(hero);
                     return;
                 }
             }
