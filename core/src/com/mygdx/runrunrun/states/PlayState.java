@@ -71,6 +71,7 @@ public class PlayState extends State{
     private float exitShopTimer;
     private int currentCycle;
     private boolean newCycle;
+    private boolean toTown;
 
     // Camera
     private float cam_offset;
@@ -96,6 +97,7 @@ public class PlayState extends State{
         currentOption = "";
         enteredShop = false;
         exitShopTimer = -1;
+        toTown = false;
 
     }
 
@@ -187,6 +189,12 @@ public class PlayState extends State{
 
             if(hero.contains(mouse.x, mouse.y)){
                 hero.interact();
+                return;
+            }
+
+            if(goToTown.containsRect(mouse.x,mouse.y)){
+                toTown = true;
+                System.out.println("Going to town");
                 return;
             }
 
@@ -334,7 +342,7 @@ public class PlayState extends State{
 
         if(newCycle){
             for (MoveableObject object : objects) {
-                if(currentCycle > 0) {
+                if(!toTown) {
                     if (object.getHide()) {
                         int newValX = rand.nextInt(1600) + 350;
                         if (newValX + object.getWidth() >= 1950) {
@@ -351,6 +359,7 @@ public class PlayState extends State{
                             object.setHide(true);
                     }
                 }else{
+                    toTown = false;
                     if(object.getHide()){
                         if(object.getType().equals(Types.Shop))
                             object.setHide(false);
@@ -410,7 +419,7 @@ public class PlayState extends State{
         shopTextBoxOptions.update(currentOption,cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4, cam.position.y + cam.viewportHeight/2 - (70),0.20f);
         textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
 
-        goToTown.update("TOWN", cam.position.x - 190, 32, 0.25f);
+        goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
 
         coinsText.update(coins + "", cam.position.x + cam.viewportWidth - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -493,6 +502,8 @@ public class PlayState extends State{
 
         for(ItemButton itemButton : itemButtons)
             sr.rect(itemButton.getX(),itemButton.getY(),itemButton.getWidth(), itemButton.getHeight());
+
+        sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
 
         sr.end();
     }

@@ -2,6 +2,7 @@ package com.mygdx.runrunrun.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
 
 /**
@@ -38,6 +39,8 @@ public class TextImage extends Box{
                 fontSheet[rows][cols] = new TextureRegion(sheet,size*cols, size*rows, size, size);
         }
 
+        rect = new Rectangle(this.x, this.y, this.width * scale, this.height * scale);
+
     }
 
     public void setTextHide(boolean b){
@@ -49,6 +52,30 @@ public class TextImage extends Box{
         this.scale = scale;
         this.x = x;
         this.y = y;
+
+        int size = 45;
+        width = size * text.length() * scale;
+        height = size * scale;
+
+        rect.setWidth(this.width);
+        rect.setHeight(this.height);
+        rect.setPosition( this.x - width / 2, y - height / 2);
+    }
+
+    public float getX(){
+        return this.rect.getX();
+    }
+
+    public float getY(){
+        return this.rect.getY();
+    }
+
+    public float getWidth(){
+        return this.rect.getWidth();
+    }
+
+    public float getHeight(){
+        return this.rect.getHeight();
     }
 
     public void update(float x, float y){
