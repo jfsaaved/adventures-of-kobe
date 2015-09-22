@@ -28,10 +28,10 @@ public class ItemButton extends Box{
                     hero.addHealth();
                     break;
                 case BREAD:
-                    System.out.println("You picked bread");
+                    hero.addBonuses(0,15);
                     break;
                 case SOUP:
-                    System.out.println("You picked soup");
+                    hero.addBonuses(15,0);
                     break;
                 case SUSHI:
                     System.out.println("You picked sushi");

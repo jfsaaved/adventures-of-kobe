@@ -22,8 +22,10 @@ public class Hero extends MoveableObject {
     private boolean boostActivated;
     private float boostValue;
 
-    // Hit mechanics
+    // Attributes
     private int health_counter;
+    private float boostBonus;
+    private float jumpBonus;
 
     // Moving mechanics
     private float speed;
@@ -50,11 +52,25 @@ public class Hero extends MoveableObject {
         // Items
         coins = 0;
 
+        // Bonuses
+        boostBonus = 0;
+        jumpBonus = 0;
+
+    }
+
+    public void addBonuses(float boostBonus, float jumpBonus){
+        this.boostBonus += boostBonus;
+        this.jumpBonus += jumpBonus;
+    }
+
+    public void setBonuses(float boostBonus, float jumpBonus){
+        this.boostBonus = boostBonus;
+        this.jumpBonus = jumpBonus;
     }
 
     public void interact(){
         if(!boostActivated){
-            boostValue = 250f;
+            boostValue = 250f + boostBonus;
             boostActivated = true;
         }
     }
@@ -111,7 +127,7 @@ public class Hero extends MoveableObject {
 
     public void jump(){
         if(inAir == false && isStopped == false){
-            jump_acceleration = 225f;
+            jump_acceleration = 225f + jumpBonus;
         }
     }
 
