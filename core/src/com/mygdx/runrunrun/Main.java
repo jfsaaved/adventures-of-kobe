@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.runrunrun.handler.Content;
 import com.mygdx.runrunrun.states.GSM;
+import com.mygdx.runrunrun.states.MenuState;
 import com.mygdx.runrunrun.states.PlayState;
 
 public class Main extends ApplicationAdapter {
@@ -33,7 +34,7 @@ public class Main extends ApplicationAdapter {
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
         gsm = new GSM();
-        gsm.push(new PlayState(gsm,5));
+        gsm.push(new MenuState(gsm));
 
 	}
 
