@@ -77,12 +77,16 @@ public class PlayState extends State{
     private float cam_offset;
     private float cam_acc;
 
+    // Level
+    private int level;
+
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
-        initLevelObj(10);
+        level = 5;
+        initLevelObj(level);
         initBGs(mapLength);
         initCamera(mapLength);
         initUI();
@@ -159,7 +163,7 @@ public class PlayState extends State{
 
         // Shops
         objects.add(new Shop(700, 32, Main.resource.getAtlas("assets").findRegion("building1")));
-        objects.lastElement().setHide(false);
+        objects.lastElement().setHide(true);
 
     }
 
@@ -345,6 +349,16 @@ public class PlayState extends State{
         Random rand = new Random();
 
         if(newCycle){
+
+            if(!toTown){
+                currentCycle++;
+                if(currentCycle % 10 == 0){
+                    level++;
+                    initLevelObj(level);
+                }
+                System.out.println(currentCycle + " and Level: "+level);
+            }
+
             for (MoveableObject object : objects) {
                 if(!toTown) {
                     if (object.getHide()) {
@@ -373,7 +387,6 @@ public class PlayState extends State{
             }
             if(toTown)
                 toTown = false;
-            currentCycle++;
         }
     }
 
