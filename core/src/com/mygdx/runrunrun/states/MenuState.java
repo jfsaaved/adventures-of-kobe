@@ -16,7 +16,7 @@ public class MenuState extends State {
     public MenuState(GSM gsm){
         super(gsm);
 
-        title = new TextImage("Run", Main.WIDTH/2, Main.HEIGHT/2,1);
+        title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2,1);
         title.setTextHide(false);
 
     }
@@ -36,7 +36,12 @@ public class MenuState extends State {
     }
 
     public void render(SpriteBatch sb){
+        sb.setProjectionMatrix((cam.combined));
+        sb.begin();
+
         title.render(sb);
+
+        sb.end();
     }
 
     public void shapeRender(ShapeRenderer sr){

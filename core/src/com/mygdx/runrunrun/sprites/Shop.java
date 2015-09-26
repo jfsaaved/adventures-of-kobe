@@ -22,9 +22,9 @@ public class Shop extends MoveableObject{
         super(x,y,image, Types.Shop);
 
         dialogue = new String[15];
-        options = new String[15];
         output = new String[15];
-        item = new Item[10];
+        item = new Item[3];
+        options = new String[3];
         itemSize = item.length;
 
         dialogue[0] = "Shop Owner: Hi there!                     " +
@@ -35,29 +35,15 @@ public class Shop extends MoveableObject{
                       //"Shop Owner: What would you like?          ";// +
                       //"duckie: chill.... i got this              ";
 
+        // Items
+        item[0] = Item.SLEEP;
+        item[1] = Item.BREAD;
+        item[2] = Item.SOUP;
+
         //"Sleep     $100"
         options[0] = "Sleep$100";
         options[1] = "Bread$100";
         options[2] = "Soup $100";
-        options[3] = "Sushi$100";
-        options[4] = "Soda $100";
-        options[5] = "ITEM1$100";
-        options[6] = "ITEM2$100";
-        options[7] = "ITEM3$100";
-        options[8] = "ITEM4$100";
-        options[9] = "ITEM5$100";
-
-        item[0] = Item.SLEEP;
-        item[1] = Item.BREAD;
-        item[2] = Item.SOUP;
-        item[3] = Item.SUSHI;
-        item[4] = Item.SODA;
-        item[5] = Item.ITEM1;
-        item[6] = Item.ITEM2;
-        item[7] = Item.ITEM3;
-        item[8] = Item.ITEM4;
-        item[9] = Item.ITEM5;
-
 
         output[0] =  "" + options[0] + "" + options[1] + "" + options[2];
         /*output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" +
