@@ -41,7 +41,7 @@ public class Shop extends MoveableObject{
         item[2] = Item.SOUP;
 
         //"Sleep     $100"
-        options[0] = "Sleep$100";
+        options[0] = "Sleep  $5";
         options[1] = "Bread$100";
         options[2] = "Soup $100";
 

@@ -79,6 +79,10 @@ public class Hero extends MoveableObject {
         coins += value;
     }
 
+    public void subtractCoins(int value){
+        coins -= value;
+    }
+
     public int getCoins(){
         return coins;
     }
@@ -93,6 +97,10 @@ public class Hero extends MoveableObject {
 
     public void addHealth(){
         health_counter++;
+    }
+
+    public void restoreHealth() {
+        health_counter = 3;
     }
 
     public boolean isJumping(){

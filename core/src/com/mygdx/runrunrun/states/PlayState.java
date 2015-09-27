@@ -59,7 +59,6 @@ public class PlayState extends State{
     // UIs
     private TextureRegion health;
     private TextImage coinsText;
-    private int coins;
 
     // Cool Downs
     private float hit_cool_down;
@@ -92,9 +91,7 @@ public class PlayState extends State{
         initUI();
         initShopButtons();
 
-        coins = hero.getCoins();
         coinsText.setTextHide(false);
-
         shopTextBox.setTextHide(true);
         shopTextBox.setTextBox_hide(true);
         currentDialogue = "";
@@ -126,7 +123,7 @@ public class PlayState extends State{
     private void initUI(){
         health = Main.resource.getAtlas("assets").findRegion("player");
 
-        coinsText = new TextImage(coins + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
+        coinsText = new TextImage(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         goToTown = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2,0.25f);
 
@@ -267,7 +264,6 @@ public class PlayState extends State{
         if(firstObj.overlaps(hero.getRectangle())){
             if(firstObj.getHide() == false) {
                 hero.addCoin(1);
-                coins = hero.getCoins();
                 firstObj.setHide(true);
             }
         }
@@ -439,7 +435,7 @@ public class PlayState extends State{
 
         goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
 
-        coinsText.update(coins + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
+        coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
 
     private void updateButtons(){

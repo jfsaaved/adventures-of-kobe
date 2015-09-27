@@ -25,7 +25,12 @@ public class ItemButton extends Box{
         if(!hide) {
             switch (this.item){
                 case SLEEP:
-                    hero.addHealth();
+                    if(hero.getCoins() == 5) {
+                        hero.restoreHealth();
+                        hero.subtractCoins(5);
+                    }else{
+                        System.out.println("Not enough funds");
+                    }
                     break;
                 case BREAD:
                     hero.addBonuses(0,15);
