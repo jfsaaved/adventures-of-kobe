@@ -510,6 +510,8 @@ public class PlayState extends State{
     }
 
     public void shapeRender(ShapeRenderer sr){
+        /*
+
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(1, 1, 0, 1);
@@ -520,5 +522,7 @@ public class PlayState extends State{
         sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
 
         sr.end();
+
+        */
     }
 }
