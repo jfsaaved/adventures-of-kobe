@@ -46,6 +46,7 @@ public class PlayState extends State{
     private float mapSize;
 
     // Text
+    private TextImage levelText;
     private TextImage textSplash;
     private TextImage goToTown;
 
@@ -126,6 +127,7 @@ public class PlayState extends State{
         coinsText = new TextImage(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         goToTown = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2,0.25f);
+        levelText = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
 
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
@@ -134,6 +136,7 @@ public class PlayState extends State{
         shopTextBoxOptions.setRow(options + 2);
 
         goToTown.setTextHide(false);
+        levelText.setTextHide(false);
     }
 
     private void initLevelObj(int level){
@@ -434,6 +437,7 @@ public class PlayState extends State{
         textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
 
         goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
+        levelText.update("LEVEL" + level,cam.position.x + 130, 16,0.25f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -498,6 +502,7 @@ public class PlayState extends State{
 
         textSplash.render(sb);
         goToTown.render(sb);
+        levelText.render(sb);
         shopTextBox.renderBox(sb);
         shopTextBox.renderText(sb);
 
