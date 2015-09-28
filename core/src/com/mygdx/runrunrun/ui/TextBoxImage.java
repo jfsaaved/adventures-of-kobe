@@ -32,7 +32,7 @@ public class TextBoxImage extends TextImage {
 
 
     public TextBoxImage(String text, float x, float y, float scale, float cam_width){
-        super(text,x,y,scale);
+        super(text);
 
         int size = 45;
         box_rows = 6;

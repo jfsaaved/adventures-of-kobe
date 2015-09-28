@@ -17,6 +17,26 @@ public class TextImage extends Box{
 
     protected boolean text_hidden;
 
+    public TextImage(String text){
+        this.text = text;
+
+        int size = 45;
+        width = size * text.length();
+        height = size;
+        text_hidden = true;
+
+        TextureRegion sheet = Main.resource.getAtlas("assets").findRegion("fontsheet");
+        int numCols = sheet.getRegionWidth() / size;
+        int numRows = sheet.getRegionHeight() / size;
+
+        fontSheet = new TextureRegion[numRows][numCols];
+
+        for(int rows = 0; rows < numRows; rows++){
+            for(int cols = 0; cols < numCols; cols++)
+                fontSheet[rows][cols] = new TextureRegion(sheet,size*cols, size*rows, size, size);
+        }
+    }
+
     public TextImage(String text, float x, float y, float scale){
         this.text = text;
         this.x = x;
