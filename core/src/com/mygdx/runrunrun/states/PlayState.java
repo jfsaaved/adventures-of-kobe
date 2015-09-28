@@ -397,7 +397,6 @@ public class PlayState extends State{
                     level++;
                     initLevelObj(level);
                 }
-                System.out.println(currentCycle + " and Level: "+level);
             }
 
             for (MoveableObject object : objects) {

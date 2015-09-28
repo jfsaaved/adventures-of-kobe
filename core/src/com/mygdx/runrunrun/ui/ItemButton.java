@@ -28,8 +28,6 @@ public class ItemButton extends Box{
                     if(hero.getCoins() >= 5) {
                         hero.restoreHealth();
                         hero.subtractCoins(5);
-                    }else{
-                        System.out.println("Not enough funds");
                     }
                     break;
                 case BREAD:
@@ -38,12 +36,6 @@ public class ItemButton extends Box{
                 case SOUP:
                     hero.addBonuses(15,0);
                     break;
-                case SUSHI:
-                    System.out.println("You picked sushi");
-                break;
-                case SODA:
-                    System.out.println("You picked soda");
-                break;
             }
         }
     }
