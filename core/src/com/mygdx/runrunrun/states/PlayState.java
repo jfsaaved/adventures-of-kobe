@@ -264,12 +264,16 @@ public class PlayState extends State{
     }
 
     private void coinDetection(MoveableObject firstObj){
+
+        coin = (Coin) firstObj;
+
         if(firstObj.overlaps(hero.getRectangle())){
             if(firstObj.getHide() == false) {
-                hero.addCoin(1);
+                hero.addCoin( coin.getValue());
                 firstObj.setHide(true);
             }
         }
+
     }
 
     private void blockDetection(MoveableObject firstObj, MoveableObject secondObj){
@@ -437,7 +441,7 @@ public class PlayState extends State{
         textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
 
         goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
-        levelText.update("LEVEL" + level,cam.position.x + 130, 16,0.25f);
+        levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
