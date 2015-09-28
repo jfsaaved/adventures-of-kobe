@@ -17,7 +17,7 @@ public class TextImage extends Box{
 
     protected boolean text_hidden;
 
-    public TextImage(String text){
+    protected TextImage(String text){
         this.text = text;
 
         int size = 45;

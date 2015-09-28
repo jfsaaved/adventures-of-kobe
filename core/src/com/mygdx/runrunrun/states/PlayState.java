@@ -72,7 +72,12 @@ public class PlayState extends State{
     private float exitShopTimer;
     private int currentCycle;
     private boolean newCycle;
+
+    // Town Events
     private boolean toTown;
+    private String toTownString;
+    private int toTownTimer;
+    private int toTownCoolDown;
 
     // Camera
     private float cam_offset;
@@ -145,6 +150,8 @@ public class PlayState extends State{
 
         goToTown.setTextHide(false);
         levelText.setTextHide(false);
+
+        toTownString = "TOWN";
     }
 
     private void initStart(){
@@ -226,7 +233,8 @@ public class PlayState extends State{
 
             if(goToTown.containsRect(mouse.x,mouse.y)){
                 toTown = true;
-                System.out.println("Going to town");
+                toTownTimer = 40;
+                toTownString = "TRAVELING";
                 return;
             }
 
@@ -348,6 +356,21 @@ public class PlayState extends State{
         }
     }
 
+    private void onTownClick(){
+        if(toTown) {
+            if (toTownTimer > 0) {
+                if (toTownTimer > 20) {
+                    goToTown.setTextHide(true);
+                } else {
+                    goToTown.setTextHide(false);
+                }
+                toTownTimer--;
+            } else {
+                toTownTimer = 40;
+            }
+        }
+    }
+
     private void onExitShop(){
         if(exitShopTimer > 0) {
             if (exitShopTimer > 97 && exitShopTimer < 98) {
@@ -426,8 +449,11 @@ public class PlayState extends State{
                     }
                 }
             }
-            if(toTown)
+            if(toTown) {
                 toTown = false;
+                toTownString = "TOWN";
+                goToTown.setTextHide(false);
+            }
         }
     }
 
@@ -479,7 +505,7 @@ public class PlayState extends State{
 
         textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
-        goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
+        goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
         levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
@@ -507,6 +533,7 @@ public class PlayState extends State{
         for(MoveableObject object : objects) collisionDetection(object,hero);
 
         onIntro();
+        onTownClick();
         onExitShop();
         onBlockCollision();
         onNewArea();
