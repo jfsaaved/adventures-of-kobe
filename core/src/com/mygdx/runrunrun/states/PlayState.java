@@ -91,11 +91,11 @@ public class PlayState extends State{
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
         level = 5;
+        initCamera(mapLength);
         initLevelObj(level);
         initUI();
         initShopButtons();
         initBGs(mapLength);
-        initCamera(mapLength);
         initStart();
 
         coinsText.setTextHide(false);
@@ -137,9 +137,10 @@ public class PlayState extends State{
         pressToBegin = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
 
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
-        shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
+        shopTextBoxOptions = new TextBoxImage("",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
 
-        int options = 3;
+        Shop temp = (Shop) objects.lastElement();
+        int options = temp.getItemSize();
         shopTextBoxOptions.setRow(options + 2);
 
         goToTown.setTextHide(false);
@@ -547,11 +548,12 @@ public class PlayState extends State{
         textSplash.render(sb);
         goToTown.render(sb);
         levelText.render(sb);
+
         shopTextBox.renderBox(sb);
         shopTextBox.renderText(sb);
-
         shopTextBoxOptions.renderBox(sb);
         shopTextBoxOptions.renderText(sb);
+
         coinsText.render(sb);
         renderHealth(sb);
 
@@ -559,7 +561,7 @@ public class PlayState extends State{
     }
 
     public void shapeRender(ShapeRenderer sr){
-        /*
+
 
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
@@ -572,6 +574,6 @@ public class PlayState extends State{
 
         sr.end();
 
-        */
+
     }
 }

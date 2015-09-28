@@ -84,6 +84,14 @@ public class TextBoxImage extends TextImage {
     }
 
     @Override
+    public void update(String text, float x, float y, float scale){
+        this.text = text;
+        this.scale = scale;
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
     public void setTextHide(boolean b){
         text_hidden = b;
         if(text_hidden == true){
@@ -97,18 +105,6 @@ public class TextBoxImage extends TextImage {
 
     public void setTextBox_hide(boolean b){
         textBox_hide = b;
-    }
-
-    public boolean isTextHidden(){
-        return text_hidden;
-    }
-
-    public boolean isFinishDrawing(){
-        return text_complete;
-    }
-
-    public String getText(){
-        return text;
     }
 
     public void renderBox(SpriteBatch sb){
@@ -180,8 +176,5 @@ public class TextBoxImage extends TextImage {
             }
 
         }
-
-
-
     }
 }
