@@ -46,6 +46,7 @@ public class PlayState extends State{
     private float mapSize;
 
     // Text
+    private TextImage pressToBegin;
     private TextImage levelText;
     private TextImage textSplash;
     private TextImage goToTown;
@@ -80,6 +81,10 @@ public class PlayState extends State{
     // Level
     private int level;
 
+    // Intro
+    private boolean intro;
+    private int flashVal;
+
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
@@ -87,10 +92,11 @@ public class PlayState extends State{
 
         level = 5;
         initLevelObj(level);
-        initBGs(mapLength);
-        initCamera(mapLength);
         initUI();
         initShopButtons();
+        initBGs(mapLength);
+        initCamera(mapLength);
+        initStart();
 
         coinsText.setTextHide(false);
         shopTextBox.setTextHide(true);
@@ -128,6 +134,7 @@ public class PlayState extends State{
         textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         goToTown = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2,0.25f);
         levelText = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
+        pressToBegin = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
 
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
         shopTextBoxOptions = new TextBoxImage("Hello",cam.position.x - cam.viewportWidth/2,cam.position.y + cam.viewportWidth/2 - 100,0f,cam.viewportWidth/4);
@@ -137,6 +144,15 @@ public class PlayState extends State{
 
         goToTown.setTextHide(false);
         levelText.setTextHide(false);
+    }
+
+    private void initStart(){
+        pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
+        pressToBegin.setTextHide(false);
+
+        hero.toggleStop(true);
+        flashVal = 40;
+        intro = true;
     }
 
     private void initLevelObj(int level){
@@ -185,6 +201,13 @@ public class PlayState extends State{
             cam.unproject(mouse);
 
             boolean jump = true;
+
+            if(intro){
+                intro = false;
+                hero.toggleStop(false);
+                pressToBegin.setTextHide(true);
+                return;
+            }
 
             for(MoveableObject object : objects){
                 if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
@@ -283,6 +306,21 @@ public class PlayState extends State{
                     hit_cool_down = HIT_COOL_DOWN_MAX;
                     hit_splash_cool_down = 60f;
                 }
+            }
+        }
+    }
+
+    private void onIntro(){
+        if(intro){
+            if(flashVal > 0){
+                if(flashVal > 20){
+                   pressToBegin.setTextHide(false);
+                }else{
+                    pressToBegin.setTextHide(true);
+                }
+                flashVal--;
+            }else{
+                flashVal = 40;
             }
         }
     }
@@ -438,8 +476,9 @@ public class PlayState extends State{
 
         shopTextBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + shopTextBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + shopTextBox_y_offset),0.20f);
         shopTextBoxOptions.update(currentOption,cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4, cam.position.y + cam.viewportHeight/2 - (70),0.20f);
-        textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
 
+        textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
+        pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
         goToTown.update("TOWN", cam.position.x - 150, 16, 0.25f);
         levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
 
@@ -467,6 +506,7 @@ public class PlayState extends State{
         for(MoveableObject object : objects) object.update(dt);
         for(MoveableObject object : objects) collisionDetection(object,hero);
 
+        onIntro();
         onExitShop();
         onBlockCollision();
         onNewArea();
@@ -504,6 +544,7 @@ public class PlayState extends State{
 
         hero.render(sb);
 
+        pressToBegin.render(sb);
         textSplash.render(sb);
         goToTown.render(sb);
         levelText.render(sb);

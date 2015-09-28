@@ -120,6 +120,14 @@ public class Hero extends MoveableObject {
         }
     }
 
+    public void toggleStop(boolean b){
+        if(b){
+            speed = 0;
+        }else{
+            speed = MAX_SPEED;
+        }
+    }
+
     public boolean getStop(){
         return isStopped;
     }
