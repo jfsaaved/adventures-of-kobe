@@ -75,6 +75,7 @@ public class PlayState extends State{
 
     // Town Events
     private boolean toTown;
+    private boolean shopExited;
     private String toTownString;
     private int toTownTimer;
     private int toTownCoolDown;
@@ -231,10 +232,12 @@ public class PlayState extends State{
                 return;
             }
 
-            if(goToTown.containsRect(mouse.x,mouse.y)){
+            if(goToTown.containsRect(mouse.x,mouse.y) && toTownCoolDown <= 0){
                 toTown = true;
                 toTownTimer = 40;
                 toTownString = "TRAVELING";
+                toTownCoolDown = 1000;
+                shopExited = false;
                 return;
             }
 
@@ -405,6 +408,8 @@ public class PlayState extends State{
 
                 for(ItemButton itemButton : itemButtons)
                     itemButton.setHide(true);
+
+                shopExited = true;
             }
             exitShopTimer--;
         }
@@ -451,13 +456,24 @@ public class PlayState extends State{
             }
             if(toTown) {
                 toTown = false;
-                toTownString = "TOWN";
+                toTownString = "IN TOWN";
                 goToTown.setTextHide(false);
             }
         }
     }
 
     private void onNewArea(){
+
+        if(shopExited) {
+            if (toTownCoolDown > 0 && !toTown) {
+                toTownCoolDown--;
+                toTownString = toTownCoolDown + "";
+            }else{
+                shopExited = false;
+                toTownString = "TOWN";
+            }
+        }
+
         if((cam.position.x - hero.getPosition().x) > 147) {
             for (MoveableObject object : objects) {
                 if (object.getPosition().x < hero.getPosition().x - (50 + object.getWidth()))
@@ -597,7 +613,8 @@ public class PlayState extends State{
         for(ItemButton itemButton : itemButtons)
             sr.rect(itemButton.getX(),itemButton.getY(),itemButton.getWidth(), itemButton.getHeight());
 
-        sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
+        if(toTownCoolDown <= 0)
+            sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
 
         sr.end();
 
