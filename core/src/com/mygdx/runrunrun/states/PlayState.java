@@ -141,10 +141,12 @@ public class PlayState extends State{
     private void initUI(){
         health = Main.resource.getAtlas("assets").findRegion("player");
 
+
         coinsText = new TextImage(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
         textSplash = new TextImage("",cam.position.x + cam.viewportWidth/2 - 150, cam.position.y + cam.viewportHeight/2 - 100,0.5f);
         goToTown = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2,0.25f);
         levelText = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
+        scoreImage = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
         pressToBegin = new TextImage("",cam.position.x + cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 + 100,0.25f);
 
         shopTextBox = new TextBoxImage("",cam.position.x - cam.viewportWidth/2, cam.position.y + cam.viewportHeight/2 - 9,0.20f,cam.viewportWidth);
@@ -156,6 +158,7 @@ public class PlayState extends State{
 
         goToTown.setTextHide(false);
         levelText.setTextHide(false);
+        scoreImage.setTextHide(false);
 
         toTownString = "TOWN";
     }
@@ -528,6 +531,7 @@ public class PlayState extends State{
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
         goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
         levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
+        scoreImage.update("SCORE" + score,cam.position.x, 16, 0.25f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -549,7 +553,6 @@ public class PlayState extends State{
         if(scoreTimer == 60){
             scoreTimer = 0;
             score++;
-            System.out.println(score);
         }
         scoreTimer++;
     }
@@ -603,6 +606,7 @@ public class PlayState extends State{
 
         hero.render(sb);
 
+        scoreImage.render(sb);
         pressToBegin.render(sb);
         textSplash.render(sb);
         goToTown.render(sb);
