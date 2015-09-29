@@ -76,6 +76,7 @@ public class PlayState extends State{
     // Town Events
     private boolean toTown;
     private boolean shopExited;
+    private boolean inTown;
     private String toTownString;
     private int toTownTimer;
     private int toTownCoolDown;
@@ -117,6 +118,7 @@ public class PlayState extends State{
         enteredShop = false;
         exitShopTimer = -1;
         toTown = false;
+        inTown = false;
 
     }
 
@@ -246,6 +248,7 @@ public class PlayState extends State{
                 toTownString = "TRAVELING";
                 toTownCoolDown = 1000;
                 shopExited = false;
+                inTown = true;
                 return;
             }
 
@@ -417,7 +420,6 @@ public class PlayState extends State{
                 for(ItemButton itemButton : itemButtons)
                     itemButton.setHide(true);
 
-                shopExited = true;
             }
             exitShopTimer--;
         }
@@ -438,6 +440,11 @@ public class PlayState extends State{
 
             for (MoveableObject object : objects) {
                 if(!toTown) {
+                    if(!shopExited)
+                        shopExited = true;
+                    if(inTown)
+                        inTown = false;
+
                     if (object.getHide()) {
                         int newValX = rand.nextInt(1600) + 350;
                         if (newValX + object.getWidth() >= 1950) {
@@ -554,7 +561,8 @@ public class PlayState extends State{
             scoreTimer = 0;
             score++;
         }
-        scoreTimer++;
+        if(!inTown)
+            scoreTimer++;
     }
 
     public void update(float dt){
