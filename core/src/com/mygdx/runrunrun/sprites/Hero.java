@@ -26,6 +26,9 @@ public class Hero extends MoveableObject {
     private int health_counter;
     private float boostBonus;
     private float jumpBonus;
+    private float armour;
+    private float hungerVariable;
+
 
     // Moving mechanics
     private float speed;
@@ -55,7 +58,21 @@ public class Hero extends MoveableObject {
         // Bonuses
         boostBonus = 0;
         jumpBonus = 0;
+        armour = 0;
+        hungerVariable = 0;
 
+    }
+
+    public void subtractArmour(){
+        armour--;
+    }
+
+    public void addArmour(){
+        armour++;
+    }
+
+    public void restoreHunger(){
+        hungerVariable = 0;
     }
 
     public void addBonuses(float boostBonus, float jumpBonus){

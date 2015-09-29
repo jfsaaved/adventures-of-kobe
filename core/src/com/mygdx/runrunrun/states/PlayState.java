@@ -538,7 +538,7 @@ public class PlayState extends State{
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
         goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
         levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
-        scoreImage.update("SCORE" + score,cam.position.x, 16, 0.25f);
+        scoreImage.update("SCORE" + score, cam.position.x, 16, 0.25f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -638,8 +638,10 @@ public class PlayState extends State{
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(1, 1, 0, 1);
 
-        for(ItemButton itemButton : itemButtons)
-            sr.rect(itemButton.getX(),itemButton.getY(),itemButton.getWidth(), itemButton.getHeight());
+        if(enteredShop) {
+            for (ItemButton itemButton : itemButtons)
+                sr.rect(itemButton.getX(), itemButton.getY(), itemButton.getWidth(), itemButton.getHeight());
+        }
 
         if(toTownCoolDown <= 0)
             sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
