@@ -91,6 +91,11 @@ public class PlayState extends State{
     private boolean intro;
     private int flashVal;
 
+    //Score
+    private TextImage scoreImage;
+    private int scoreTimer;
+    private int score;
+
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
@@ -540,6 +545,15 @@ public class PlayState extends State{
             newCycle = false;
     }
 
+    private void scoreCalculator(){
+        if(scoreTimer == 60){
+            scoreTimer = 0;
+            score++;
+            System.out.println(score);
+        }
+        scoreTimer++;
+    }
+
     public void update(float dt){
 
         handleInput();
@@ -547,6 +561,8 @@ public class PlayState extends State{
         hero.update(dt);
         for(MoveableObject object : objects) object.update(dt);
         for(MoveableObject object : objects) collisionDetection(object,hero);
+
+        scoreCalculator();
 
         onIntro();
         onTownClick();
