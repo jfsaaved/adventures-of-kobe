@@ -31,10 +31,15 @@ public class ItemButton extends Box{
                     }
                     break;
                 case BREAD:
-                    hero.addBonuses(0,15);
+                    if(hero.getCoins() >= 20) {
+                        hero.subtractCoins(20);
+                    }
                     break;
                 case SOUP:
-                    hero.addBonuses(15,0);
+                    hero.setFly(true);
+                    if(hero.getCoins() >= 50) {
+                        hero.subtractCoins(50);
+                    }
                     break;
             }
         }

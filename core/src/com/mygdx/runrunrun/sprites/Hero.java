@@ -24,18 +24,17 @@ public class Hero extends MoveableObject {
 
     // Attributes
     private int health_counter;
-    private float boostBonus;
-    private float jumpBonus;
-    private float armour;
-    private float hungerVariable;
+    private int coins;
 
+    // Fly mechanics
+    private boolean fly;
+    private float flyTimer;
+    private boolean flyTimerBoolean;
+    private int flyHeight;
 
     // Moving mechanics
     private float speed;
     private boolean isStopped;
-
-    // Items
-    private int coins;
 
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
     public Hero(float x, float y, TextureRegion image){
@@ -55,41 +54,27 @@ public class Hero extends MoveableObject {
         // Items
         coins = 0;
 
-        // Bonuses
-        boostBonus = 0;
-        jumpBonus = 0;
-        armour = 0;
-        hungerVariable = 0;
+        // Fly mechanics
+        fly = false;
+        flyTimerBoolean = false;
+        flyTimer = 0;
+        flyHeight = Main.GROUND_LEVEL;
 
-    }
-
-    public void subtractArmour(){
-        armour--;
-    }
-
-    public void addArmour(){
-        armour++;
-    }
-
-    public void restoreHunger(){
-        hungerVariable = 0;
-    }
-
-    public void addBonuses(float boostBonus, float jumpBonus){
-        this.boostBonus += boostBonus;
-        this.jumpBonus += jumpBonus;
-    }
-
-    public void setBonuses(float boostBonus, float jumpBonus){
-        this.boostBonus = boostBonus;
-        this.jumpBonus = jumpBonus;
     }
 
     public void interact(){
         if(!boostActivated){
-            boostValue = 250f + boostBonus;
+            boostValue = 250f;
             boostActivated = true;
         }
+    }
+
+    public void setFly(boolean b){
+        fly = b;
+    }
+
+    public boolean getFlyStatus(){
+        return fly;
     }
 
     public void addCoin(int value){
@@ -112,16 +97,8 @@ public class Hero extends MoveableObject {
         health_counter--;
     }
 
-    public void addHealth(){
-        health_counter++;
-    }
-
     public void restoreHealth() {
         health_counter = 3;
-    }
-
-    public boolean isJumping(){
-        return inAir;
     }
 
     public float getSpeed(){
@@ -160,7 +137,7 @@ public class Hero extends MoveableObject {
 
     public void jump(){
         if(inAir == false && isStopped == false){
-            jump_acceleration = 225f + jumpBonus;
+            jump_acceleration = 225f;
         }
     }
 
@@ -218,19 +195,45 @@ public class Hero extends MoveableObject {
         }
 
         float final_x = init_x + (speed + boostValue) * dt;
-        float final_y = init_y + (jump_acceleration) * dt;
+        float final_y;
 
-        if(final_y > Main.GROUND_LEVEL){
-            inAir = true;
-            jump_acceleration -= 100f * dt;
+        if(!fly) {
+            if (flyHeight > Main.GROUND_LEVEL) {
+                flyHeight -= 100 * dt;
+            }
+            final_y = init_y + (jump_acceleration) * dt;
         }
-        else{
-            jump_acceleration = 0;
-            final_y = Main.GROUND_LEVEL;
-            inAir = false;
+        else {
+            if(flyHeight < 139){
+                flyHeight += 100 * dt;
+            }
+            final_y = flyHeight + flyTimer * dt;
+            if(!flyTimerBoolean){
+                flyTimer += 300f * dt;
+                if(flyTimer > 500){
+                    flyTimerBoolean = true;
+                }
+            }else{
+                flyTimer -= 300f * dt;
+                if(flyTimer < 0){
+                    flyTimerBoolean = false;
+                }
+            }
+        }
+
+        if(!fly) {
+            if (final_y > Main.GROUND_LEVEL) {
+                inAir = true;
+                jump_acceleration -= 100f * dt;
+            } else {
+                jump_acceleration = 0;
+                final_y = Main.GROUND_LEVEL;
+                inAir = false;
+            }
         }
 
         this.position.set(final_x,final_y);
+        this.rect.setPosition(final_x,final_y);
 
     }
 
