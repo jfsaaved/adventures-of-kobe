@@ -1,6 +1,7 @@
 package com.mygdx.runrunrun.ui;
 
 import com.mygdx.runrunrun.sprites.Hero;
+import com.mygdx.runrunrun.states.PlayState;
 
 /**
  * Created by 343076 on 13/09/2015.
@@ -21,7 +22,7 @@ public class ItemButton extends Box{
         this.hide = b;
     }
 
-    public void interact(Hero hero){
+    public void interact(Hero hero, PlayState state){
         if(!hide) {
             switch (this.item){
                 case SLEEP:
@@ -37,6 +38,7 @@ public class ItemButton extends Box{
                     break;
                 case SOUP:
                     hero.setFly(true);
+                    state.setFly(true);
                     if(hero.getCoins() >= 50) {
                         hero.subtractCoins(50);
                     }

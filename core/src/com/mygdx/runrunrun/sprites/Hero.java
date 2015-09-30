@@ -25,6 +25,7 @@ public class Hero extends MoveableObject {
     // Attributes
     private int health_counter;
     private int coins;
+    private boolean invisibility;
 
     // Fly mechanics
     private boolean fly;
@@ -59,6 +60,7 @@ public class Hero extends MoveableObject {
         flyTimerBoolean = false;
         flyTimer = 0;
         flyHeight = Main.GROUND_LEVEL;
+        invisibility = false;
 
     }
 
@@ -94,7 +96,8 @@ public class Hero extends MoveableObject {
     }
 
     public void reduceHealth(){
-        health_counter--;
+        if(!invisibility)
+            health_counter--;
     }
 
     public void restoreHealth() {
@@ -176,7 +179,8 @@ public class Hero extends MoveableObject {
 
     public void update(float dt){
 
-        super.update(dt);
+        if(!fly)
+            super.update(dt);
 
         float init_x = this.position.x;
         float init_y = this.position.y;
@@ -199,11 +203,28 @@ public class Hero extends MoveableObject {
 
         if(!fly) {
             if (flyHeight > Main.GROUND_LEVEL) {
-                flyHeight -= 100 * dt;
+                flyHeight -= 10f * dt;
+                final_y = init_y + flyHeight * dt;
+            }else{
+                if(flyHeight != Main.GROUND_LEVEL) {
+                    flyHeight = Main.GROUND_LEVEL;
+                    flyTimer = 0;
+                }
+
+                final_y = init_y + (jump_acceleration) * dt;
+
+                if (final_y > Main.GROUND_LEVEL) {
+                    inAir = true;
+                    jump_acceleration -= 100f * dt;
+                } else {
+                    jump_acceleration = 0;
+                    final_y = Main.GROUND_LEVEL;
+                    inAir = false;
+                }
             }
-            final_y = init_y + (jump_acceleration) * dt;
         }
         else {
+            inAir = true;
             if(flyHeight < 139){
                 flyHeight += 100 * dt;
             }
@@ -218,17 +239,6 @@ public class Hero extends MoveableObject {
                 if(flyTimer < 0){
                     flyTimerBoolean = false;
                 }
-            }
-        }
-
-        if(!fly) {
-            if (final_y > Main.GROUND_LEVEL) {
-                inAir = true;
-                jump_acceleration -= 100f * dt;
-            } else {
-                jump_acceleration = 0;
-                final_y = Main.GROUND_LEVEL;
-                inAir = false;
             }
         }
 

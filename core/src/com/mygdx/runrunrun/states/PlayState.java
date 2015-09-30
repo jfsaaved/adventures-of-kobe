@@ -81,6 +81,9 @@ public class PlayState extends State{
     private int toTownTimer;
     private int toTownCoolDown;
 
+    // Skills
+    private int flyCount;
+
     // Camera
     private float cam_offset;
     private float cam_acc;
@@ -117,6 +120,7 @@ public class PlayState extends State{
         currentOption = "";
         enteredShop = false;
         exitShopTimer = -1;
+        flyCount = -1;
         toTown = false;
         inTown = false;
 
@@ -254,7 +258,7 @@ public class PlayState extends State{
 
             for(ItemButton itemButton : itemButtons){
                 if(itemButton.containsRect(mouse.x,mouse.y)){
-                    itemButton.interact(hero);
+                    itemButton.interact(hero, this);
                     return;
                 }
             }
@@ -430,6 +434,13 @@ public class PlayState extends State{
 
         if(newCycle){
 
+            if(flyCount > 0){
+                flyCount--;
+            }else if(flyCount == 0){
+                hero.setFly(false);
+                flyCount--;
+            }
+
             if(!toTown){
                 currentCycle++;
                 if(currentCycle % 10 == 0){
@@ -557,12 +568,20 @@ public class PlayState extends State{
     }
 
     private void scoreCalculator(){
-        if(scoreTimer == 60){
+        if(scoreTimer == 60 && !intro){
             scoreTimer = 0;
             score++;
         }
         if(!inTown)
             scoreTimer++;
+    }
+
+    public void setFly(boolean b){
+        if(b){
+            flyCount = 1;
+        }else{
+            flyCount = -1;
+        }
     }
 
     public void update(float dt){
