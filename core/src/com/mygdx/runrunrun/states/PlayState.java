@@ -473,8 +473,10 @@ public class PlayState extends State{
                     }
                 }else{
                     if(object.getHide()){
-                        if(object.getType().equals(Types.Shop))
+                        if(object.getType().equals(Types.Shop)) {
+                            object.changePosition(700,object.getPosition().y);
                             object.setHide(false);
+                        }
                         else
                             object.setHide(true);
                     }
@@ -500,11 +502,13 @@ public class PlayState extends State{
             }
         }
 
-        if((cam.position.x - hero.getPosition().x) > 147) {
+        if(exitShopTimer <= 0) {
+            //if((cam.position.x - hero.getPosition().x) > 147) {
             for (MoveableObject object : objects) {
                 if (object.getPosition().x < hero.getPosition().x - (50 + object.getWidth()))
                     object.setHide(true);
             }
+            //}
         }
     }
 
