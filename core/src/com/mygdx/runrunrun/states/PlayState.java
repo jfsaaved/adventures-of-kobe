@@ -303,7 +303,8 @@ public class PlayState extends State{
         shop = (Shop) firstObj;
         if(firstObj.contains(hero.getPosition()) && firstObj.getHide() == false) {
             stopForShop = true;
-            exitShopTimer = 100;
+            if(flyCount <= 0)
+                exitShopTimer = 100;
         }else{
             stopForShop = false;
             enteredShop = false;
@@ -502,14 +503,17 @@ public class PlayState extends State{
             }
         }
 
-        if(exitShopTimer <= 0) {
-            //if((cam.position.x - hero.getPosition().x) > 147) {
-            for (MoveableObject object : objects) {
+        //if((cam.position.x - hero.getPosition().x) > 147) {
+        for (MoveableObject object : objects) {
+            if(object.getType().equals(Types.Shop)){
+                if (object.getPosition().x < hero.getPosition().x - (100 + object.getWidth()))
+                    object.setHide(true);
+            }else {
                 if (object.getPosition().x < hero.getPosition().x - (50 + object.getWidth()))
                     object.setHide(true);
             }
-            //}
         }
+        //}
     }
 
     private void updateCam(float dt){
@@ -583,6 +587,7 @@ public class PlayState extends State{
     public void setFly(boolean b){
         if(b){
             flyCount = 1;
+
         }else{
             flyCount = -1;
         }
@@ -664,6 +669,9 @@ public class PlayState extends State{
         if(enteredShop) {
             for (ItemButton itemButton : itemButtons)
                 sr.rect(itemButton.getX(), itemButton.getY(), itemButton.getWidth(), itemButton.getHeight());
+
+            sr.rect(shop.getRectangle().getX(), shop.getRectangle().getY(), shop.getRectangle().getWidth(), shop.getRectangle().getHeight());
+
         }
 
         if(toTownCoolDown <= 0)
