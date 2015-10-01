@@ -233,7 +233,7 @@ public class PlayState extends State{
             }
 
             for(MoveableObject object : objects){
-                if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
+                if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock) || object.getType().equals(Types.Coin)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.interact();
                         return;
