@@ -21,8 +21,8 @@ public class Shop extends MoveableObject{
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image, Types.Shop);
 
-        dialogue = new String[15];
-        output = new String[15];
+        dialogue = new String[3];
+        output = new String[3];
         item = new Item[3];
         options = new String[3];
         itemSize = item.length;

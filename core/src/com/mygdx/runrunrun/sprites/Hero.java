@@ -25,7 +25,6 @@ public class Hero extends MoveableObject {
     // Attributes
     private int health_counter;
     private int coins;
-    private boolean invisibility;
 
     // Fly mechanics
     private boolean fly;
@@ -60,7 +59,6 @@ public class Hero extends MoveableObject {
         flyTimerBoolean = false;
         flyTimer = 0;
         flyHeight = Main.GROUND_LEVEL;
-        invisibility = false;
 
     }
 
@@ -73,10 +71,6 @@ public class Hero extends MoveableObject {
 
     public void setFly(boolean b){
         fly = b;
-    }
-
-    public boolean getFlyStatus(){
-        return fly;
     }
 
     public void addCoin(int value){
@@ -96,8 +90,7 @@ public class Hero extends MoveableObject {
     }
 
     public void reduceHealth(){
-        if(!invisibility)
-            health_counter--;
+        health_counter--;
     }
 
     public void restoreHealth() {

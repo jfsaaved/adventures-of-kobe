@@ -544,20 +544,19 @@ public class PlayState extends State{
         int shopTextBox_x_offset = 2;
         int shopTextBox_y_offset = 4;
 
-        int coin_text_x_offset = 18;
+        int coin_text_x_offset = 20;
         int coin_text_y_offset = 40;
 
-        int hit_x_offset = 40;
         int hit_y_offset = 75;
 
         shopTextBox.update(currentDialogue,cam.position.x - cam.viewportWidth/2 + shopTextBox_x_offset, cam.position.y + cam.viewportHeight/2 - (9 + shopTextBox_y_offset),0.20f);
         shopTextBoxOptions.update(currentOption,cam.position.x - cam.viewportWidth/2 + cam.viewportWidth/2 + cam.viewportWidth/4, cam.position.y + cam.viewportHeight/2 - (70),0.20f);
 
-        textSplash.update("HIT!", cam.position.x - hit_x_offset, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
+        textSplash.update("HIT!", cam.position.x, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
         goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
         levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
-        scoreImage.update("SCORE" + score, cam.position.x, 16, 0.25f);
+        scoreImage.update("SCORE" + score, cam.position.x, 16, 0.10f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -576,12 +575,14 @@ public class PlayState extends State{
     }
 
     private void scoreCalculator(){
-        if(scoreTimer == 60 && !intro){
-            scoreTimer = 0;
-            score++;
+        if(!intro) {
+            if (scoreTimer == 60) {
+                scoreTimer = 0;
+                score++;
+            }
+            if (!inTown)
+                scoreTimer++;
         }
-        if(!inTown)
-            scoreTimer++;
     }
 
     public void setFly(boolean b){
