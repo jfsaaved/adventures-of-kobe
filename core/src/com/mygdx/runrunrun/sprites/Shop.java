@@ -37,8 +37,8 @@ public class Shop extends MoveableObject{
 
         // Items
         item[0] = Item.SLEEP;
-        item[1] = Item.BREAD;
-        item[2] = Item.SOUP;
+        item[1] = Item.EAT;
+        item[2] = Item.CHILL;
 
         //"Sleep     $100"
         options[0] = "Sleep  $5";

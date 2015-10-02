@@ -89,6 +89,9 @@ public class Hero extends MoveableObject {
         return health_counter;
     }
 
+    public void addHealth() {
+        health_counter++;
+    }
     public void reduceHealth(){
         health_counter--;
     }
