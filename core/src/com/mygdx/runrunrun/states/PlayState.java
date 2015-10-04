@@ -116,7 +116,7 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
-        level = 5;
+        level = 14;
         initCamera(mapLength);
         initLevelObj(level);
         initUI();
@@ -260,11 +260,14 @@ public class PlayState extends State{
             }
 
             for(MoveableObject object : objects){
-                if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock) || object.getType().equals(Types.Coin)) {
+                if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
-                        object.interact();
+                        object.setHide(true);
+                        //object.interact();
                         return;
                     }
+                }else if(object.getType().equals(Types.Coin)){
+                    object.interact();
                 }
             }
 
