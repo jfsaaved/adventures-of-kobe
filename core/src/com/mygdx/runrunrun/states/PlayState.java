@@ -32,7 +32,7 @@ import java.util.Vector;
  */
 public class PlayState extends State{
 
-    private static float HIT_COOL_DOWN_MAX = 20f;
+    private static float HIT_COOL_DOWN_MAX = 60f;
     private static float MAX_CAM_OFFSET = 150;
 
     // Transitions
@@ -286,6 +286,12 @@ public class PlayState extends State{
             for(ItemButton itemButton : itemButtons){
                 if(itemButton.containsRect(mouse.x,mouse.y)){
                     itemButton.interact(hero, this);
+
+                    if(itemButton.getItem().equals(Item.REST)) {
+                        shopTextBox.setTextHide(true);
+                        currentDialogue = shop.getDialogue(2);
+                        shopTextBox.setTextHide(false);
+                    }
                     return;
                 }
             }
@@ -436,7 +442,7 @@ public class PlayState extends State{
                     itemButton.setHide(true);
             }
             else if(exitShopTimer < 97 && exitShopTimer > 20){
-                if(currentDialogue.equals(shop.getDialogue(0))) {
+                if(currentDialogue.equals(shop.getDialogue(0)) || currentDialogue.equals(shop.getDialogue(2))) {
                     currentDialogue = shop.getDialogue(1);
                     shopTextBox.setTextHide(false);
                     shopTextBox.setTextBox_hide(false);
@@ -588,8 +594,8 @@ public class PlayState extends State{
         textSplash.update("HIT!", cam.position.x, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
         goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
-        levelText.update("LEVEL" + (level - 4),cam.position.x + 150, 16, 0.25f);
-        scoreImage.update("SCORE" + score, cam.position.x + 150, 8, 0.10f);
+        levelText.update("LEVEL" + (level - 4),cam.position.x + 150, 20, 0.25f);
+        scoreImage.update("SCORE" + score, cam.position.x + 150, 8, 0.20f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }

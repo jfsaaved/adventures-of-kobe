@@ -22,6 +22,10 @@ public class ItemButton extends Box{
         this.hide = b;
     }
 
+    public Item getItem(){
+        return this.item;
+    }
+
     public void interact(Hero hero, PlayState state){
         if(!hide) {
             switch (this.item){
