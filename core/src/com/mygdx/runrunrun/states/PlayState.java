@@ -241,7 +241,7 @@ public class PlayState extends State{
                 }
             }
 
-            if(hero.contains(mouse.x, mouse.y)){
+            if(hero.contains(mouse.x, mouse.y) && !stopForShop && !hero.isFlying()){
                 hero.interact();
                 return;
             }

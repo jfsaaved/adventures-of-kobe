@@ -25,7 +25,7 @@ public class ItemButton extends Box{
     public void interact(Hero hero, PlayState state){
         if(!hide) {
             switch (this.item){
-                case SLEEP:
+                case REST:
                     if(hero.getCoins() >= 5) {
                         hero.restoreHealth();
                         hero.subtractCoins(5);

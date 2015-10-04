@@ -28,7 +28,7 @@ public class Shop extends MoveableObject{
         itemSize = item.length;
 
         dialogue[0] = "Shop Owner: Hi there!                     " +
-                   "Shop Owner: What would you like?          ";// +
+                      "Shop Owner: What would you like?          ";// +
                    //"duckie: chill.... i got this              ";
 
         dialogue[1] = "Shop Owner: Good bye!!                    " ;//+
@@ -36,11 +36,11 @@ public class Shop extends MoveableObject{
                       //"duckie: chill.... i got this              ";
 
         // Items
-        item[0] = Item.SLEEP;
+        item[0] = Item.REST;
         item[1] = Item.CHILL;
 
         //"Sleep     $100"
-        options[0] = "Sleep  $5";
+        options[0] = "Rest   $5";
         options[1] = "Chill $50";
 
         output[0] =  "" + options[0] + "" + options[1];

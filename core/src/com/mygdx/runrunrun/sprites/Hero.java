@@ -89,8 +89,8 @@ public class Hero extends MoveableObject {
         return health_counter;
     }
 
-    public void addHealth() {
-        health_counter++;
+    public boolean isFlying(){
+        return fly;
     }
     public void reduceHealth(){
         health_counter--;
@@ -199,7 +199,7 @@ public class Hero extends MoveableObject {
 
         if(!fly) {
             if (flyHeight > Main.GROUND_LEVEL) {
-                flyHeight -= 10f * dt;
+                flyHeight -= 50f * dt;
                 final_y = init_y + flyHeight * dt;
             }else{
                 if(flyHeight != Main.GROUND_LEVEL) {
