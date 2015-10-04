@@ -1,5 +1,6 @@
 package com.mygdx.runrunrun.sprites;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -26,6 +27,9 @@ public class MoveableObject {
     protected boolean hide;
     protected Types type;
 
+    protected boolean kill;
+    protected float killVal;
+
     public MoveableObject(float x, float y, TextureRegion image, Types type){
 
         if(image != null) {
@@ -42,9 +46,29 @@ public class MoveableObject {
 
     }
 
+    public void kill(){
+        killVal = 0.2f;
+        kill = true;
+    }
+
+    private void onKill(float dt){
+        if(killVal > 0f){
+            killVal -= 1f * dt;
+            if(!hide)
+                hide = true;
+            else
+                hide = false;
+        }else{
+            if(kill){
+                hide = true;
+            }
+        }
+    }
+
     public void changePosition(float x, float y){
         this.position.set(x,y);
         this.rect.setPosition(x,y);
+        kill = false;
     }
 
     public void interact(){
@@ -98,6 +122,9 @@ public class MoveableObject {
     }
 
     public void update(float dt){
+
+        onKill(dt);
+
         float init_y = this.position.y;
 
         if(init_y > Main.GROUND_LEVEL){
@@ -117,7 +144,7 @@ public class MoveableObject {
 
     public void render(SpriteBatch sb){
         if(hide == false)
-            sb.draw(image,position.x,position.y);
+            sb.draw(image, position.x, position.y);
     }
 
 }
