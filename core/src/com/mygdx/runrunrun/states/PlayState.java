@@ -36,6 +36,7 @@ public class PlayState extends State{
     private static float MAX_CAM_OFFSET = 150;
 
     // Transitions
+    private float wait;
     private float transitionVal;
     private boolean transitioning;
 
@@ -109,6 +110,7 @@ public class PlayState extends State{
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
+        wait = 1f;
         transitioning = true;
         transitionVal = 1f;
 
@@ -138,7 +140,10 @@ public class PlayState extends State{
     private void onTransition(float dt){
         if(transitioning){
 
-            transitionVal -= 1f * dt;
+            if(wait > 0)
+                wait -= 1f * dt;
+            else
+                transitionVal -= 0.5f * dt;
 
             if(transitionVal <= 0f){
                 transitioning = false;
@@ -583,8 +588,8 @@ public class PlayState extends State{
         textSplash.update("HIT!", cam.position.x, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
         goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
-        levelText.update("LEVEL" + (level - 4),cam.position.x + 130, 16, 0.25f);
-        scoreImage.update("SCORE" + score, cam.position.x, 16, 0.10f);
+        levelText.update("LEVEL" + (level - 4),cam.position.x + 150, 16, 0.25f);
+        scoreImage.update("SCORE" + score, cam.position.x + 150, 8, 0.10f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
