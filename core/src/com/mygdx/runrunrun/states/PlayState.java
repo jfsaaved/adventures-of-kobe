@@ -116,7 +116,7 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
-        level = 14;
+        level = 24;
         initCamera(mapLength);
         initLevelObj(level);
         initUI();
@@ -263,7 +263,6 @@ public class PlayState extends State{
                 if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.kill();
-                        //object.interact();
                         return;
                     }
                 }else if(object.getType().equals(Types.Coin)){
@@ -271,7 +270,6 @@ public class PlayState extends State{
                         object.interact();
                         return;
                     }
-
                 }
             }
 
@@ -491,8 +489,10 @@ public class PlayState extends State{
             if(!toTown){
                 currentCycle++;
                 if(currentCycle % 10 == 0){
-                    level++;
-                    initLevelObj(level);
+                    if(level < 24) {
+                        level++;
+                        initLevelObj(level);
+                    }
                 }
             }
 
