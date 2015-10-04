@@ -21,10 +21,10 @@ public class Shop extends MoveableObject{
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image, Types.Shop);
 
-        dialogue = new String[3];
-        output = new String[3];
-        item = new Item[3];
-        options = new String[3];
+        dialogue = new String[2];
+        output = new String[2];
+        item = new Item[2];
+        options = new String[2];
         itemSize = item.length;
 
         dialogue[0] = "Shop Owner: Hi there!                     " +
@@ -37,15 +37,13 @@ public class Shop extends MoveableObject{
 
         // Items
         item[0] = Item.SLEEP;
-        item[1] = Item.EAT;
-        item[2] = Item.CHILL;
+        item[1] = Item.CHILL;
 
         //"Sleep     $100"
         options[0] = "Sleep  $5";
-        options[1] = "Eat   $20";
-        options[2] = "Chill $50";
+        options[1] = "Chill $50";
 
-        output[0] =  "" + options[0] + "" + options[1] + "" + options[2];
+        output[0] =  "" + options[0] + "" + options[1];
         /*output[0] = "" + options[0] + "" + options[1] + "" + options[2] + "" +
                     options[3] + "" + options[4] + "" + options[5] + "" +
                     options[6] + "" + options[7] + "" + options[8] + "" + options[9] ;*/

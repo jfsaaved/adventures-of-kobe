@@ -31,14 +31,6 @@ public class ItemButton extends Box{
                         hero.subtractCoins(5);
                     }
                     break;
-                case EAT:
-                    if(hero.getHealth_counter() < 4) {
-                        hero.addHealth();
-                    }
-                    if(hero.getCoins() >= 20) {
-                        hero.subtractCoins(20);
-                    }
-                    break;
                 case CHILL:
                     hero.setFly(true);
                     state.setFly(true);
