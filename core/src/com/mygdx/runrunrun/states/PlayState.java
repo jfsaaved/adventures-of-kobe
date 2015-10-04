@@ -2,6 +2,8 @@ package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -32,6 +34,10 @@ public class PlayState extends State{
 
     private static float HIT_COOL_DOWN_MAX = 20f;
     private static float MAX_CAM_OFFSET = 150;
+
+    // Transitions
+    private float transitionVal;
+    private boolean transitioning;
 
     // Moveable Objects
     private Hero hero;
@@ -103,6 +109,9 @@ public class PlayState extends State{
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
+        transitioning = true;
+        transitionVal = 1f;
+
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
         level = 5;
@@ -124,6 +133,17 @@ public class PlayState extends State{
         toTown = false;
         inTown = false;
 
+    }
+
+    private void onTransition(float dt){
+        if(transitioning){
+
+            transitionVal -= 1f * dt;
+
+            if(transitionVal <= 0f){
+                transitioning = false;
+            }
+        }
     }
 
     private void initCamera(int mapLength){
@@ -174,7 +194,7 @@ public class PlayState extends State{
         pressToBegin.setTextHide(false);
 
         hero.toggleStop(true);
-        flashVal = 40;
+        flashVal = 60;
         intro = true;
     }
 
@@ -224,6 +244,8 @@ public class PlayState extends State{
             cam.unproject(mouse);
 
             boolean jump = true;
+
+            if(transitioning == true) return;
 
             if(intro){
                 intro = false;
@@ -339,16 +361,22 @@ public class PlayState extends State{
     }
 
     private void onIntro(){
+
+        if(transitioning){
+            pressToBegin.setTextHide(true);
+            return;
+        }
+
         if(intro){
             if(flashVal > 0){
-                if(flashVal > 20){
+                if(flashVal > 30){
                    pressToBegin.setTextHide(false);
                 }else{
                     pressToBegin.setTextHide(true);
                 }
                 flashVal--;
             }else{
-                flashVal = 40;
+                flashVal = 60;
             }
         }
     }
@@ -604,6 +632,7 @@ public class PlayState extends State{
 
         scoreCalculator();
 
+        onTransition(dt);
         onIntro();
         onTownClick();
         onExitShop();
@@ -662,7 +691,22 @@ public class PlayState extends State{
 
     public void shapeRender(ShapeRenderer sr){
 
+        if(transitioning) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+            sr.setProjectionMatrix(cam.combined);
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+
+            sr.setColor(new Color(0, 0, 0, transitionVal));
+            sr.rect(hero.getPosition().x - 200, hero.getPosition().y - 100, Main.WIDTH, Main.HEIGHT);
+
+
+            sr.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
+
+        /*
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(1, 1, 0, 1);
@@ -679,7 +723,7 @@ public class PlayState extends State{
             sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
 
         sr.end();
-
+        */
 
     }
 }
