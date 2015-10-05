@@ -46,6 +46,12 @@ public class MoveableObject {
 
     }
 
+    protected void resize(float width, float height){
+        this.width = width;
+        this.height = height;
+        this.rect = new Rectangle(position.x, position.y, width, height);
+    }
+
     public void kill(){
         killVal = 0.2f;
         kill = true;

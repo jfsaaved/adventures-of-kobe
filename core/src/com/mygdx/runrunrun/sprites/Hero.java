@@ -17,8 +17,6 @@ public class Hero extends MoveableObject {
     private boolean inAir;
 
     // Moving animations
-    private float height_var;
-    private boolean height_anim_interval_status;
     private boolean boostActivated;
     private float boostValue;
 
@@ -36,14 +34,36 @@ public class Hero extends MoveableObject {
     private float speed;
     private boolean isStopped;
 
+
+    // Animation handler
+    private boolean standing;
+    private TextureRegion[][] fontSheet;
+    private int rowIndex;
+    private int colIndex;
+    private float animationDelay;
+
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
     public Hero(float x, float y, TextureRegion image){
 
         super(x, y, image, Types.Hero);
 
-        // Moving animations
-        height_var = 0f;
-        height_anim_interval_status = true;
+        // Animation test
+        int size = 89;
+        rowIndex = 0;
+        colIndex = 0;
+        animationDelay = 1f;
+        resize(size,size);
+        standing = true;
+        int rows = image.getRegionWidth() / size;
+        int cols = image.getRegionHeight() / size;
+
+        fontSheet = new TextureRegion[rows][cols];
+
+        for(int i = 0 ; i < rows ; i ++){
+            for(int j = 0 ; j < cols ; j ++){
+                fontSheet[i][j] = new TextureRegion(image, size * i, size * j, size, size);
+            }
+        }
 
         // Hit mechanics
         health_counter = 3;
@@ -150,26 +170,18 @@ public class Hero extends MoveableObject {
         }
     }
 
-    private void updateAnimation(){
-        if(!inAir) {
-            if (height_anim_interval_status) {
-                height_var++;
-                if (height_var > 5f) {
-                    height_anim_interval_status = false;
-                }
-            } else{
-                height_var--;
-                if (height_var < 0f) {
-                    height_anim_interval_status = true;
+    private void updateAnimation(float dt){
+
+        if(animationDelay > 0){
+            animationDelay -= 2f * dt;
+        }else{
+            animationDelay = 1f;
+            rowIndex++;
+            if(standing) {
+                if (rowIndex == 4) {
+                    rowIndex = 0;
                 }
             }
-        }
-        else {
-            height_var = 0;
-        }
-
-        if(isStopped){
-            height_var = 0;
         }
     }
 
@@ -181,7 +193,7 @@ public class Hero extends MoveableObject {
         float init_x = this.position.x;
         float init_y = this.position.y;
 
-        updateAnimation();
+        updateAnimation(dt);
 
         if(isStopped){
             decelerate(dt);
@@ -246,8 +258,16 @@ public class Hero extends MoveableObject {
     @Override
     public void render(SpriteBatch sb){
 
-        if(hide == false)
-            sb.draw(image, position.x, position.y, width, height - height_var);
+        if(hide == false) {
+
+            if(standing){
+                colIndex = 0;
+                sb.draw(fontSheet[rowIndex][colIndex],position.x, position.y, width, height);
+            }
+
+            //sb.draw(image, position.x, position.y, width, height);
+
+        }
 
     }
 
