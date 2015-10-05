@@ -30,12 +30,16 @@ public class ItemButton extends Box{
         if(!hide) {
             switch (this.item){
                 case REST:
-                    if(hero.getCoins() >= 5) {
+                    if(hero.getCoins() >= 1) {
+                        state.changeDialogue(2);
                         hero.restoreHealth();
                         hero.subtractCoins(5);
+                    }else{
+                        state.changeDialogue(3);
                     }
                     break;
                 case CHILL:
+                    state.changeDialogue(4);
                     hero.setFly(true);
                     state.setFly(true);
                     if(hero.getCoins() >= 50) {

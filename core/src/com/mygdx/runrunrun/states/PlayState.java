@@ -243,6 +243,12 @@ public class PlayState extends State{
 
     }
 
+    public void changeDialogue(int i){
+        shopTextBox.setTextHide(true);
+        currentDialogue = shop.getDialogue(i);
+        shopTextBox.setTextHide(false);
+    }
+
     public void handleInput(){
         if(Gdx.input.justTouched()){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -290,13 +296,9 @@ public class PlayState extends State{
 
             for(ItemButton itemButton : itemButtons){
                 if(itemButton.containsRect(mouse.x,mouse.y)){
+
                     itemButton.interact(hero, this);
 
-                    if(itemButton.getItem().equals(Item.REST)) {
-                        shopTextBox.setTextHide(true);
-                        currentDialogue = shop.getDialogue(2);
-                        shopTextBox.setTextHide(false);
-                    }
                     return;
                 }
             }
@@ -447,7 +449,7 @@ public class PlayState extends State{
                     itemButton.setHide(true);
             }
             else if(exitShopTimer < 97 && exitShopTimer > 20){
-                if(currentDialogue.equals(shop.getDialogue(0)) || currentDialogue.equals(shop.getDialogue(2))) {
+                if(currentDialogue.equals(shop.getDialogue(0)) || currentDialogue.equals(shop.getDialogue(2)) || currentDialogue.equals(shop.getDialogue(3))) {
                     currentDialogue = shop.getDialogue(1);
                     shopTextBox.setTextHide(false);
                     shopTextBox.setTextBox_hide(false);
