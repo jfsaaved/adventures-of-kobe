@@ -37,6 +37,7 @@ public class Hero extends MoveableObject {
 
     // Animation handler
     private boolean standing;
+    private boolean stopping;
     private boolean jumpingUp;
     private boolean jumpingDown;
 
@@ -164,6 +165,7 @@ public class Hero extends MoveableObject {
 
 
     private void decelerate(float dt){
+        stopping = true;
         if(speed > 0){
             speed -= 300f * dt;
         }
@@ -181,6 +183,7 @@ public class Hero extends MoveableObject {
             if(speed > 0){
                 standing = false;
             }else{
+                stopping = false;
                 standing = true;
             }
 
@@ -209,6 +212,10 @@ public class Hero extends MoveableObject {
                 if(rowIndex >= 6){
                     rowIndex = 0;
                 }
+            }
+            if(stopping){
+                colIndex = 1;
+                rowIndex = 6;
             }
             if(jumpingUp || jumpingDown){
                 colIndex = 2;
