@@ -37,6 +37,9 @@ public class Hero extends MoveableObject {
 
     // Animation handler
     private boolean standing;
+    private boolean jumpingUp;
+    private boolean jumpingDown;
+
     private TextureRegion[][] fontSheet;
     private int rowIndex;
     private int colIndex;
@@ -172,7 +175,7 @@ public class Hero extends MoveableObject {
     private void updateAnimation(float dt){
 
         if(animationDelay > 0){
-            animationDelay -= 5f * dt;
+            animationDelay -= 10f * dt;
         }else{
 
             if(speed > 0){
@@ -181,18 +184,38 @@ public class Hero extends MoveableObject {
                 standing = true;
             }
 
+            if(jump_acceleration > 1){
+                if(jump_acceleration > 200){
+                    jumpingDown = false;
+                    jumpingUp = true;
+                }else{
+                    jumpingUp = false;
+                    jumpingDown = true;
+                }
+            }else{
+                jumpingUp = false;
+                jumpingDown = false;
+            }
+
             animationDelay = 1f;
             rowIndex++;
             if(standing) {
-
                 colIndex = 0;
-                if (rowIndex == 4) {
+                if (rowIndex >= 5) {
                     rowIndex = 0;
                 }
             }else{
                 colIndex = 1;
-                if(rowIndex == 6){
+                if(rowIndex >= 6){
                     rowIndex = 0;
+                }
+            }
+            if(jumpingUp || jumpingDown){
+                colIndex = 2;
+                if(jumpingUp){
+                    if(rowIndex >= 2) rowIndex = 0;
+                }else{
+                    rowIndex = 3;
                 }
             }
         }
@@ -271,12 +294,8 @@ public class Hero extends MoveableObject {
     @Override
     public void render(SpriteBatch sb){
 
-        if(hide == false) {
+        if(hide == false)
                 sb.draw(fontSheet[rowIndex][colIndex],position.x, position.y, width, height);
-
-            //sb.draw(image, position.x, position.y, width, height);
-
-        }
 
     }
 
