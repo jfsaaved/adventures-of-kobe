@@ -53,7 +53,6 @@ public class Hero extends MoveableObject {
         colIndex = 0;
         animationDelay = 1f;
         resize(size,size);
-        standing = true;
         int rows = image.getRegionWidth() / size;
         int cols = image.getRegionHeight() / size;
 
@@ -173,12 +172,26 @@ public class Hero extends MoveableObject {
     private void updateAnimation(float dt){
 
         if(animationDelay > 0){
-            animationDelay -= 2f * dt;
+            animationDelay -= 5f * dt;
         }else{
+
+            if(speed > 0){
+                standing = false;
+            }else{
+                standing = true;
+            }
+
             animationDelay = 1f;
             rowIndex++;
             if(standing) {
+
+                colIndex = 0;
                 if (rowIndex == 4) {
+                    rowIndex = 0;
+                }
+            }else{
+                colIndex = 1;
+                if(rowIndex == 6){
                     rowIndex = 0;
                 }
             }
@@ -259,11 +272,7 @@ public class Hero extends MoveableObject {
     public void render(SpriteBatch sb){
 
         if(hide == false) {
-
-            if(standing){
-                colIndex = 0;
                 sb.draw(fontSheet[rowIndex][colIndex],position.x, position.y, width, height);
-            }
 
             //sb.draw(image, position.x, position.y, width, height);
 
