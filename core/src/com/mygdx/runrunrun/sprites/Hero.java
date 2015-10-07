@@ -94,6 +94,11 @@ public class Hero extends MoveableObject {
 
     public void setFly(boolean b){
         fly = b;
+        if(fly){
+            flyTimerBoolean = false;
+            flyTimer = 0;
+            flyHeight = Main.GROUND_LEVEL;
+        }
     }
 
     public void addCoin(int value){
@@ -170,6 +175,7 @@ public class Hero extends MoveableObject {
             speed -= 300f * dt;
         }
         else if(speed <= 0){
+            stopping = false;
             speed = 0;
         }
     }
@@ -180,13 +186,14 @@ public class Hero extends MoveableObject {
             animationDelay -= 10f * dt;
         }else{
 
+            animationDelay = 1f;
+            rowIndex++;
+
             if(speed > 0){
                 standing = false;
             }else{
-                stopping = false;
                 standing = true;
             }
-
             if(jump_acceleration > 1){
                 if(jump_acceleration > 200){
                     jumpingDown = false;
@@ -196,12 +203,15 @@ public class Hero extends MoveableObject {
                     jumpingDown = true;
                 }
             }else{
-                jumpingUp = false;
-                jumpingDown = false;
+                if(flyHeight > Main.GROUND_LEVEL && !fly){
+                    jumpingUp = false;
+                    jumpingDown = true;
+                }else{
+                    jumpingUp = false;
+                    jumpingDown = false;
+                }
             }
 
-            animationDelay = 1f;
-            rowIndex++;
             if(standing || fly) {
                 colIndex = 0;
                 if (rowIndex >= 5) {
@@ -237,8 +247,6 @@ public class Hero extends MoveableObject {
         float init_x = this.position.x;
         float init_y = this.position.y;
 
-        updateAnimation(dt);
-
         if(isStopped){
             decelerate(dt);
         }
@@ -255,16 +263,16 @@ public class Hero extends MoveableObject {
 
         if(!fly) {
             if (flyHeight > Main.GROUND_LEVEL) {
-                flyHeight -= 50f * dt;
                 final_y = init_y + flyHeight * dt;
-            }else{
-                if(flyHeight != Main.GROUND_LEVEL) {
-                    flyHeight = Main.GROUND_LEVEL;
-                    flyTimer = 0;
+                if(final_y > Main.GROUND_LEVEL)
+                    flyHeight -= 50f * dt;
+                else{
+                    flyHeight = 0;
+                    final_y = Main.GROUND_LEVEL;
+                    inAir = false;
                 }
-
+            }else{
                 final_y = init_y + (jump_acceleration) * dt;
-
                 if (final_y > Main.GROUND_LEVEL) {
                     inAir = true;
                     jump_acceleration -= 100f * dt;
@@ -294,6 +302,8 @@ public class Hero extends MoveableObject {
             }
         }
 
+
+        updateAnimation(dt);
         this.position.set(final_x,final_y);
         this.rect.setPosition(final_x,final_y);
 
