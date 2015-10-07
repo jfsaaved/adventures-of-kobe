@@ -146,6 +146,10 @@ public class Hero extends MoveableObject {
             speed = 0;
         }else{
             speed = MAX_SPEED;
+
+            if(stopping){
+                stopping = false;
+            }
         }
     }
 
