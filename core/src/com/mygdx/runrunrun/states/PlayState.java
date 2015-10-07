@@ -170,7 +170,7 @@ public class PlayState extends State{
     }
 
     private void initUI(){
-        health = Main.resource.getAtlas("assets").findRegion("player");
+        health = Main.resource.getAtlas("assets").findRegion("heart");
 
 
         coinsText = new TextImage(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - 25, cam.position.y + cam.viewportHeight/2 - 39,0.20f);
@@ -674,7 +674,7 @@ public class PlayState extends State{
     private void renderHealth(SpriteBatch sb){
         int health_y_offset = 4;
         for(int i = 1; i <= hero.getHealth_counter(); i++)
-            sb.draw(health,cam.position.x + cam.viewportWidth/2 - (25 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth()/2,health.getRegionHeight()/2);
+            sb.draw(health,cam.position.x + cam.viewportWidth/2 - (16 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth(),health.getRegionHeight());
     }
 
     public void render(SpriteBatch sb){
