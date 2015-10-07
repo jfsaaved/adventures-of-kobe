@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.runrunrun.handler.Content;
+import com.mygdx.runrunrun.handler.MusicContent;
+import com.mygdx.runrunrun.handler.Sounds;
 import com.mygdx.runrunrun.states.GSM;
 import com.mygdx.runrunrun.states.MenuState;
 import com.mygdx.runrunrun.states.PlayState;
@@ -23,6 +25,8 @@ public class Main extends ApplicationAdapter {
     private ShapeRenderer sr;
 
     public static Content resource;
+    public static MusicContent musicContent;
+    public static Sounds sounds;
 
 
 	@Override
@@ -30,6 +34,9 @@ public class Main extends ApplicationAdapter {
 
         resource = new Content();
         resource.loadAtlas("pack1.pack","assets");
+
+        musicContent = new MusicContent();
+        sounds = new Sounds();
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
