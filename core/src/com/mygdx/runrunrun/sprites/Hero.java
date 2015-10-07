@@ -202,27 +202,28 @@ public class Hero extends MoveableObject {
 
             animationDelay = 1f;
             rowIndex++;
-            if(standing) {
+            if(standing || fly) {
                 colIndex = 0;
                 if (rowIndex >= 5) {
                     rowIndex = 0;
                 }
-            }else{
-                colIndex = 1;
-                if(rowIndex >= 6){
-                    rowIndex = 0;
-                }
             }
-            if(stopping){
+            else if(stopping){
                 colIndex = 1;
                 rowIndex = 6;
             }
-            if(jumpingUp || jumpingDown){
+            else if(jumpingUp || jumpingDown){
                 colIndex = 2;
                 if(jumpingUp){
                     if(rowIndex >= 2) rowIndex = 0;
                 }else{
                     rowIndex = 3;
+                }
+            }
+            else{
+                colIndex = 1;
+                if(rowIndex >= 6){
+                    rowIndex = 0;
                 }
             }
         }
