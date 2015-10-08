@@ -648,6 +648,10 @@ public class PlayState extends State{
         }
     }
 
+    private void updateSounds(){
+
+    }
+
     private void onExitCycle(){
         if(hero.getPosition().x >= mapSize){
             hero.changePosition(hero.getPosition().x - mapSize,hero.getPosition().y);
