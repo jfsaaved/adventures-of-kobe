@@ -31,6 +31,7 @@ public class MenuState extends State {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
+            Main.sounds.playSound("select");
             startTransition = true;
             transitionVal = 0f;
         }

@@ -26,5 +26,9 @@ public class Sounds {
         return sounds.get(key);
     }
 
+    public void playSound(String key){
+        sounds.get(key).play();
+    }
+
 
 }

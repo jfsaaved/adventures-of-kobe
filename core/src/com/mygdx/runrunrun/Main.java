@@ -33,10 +33,12 @@ public class Main extends ApplicationAdapter {
 	public void create () {
 
         resource = new Content();
-        resource.loadAtlas("pack1.pack","assets");
-
         musicContent = new MusicContent();
         sounds = new Sounds();
+
+        resource.loadAtlas("pack1.pack","assets");
+        musicContent.loadMusic("play.mp3","play");
+        sounds.loadSound("select.mp3","select");
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();

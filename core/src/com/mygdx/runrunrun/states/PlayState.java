@@ -110,6 +110,7 @@ public class PlayState extends State{
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
+        Main.musicContent.playMusic("play");
         wait = 1f;
         transitioning = true;
         transitionVal = 1f;

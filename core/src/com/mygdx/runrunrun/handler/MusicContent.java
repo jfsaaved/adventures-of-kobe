@@ -22,4 +22,11 @@ public class MusicContent {
 
     public Music getMusic(String key) { return musics.get(key); }
 
+    public void playMusic(String key){
+
+        musics.get(key).setLooping(true);
+        musics.get(key).play();
+
+    }
+
 }
