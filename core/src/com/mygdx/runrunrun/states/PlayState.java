@@ -1,8 +1,8 @@
 package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +12,7 @@ import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.backgrounds.Clouds;
 import com.mygdx.runrunrun.backgrounds.Ground;
 import com.mygdx.runrunrun.backgrounds.Mountains;
+import com.mygdx.runrunrun.handler.Sounds;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
@@ -20,7 +21,7 @@ import com.mygdx.runrunrun.sprites.MoveableObject;
 import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.sprites.Types;
-import com.mygdx.runrunrun.ui.Item;
+import com.mygdx.runrunrun.handler.Sounds;
 import com.mygdx.runrunrun.ui.ItemButton;
 import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
@@ -112,6 +113,9 @@ public class PlayState extends State{
     private Music beforePlay;
     private Music play;
 
+    // Sound effects
+    private Sound jump;
+
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
@@ -129,6 +133,7 @@ public class PlayState extends State{
         initBGs(mapLength);
         initStart();
         initMusic();
+        initSounds();
 
         coinsText.setTextHide(false);
         shopTextBox.setTextHide(true);
@@ -160,6 +165,10 @@ public class PlayState extends State{
     private void initMusic(){
         play = Main.musicContent.getMusic("play");
         beforePlay = Main.musicContent.getMusic("intro");
+    }
+
+    private void initSounds(){
+        jump = Main.sounds.getSound("select");
     }
 
     private void initCamera(int mapLength){
