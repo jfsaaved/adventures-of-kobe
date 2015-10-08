@@ -38,6 +38,7 @@ public class Main extends ApplicationAdapter {
 
         resource.loadAtlas("pack1.pack","assets");
         musicContent.loadMusic("play.mp3","play");
+        musicContent.loadMusic("intro.mp3","intro");
         sounds.loadSound("select.mp3","select");
 
         sb = new SpriteBatch();

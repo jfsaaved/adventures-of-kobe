@@ -2,6 +2,7 @@ package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -107,10 +108,13 @@ public class PlayState extends State{
     private int scoreTimer;
     private int score;
 
+    // Music variables
+    private Music beforePlay;
+    private Music play;
+
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
-        Main.musicContent.playMusic("play");
         wait = 1f;
         transitioning = true;
         transitionVal = 1f;
@@ -124,6 +128,7 @@ public class PlayState extends State{
         initShopButtons();
         initBGs(mapLength);
         initStart();
+        initMusic();
 
         coinsText.setTextHide(false);
         shopTextBox.setTextHide(true);
@@ -150,6 +155,11 @@ public class PlayState extends State{
                 transitioning = false;
             }
         }
+    }
+
+    private void initMusic(){
+        play = Main.musicContent.getMusic("play");
+        beforePlay = Main.musicContent.getMusic("intro");
     }
 
     private void initCamera(int mapLength){
@@ -387,6 +397,7 @@ public class PlayState extends State{
         }
 
         if(intro){
+
             if(flashVal > 0){
                 if(flashVal > 30){
                    pressToBegin.setTextHide(false);
@@ -615,6 +626,19 @@ public class PlayState extends State{
             itemButton.update(cam.position.x - cam.viewportWidth/2 + cam.viewportWidth / 2 + cam.viewportWidth / 4 + 10, itemButton.getY());
     }
 
+    private void updateMusic(){
+        if(intro){
+            if(!beforePlay.isPlaying()){
+                beforePlay.play();
+            }
+        }else{
+            beforePlay.stop();
+            if(!play.isPlaying()){
+                play.play();
+            }
+        }
+    }
+
     private void onExitCycle(){
         if(hero.getPosition().x >= mapSize){
             hero.changePosition(hero.getPosition().x - mapSize,hero.getPosition().y);
@@ -666,6 +690,7 @@ public class PlayState extends State{
         mountains.update(dt, hero.getPosition().x, hero.getSpeed());
         clouds.update(dt, hero.getPosition().x, hero.getSpeed());
 
+        updateMusic();
         updateCam(dt);
         updateTexts();
         updateButtons();
