@@ -101,6 +101,10 @@ public class Hero extends MoveableObject {
         }
     }
 
+    public boolean getJump(){
+        return  jump_acceleration == 225f;
+    }
+
     public void addCoin(int value){
         coins += value;
     }

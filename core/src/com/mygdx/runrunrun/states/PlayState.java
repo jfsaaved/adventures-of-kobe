@@ -114,7 +114,9 @@ public class PlayState extends State{
     private Music play;
 
     // Sound effects
-    private Sound jump;
+    private Sound jumpSound;
+    private boolean jumpSoundHelper;
+
 
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
@@ -168,7 +170,7 @@ public class PlayState extends State{
     }
 
     private void initSounds(){
-        jump = Main.sounds.getSound("select");
+        jumpSound = Main.sounds.getSound("select");
     }
 
     private void initCamera(int mapLength){
@@ -341,6 +343,8 @@ public class PlayState extends State{
                 }
             }else if(jump){
                 hero.jump();
+                if(hero.getJump())
+                    jumpSoundHelper = true;
             }
 
 
@@ -649,7 +653,10 @@ public class PlayState extends State{
     }
 
     private void updateSounds(){
-
+        if(jumpSoundHelper) {
+            jumpSound.play();
+            jumpSoundHelper = false;
+        }
     }
 
     private void onExitCycle(){
@@ -704,6 +711,7 @@ public class PlayState extends State{
         clouds.update(dt, hero.getPosition().x, hero.getSpeed());
 
         updateMusic();
+        updateSounds();
         updateCam(dt);
         updateTexts();
         updateButtons();
