@@ -127,7 +127,7 @@ public class PlayState extends State{
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
-        level = 24;
+        level = 5;
         initCamera(mapLength);
         initLevelObj(level);
         initUI();

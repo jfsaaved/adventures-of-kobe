@@ -14,15 +14,19 @@ import com.mygdx.runrunrun.ui.TextImage;
 public class MenuState extends State {
 
     private TextImage title;
+    private TextImage startButton;
     private float transitionVal;
     private boolean startTransition;
+
 
     public MenuState(GSM gsm){
         super(gsm);
 
         startTransition = false;
-        title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2,1);
+        title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
+        startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
         title.setTextHide(false);
+        startButton.setTextHide(false);
 
     }
 
@@ -31,9 +35,11 @@ public class MenuState extends State {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
-            Main.sounds.playSound("select");
-            startTransition = true;
-            transitionVal = 0f;
+            if(startButton.contains(mouse.x, mouse.y)) {
+                Main.sounds.playSound("select");
+                startTransition = true;
+                transitionVal = 0f;
+            }
         }
     }
 
@@ -61,6 +67,7 @@ public class MenuState extends State {
         sb.begin();
 
         title.render(sb);
+        startButton.render(sb);
 
         sb.end();
     }
