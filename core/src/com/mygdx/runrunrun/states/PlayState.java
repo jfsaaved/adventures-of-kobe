@@ -117,6 +117,10 @@ public class PlayState extends State{
     private Sound jumpSound;
     private boolean jumpSoundHelper;
 
+    // Game over stuff
+    private boolean gameOver;
+    private boolean gameOverTransitioning;
+    private float gameOverTransitionVal;
 
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
@@ -346,8 +350,6 @@ public class PlayState extends State{
                 if(hero.getJump())
                     jumpSoundHelper = true;
             }
-
-
         }
     }
 
@@ -429,6 +431,10 @@ public class PlayState extends State{
         if(hit_cool_down > 0f){
             if(hit_cool_down == HIT_COOL_DOWN_MAX){
                 hero.reduceHealth();
+                if(hero.getHealth_counter() == 0) {
+                    hero.reduceHealth();
+                    gameOver = true;
+                }
             }
             hit_cool_down--;
             hero.hit_animation(hit_cool_down);
@@ -589,6 +595,26 @@ public class PlayState extends State{
         //}
     }
 
+    private void onGameOver(){
+        if(gameOver){
+            gameOver = false;
+            hero.toggleStop(true);
+            hero.setFly(true);
+            gameOverTransitionVal = 0f;
+            gameOverTransitioning = true;
+        }
+    }
+
+    private void onGameOverTransition(float dt){
+        if(gameOverTransitioning) {
+            gameOverTransitionVal += 0.5f * dt;
+
+            if (gameOverTransitionVal >= 1f) {
+                gsm.set(new GameOverState(gsm));
+            }
+        }
+    }
+
     private void updateCam(float dt){
         if(hero.getSpeed() > 0) {
             if(cam_offset < Math.abs(MAX_CAM_OFFSET)){
@@ -702,6 +728,8 @@ public class PlayState extends State{
         onTownClick();
         onExitShop();
         onBlockCollision();
+        onGameOver();
+        onGameOverTransition(dt);
         onNewArea();
         onNewCycle();
         onExitCycle();
