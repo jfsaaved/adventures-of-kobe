@@ -600,6 +600,7 @@ public class PlayState extends State{
             gameOver = false;
             hero.toggleStop(true);
             hero.setFly(true);
+            hero.setFade(true);
             gameOverTransitionVal = 0f;
             gameOverTransitioning = true;
         }

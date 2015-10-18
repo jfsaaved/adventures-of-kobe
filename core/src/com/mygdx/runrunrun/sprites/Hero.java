@@ -174,6 +174,9 @@ public class Hero extends MoveableObject {
         else{
             hide = true;
         }
+
+        if(stopFades)
+            hide = false;
     }
 
     public void jump(){
