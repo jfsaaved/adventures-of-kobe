@@ -46,6 +46,8 @@ public class Hero extends MoveableObject {
     private int colIndex;
     private float animationDelay;
 
+    private boolean stopFades;
+
     // This constructor provides the Background reference, so that MoveableObject can determine at what x position Hero resets
     public Hero(float x, float y, TextureRegion image){
 
@@ -99,6 +101,10 @@ public class Hero extends MoveableObject {
             flyTimer = 0;
             flyHeight = Main.GROUND_LEVEL;
         }
+    }
+
+    public void setFade(boolean b){
+        stopFades = b;
     }
 
     public boolean getJump(){
