@@ -801,6 +801,21 @@ public class PlayState extends State{
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
 
+        if(gameOverTransitioning) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+            sr.setProjectionMatrix(cam.combined);
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+
+            sr.setColor(new Color(0, 0, 0, gameOverTransitionVal));
+            sr.rect(cam.position.x - 200, cam.position.y - 100, Main.WIDTH, Main.HEIGHT);
+
+
+            sr.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
+
 
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
