@@ -611,7 +611,7 @@ public class PlayState extends State{
             gameOverTransitionVal += 0.5f * dt;
 
             if (gameOverTransitionVal >= 1f) {
-                gsm.set(new GameOverState(gsm));
+                gsm.set(new GameOverState(gsm, score));
             }
         }
     }
@@ -674,7 +674,8 @@ public class PlayState extends State{
         }else{
             beforePlay.stop();
             if(!play.isPlaying()){
-                play.play();
+                if(!gameOverTransitioning)
+                    play.play();
             }
         }
     }

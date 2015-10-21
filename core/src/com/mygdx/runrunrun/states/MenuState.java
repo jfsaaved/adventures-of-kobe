@@ -13,6 +13,7 @@ import com.mygdx.runrunrun.ui.TextImage;
  */
 public class MenuState extends State {
 
+    private TextImage highScore;
     private TextImage title;
     private TextImage startButton;
     private float transitionVal;
@@ -25,8 +26,10 @@ public class MenuState extends State {
         startTransition = false;
         title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
+        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 80,1);
         title.setTextHide(false);
         startButton.setTextHide(false);
+        highScore.setTextHide(false);
 
     }
 
@@ -68,6 +71,7 @@ public class MenuState extends State {
 
         title.render(sb);
         startButton.render(sb);
+        highScore.render(sb);
 
         sb.end();
     }

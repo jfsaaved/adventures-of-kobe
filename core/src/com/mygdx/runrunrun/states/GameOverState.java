@@ -12,11 +12,26 @@ import com.mygdx.runrunrun.ui.TextImage;
 public class GameOverState extends State {
 
     private TextImage game_over_text;
+    private TextImage highScore;
+    private TextImage currentScore;
 
-    public GameOverState(GSM gsm){
+    public GameOverState(GSM gsm, int score){
         super(gsm);
+
+        currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f );
+        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 140, 1f);
         game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2, 1f);
+
+        if(score > Main.pref.getHighScore()) {
+            Main.pref.setHighScore(score);
+            currentScore.setTextHide(false);
+        }else{
+            currentScore.setTextHide(false);
+            highScore.setTextHide(false);
+        }
+
         game_over_text.setTextHide(false);
+
     }
 
     public void handleInput(){
@@ -33,6 +48,8 @@ public class GameOverState extends State {
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
+        currentScore.render(sb);
+        highScore.render(sb);
         game_over_text.render(sb);
 
         sb.end();

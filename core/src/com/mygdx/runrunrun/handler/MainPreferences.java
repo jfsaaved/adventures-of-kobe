@@ -11,11 +11,7 @@ public class MainPreferences {
     private Preferences prefs;
 
     public MainPreferences(){
-        prefs = Gdx.app.getPreferences("save");
-    }
-
-    public Preferences getPref(){
-        return prefs;
+        prefs = Gdx.app.getPreferences("RunRunRun-Save");
     }
 
     public void setHighScore(int score){
