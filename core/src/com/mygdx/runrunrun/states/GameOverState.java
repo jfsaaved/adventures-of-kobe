@@ -24,6 +24,7 @@ public class GameOverState extends State {
 
         if(score > Main.pref.getHighScore()) {
             Main.pref.setHighScore(score);
+            currentScore.update("NEW HIGH SCORE: " + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
             currentScore.setTextHide(false);
         }else{
             currentScore.setTextHide(false);

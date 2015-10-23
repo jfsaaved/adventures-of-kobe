@@ -608,6 +608,7 @@ public class PlayState extends State{
 
     private void onGameOverTransition(float dt){
         if(gameOverTransitioning) {
+
             gameOverTransitionVal += 0.5f * dt;
 
             if (gameOverTransitionVal >= 1f) {
@@ -671,11 +672,20 @@ public class PlayState extends State{
             if(!beforePlay.isPlaying()){
                 beforePlay.play();
             }
+        }if(gameOver || gameOverTransitioning){
+            if(play.isPlaying()) {
+                play.stop();
+                play.dispose();
+            }
+            if(beforePlay.isPlaying()){
+                beforePlay.stop();
+                beforePlay.dispose();
+            }
         }else{
-            beforePlay.stop();
-            if(!play.isPlaying()){
-                if(!gameOverTransitioning)
-                    play.play();
+            if(beforePlay.isPlaying())
+                beforePlay.stop();
+            if (!play.isPlaying()) {
+                play.play();
             }
         }
     }
