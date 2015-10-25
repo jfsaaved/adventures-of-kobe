@@ -18,13 +18,13 @@ public class GameOverState extends State {
     public GameOverState(GSM gsm, int score){
         super(gsm);
 
-        currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f );
-        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 140, 1f);
-        game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2, 1f);
+        currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2, 1f );
+        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
+        game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2 + 100, 1f);
 
         if(score > Main.pref.getHighScore()) {
             Main.pref.setHighScore(score);
-            currentScore.update("NEW HIGH SCORE: " + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
+            currentScore.update("NEW HIGH SCORE: " + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2, 1f);
             currentScore.setTextHide(false);
         }else{
             currentScore.setTextHide(false);
