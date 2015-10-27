@@ -1,6 +1,8 @@
 package com.mygdx.runrunrun.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.runrunrun.Main;
@@ -15,8 +17,13 @@ public class GameOverState extends State {
     private TextImage highScore;
     private TextImage currentScore;
 
+    private float transitionVal;
+    private boolean startTransition;
+
     public GameOverState(GSM gsm, int score){
         super(gsm);
+
+        startTransition = false;
 
         currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2, 1f );
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
@@ -37,12 +44,26 @@ public class GameOverState extends State {
 
     public void handleInput(){
         if(Gdx.input.isTouched()){
-            gsm.set(new PlayState(gsm, 5));
+            startTransition = true;
+            transitionVal = 0f;
+        }
+    }
+
+    private void transition(float dt){
+        if(startTransition){
+
+            transitionVal += 1f * dt;
+
+            if(transitionVal >= 1f){
+                gsm.set(new PlayState(gsm, 5));
+            }
+
         }
     }
 
     public void update(float dt){
         handleInput();
+        transition(dt);
     }
 
     public void render(SpriteBatch sb){
@@ -57,6 +78,17 @@ public class GameOverState extends State {
     }
 
     public void shapeRender(ShapeRenderer sr){
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+        sr.setProjectionMatrix(cam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+
+        sr.setColor(new Color(0,0,0,transitionVal));
+        sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
+
+
+        sr.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 }
