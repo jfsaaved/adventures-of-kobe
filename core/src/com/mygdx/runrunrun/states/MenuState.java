@@ -43,7 +43,7 @@ public class MenuState extends State {
     }
 
     public void handleInput(){
-        if(Gdx.input.justTouched() && !exitTransition){
+        if(Gdx.input.justTouched() && !exitTransition && !enterTransition){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
