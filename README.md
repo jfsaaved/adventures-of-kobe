@@ -1,6 +1,4 @@
-<snippet>
-  <content><![CDATA[
-# ${1:Adventures of Kobe}
+# Adventures of Kobe
 A 2D endless runner game  using core Java and libgdx.
 Re-uses objects to populate the dynamic map/level.
 
@@ -26,7 +24,3 @@ Android: Download Adventures-of-Kobe.apk to your device. Install. (Allow unknown
 Android Studio
 libgdx
 Java
-
-]]></content>
-  <tabTrigger>readme</tabTrigger>
-</snippet>
