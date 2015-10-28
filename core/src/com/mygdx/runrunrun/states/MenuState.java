@@ -26,7 +26,7 @@ public class MenuState extends State {
 
         exitTransition = false;
 
-        title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
+        title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 80,1);
         title.setTextHide(false);

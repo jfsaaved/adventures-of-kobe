@@ -793,27 +793,26 @@ public class PlayState extends State{
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
 
-        /*
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(1, 1, 0, 1);
+
 
         //sr.rect(hero.getRectangle().getX(), hero.getRectangle().getY(), hero.getRectangle().getWidth(),hero.getRectangle().getHeight());
+        //sr.setColor(1, 1, 0, 1);
 
-
+        /*
         if(enteredShop) {
             for (ItemButton itemButton : itemButtons)
                 sr.rect(itemButton.getX(), itemButton.getY(), itemButton.getWidth(), itemButton.getHeight());
 
             sr.rect(shop.getRectangle().getX(), shop.getRectangle().getY(), shop.getRectangle().getWidth(), shop.getRectangle().getHeight());
-
         }
 
         if(toTownCoolDown <= 0)
             sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
+        */
 
         sr.end();
-        */
 
     }
 }

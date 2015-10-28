@@ -16,7 +16,7 @@ import com.mygdx.runrunrun.states.PlayState;
 
 public class Main extends ApplicationAdapter {
 
-    public static final String TITLE = "Run Run Run!";
+    public static final String TITLE = "Adventures of Kobe";
     public static final int WIDTH = 800;
     public static final int HEIGHT = 400;
     public static final int GROUND_LEVEL = 30;

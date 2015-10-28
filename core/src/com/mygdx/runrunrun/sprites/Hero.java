@@ -322,9 +322,12 @@ public class Hero extends MoveableObject {
 
         updateAnimation(dt);
         this.position.set(final_x,final_y);
-        this.rect.setPosition(final_x,final_y);
+        this.rect.setWidth(30);
+        this.rect.setPosition(final_x + 30,final_y);
 
     }
+
+
 
     @Override
     public void render(SpriteBatch sb){
