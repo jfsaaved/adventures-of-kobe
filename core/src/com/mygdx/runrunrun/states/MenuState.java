@@ -16,18 +16,21 @@ public class MenuState extends State {
     private TextImage highScore;
     private TextImage title;
     private TextImage startButton;
-    private float transitionVal;
-    private boolean startTransition;
+
+    private float exitTransitionVal;
+    private boolean exitTransition;
 
     private boolean enterTransition;
     private float enterTransitionVal;
+    private float getEnterTransitionValHelper;
 
     public MenuState(GSM gsm){
         super(gsm);
 
         enterTransition = true;
-        startTransition = false;
-        enterTransitionVal = 0f;
+        enterTransitionVal = 1f;
+
+        exitTransition = false;
 
         title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
@@ -39,24 +42,37 @@ public class MenuState extends State {
     }
 
     public void handleInput(){
-        if(Gdx.input.justTouched() && !startTransition){
+        if(Gdx.input.justTouched() && !exitTransition){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
             if(startButton.contains(mouse.x, mouse.y)) {
                 Main.sounds.playSound("select");
-                startTransition = true;
-                transitionVal = 0f;
+                exitTransition = true;
+                exitTransitionVal = 0f;
             }
         }
     }
 
-    private void transition(float dt){
-        if(startTransition){
+    private void onEnterTransition(float dt){
+        if(enterTransition){
+            if(getEnterTransitionValHelper > 0)
+                getEnterTransitionValHelper -= 1f * dt;
+            else
+                enterTransitionVal -= 0.5f * dt;
 
-            transitionVal += 1f * dt;
+            if(enterTransitionVal <= 0f){
+                enterTransition = false;
+            }
+        }
+    }
 
-            if(transitionVal >= 1f){
+    private void onExitTransition(float dt){
+        if(exitTransition){
+
+            exitTransitionVal += 1f * dt;
+
+            if(exitTransitionVal >= 1f){
                 gsm.set(new PlayState(gsm, 5));
             }
 
@@ -66,7 +82,8 @@ public class MenuState extends State {
     public void update(float dt){
 
         handleInput();
-        transition(dt);
+        onEnterTransition(dt);
+        onExitTransition(dt);
 
     }
 
@@ -91,8 +108,8 @@ public class MenuState extends State {
 
         if(enterTransition)
             sr.setColor((new Color(0,0,0,enterTransitionVal)));
-        else
-            sr.setColor(new Color(0,0,0,transitionVal));
+        else if(exitTransition)
+            sr.setColor(new Color(0,0,0, exitTransitionVal));
 
         sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
 
