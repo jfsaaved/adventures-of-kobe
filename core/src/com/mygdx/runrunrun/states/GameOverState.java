@@ -23,6 +23,8 @@ public class GameOverState extends State {
     private float transitionVal;
     private boolean startTransition;
 
+    private boolean fState; // 0 play again, 1 main menu;
+
     public GameOverState(GSM gsm, int score){
         super(gsm);
 
@@ -56,6 +58,10 @@ public class GameOverState extends State {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
+            if(menu.contains(mouse.x, mouse.y))
+                fState = true;
+            else if (play.contains(mouse.x,mouse.y))
+                fState = false;
 
             startTransition = true;
             transitionVal = 0f;
@@ -68,7 +74,10 @@ public class GameOverState extends State {
             transitionVal += 1f * dt;
 
             if(transitionVal >= 1f){
-                gsm.set(new PlayState(gsm, 5));
+                if(!fState)
+                    gsm.set(new PlayState(gsm, 5));
+                else if(fState)
+                    gsm.set(new MenuState(gsm));
             }
 
         }
