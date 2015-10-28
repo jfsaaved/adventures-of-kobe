@@ -37,11 +37,6 @@ public class PlayState extends State{
     private static float HIT_COOL_DOWN_MAX = 60f;
     private static float MAX_CAM_OFFSET = 150;
 
-    // Transitions
-    private float wait;
-    private float transitionVal;
-    private boolean transitioning;
-
     // Moveable Objects
     private Hero hero;
     private Shop shop;
@@ -119,15 +114,13 @@ public class PlayState extends State{
 
     // Game over stuff
     private boolean gameOver;
-    private boolean gameOverTransitioning;
-    private float gameOverTransitionVal;
 
     public PlayState(GSM gsm, int mapLength){
         super(gsm);
 
-        wait = 1f;
-        transitioning = true;
-        transitionVal = 1f;
+        enterTransition = true;
+        enterTransitionVal = 1f;
+        getEnterTransitionValHelper = 1f;
 
         hero = new Hero(0,0, Main.resource.getAtlas("assets").findRegion("player"));
 
@@ -152,20 +145,6 @@ public class PlayState extends State{
         toTown = false;
         inTown = false;
 
-    }
-
-    private void onTransition(float dt){
-        if(transitioning){
-
-            if(wait > 0)
-                wait -= 1f * dt;
-            else
-                transitionVal -= 0.5f * dt;
-
-            if(transitionVal <= 0f){
-                transitioning = false;
-            }
-        }
     }
 
     private void initMusic(){
@@ -276,13 +255,11 @@ public class PlayState extends State{
     }
 
     public void handleInput(){
-        if(Gdx.input.justTouched()){
+        if(Gdx.input.justTouched() && !enterTransition && !exitTransition){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
 
             boolean jump = true;
-
-            if(transitioning == true) return;
 
             if(intro){
                 intro = false;
@@ -406,7 +383,7 @@ public class PlayState extends State{
 
     private void onIntro(){
 
-        if(transitioning){
+        if(enterTransition){
             pressToBegin.setTextHide(true);
             return;
         }
@@ -601,18 +578,20 @@ public class PlayState extends State{
             hero.toggleStop(true);
             hero.setFly(true);
             hero.setFade(true);
-            gameOverTransitionVal = 0f;
-            gameOverTransitioning = true;
+            exitTransition = true;
+            exitTransitionVal = 0f;
         }
     }
 
-    private void onGameOverTransition(float dt){
-        if(gameOverTransitioning) {
-            gameOverTransitionVal += 0.5f * dt;
+    @Override
+    protected void onExitTransition(float dt){
+        if(exitTransition){
 
-            if (gameOverTransitionVal >= 1f) {
+            exitTransitionVal += 1f * dt;
+            if(exitTransitionVal >= 1f){
                 gsm.set(new GameOverState(gsm, score));
             }
+
         }
     }
 
@@ -671,7 +650,7 @@ public class PlayState extends State{
             if(!beforePlay.isPlaying()){
                 beforePlay.play();
             }
-        }else if(gameOver || gameOverTransitioning){
+        }else if(gameOver || exitTransition){
             if(play.isPlaying()) {
                 play.stop();
                 play.dispose();
@@ -734,13 +713,13 @@ public class PlayState extends State{
 
         scoreCalculator();
 
-        onTransition(dt);
+        onEnterTransition(dt);
         onIntro();
         onTownClick();
         onExitShop();
         onBlockCollision();
         onGameOver();
-        onGameOverTransition(dt);
+        onExitTransition(dt);
         onNewArea();
         onNewCycle();
         onExitCycle();
@@ -796,45 +775,32 @@ public class PlayState extends State{
     }
 
     public void shapeRender(ShapeRenderer sr){
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        sr.setProjectionMatrix(cam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
 
-        if(transitioning) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-            sr.setProjectionMatrix(cam.combined);
-            sr.begin(ShapeRenderer.ShapeType.Filled);
-
-            sr.setColor(new Color(0, 0, 0, transitionVal));
+        if(enterTransition) {
+            sr.setColor((new Color(0, 0, 0, enterTransitionVal)));
             sr.rect(hero.getPosition().x - 200, hero.getPosition().y - 100, Main.WIDTH, Main.HEIGHT);
-
-
-            sr.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
-
-        if(gameOverTransitioning) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-            sr.setProjectionMatrix(cam.combined);
-            sr.begin(ShapeRenderer.ShapeType.Filled);
-
-            sr.setColor(new Color(0, 0, 0, gameOverTransitionVal));
+        else if(exitTransition) {
+            sr.setColor(new Color(0, 0, 0, exitTransitionVal));
             sr.rect(cam.position.x - 200, cam.position.y - 100, Main.WIDTH, Main.HEIGHT);
-
-
-            sr.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
 
+        sr.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
+
+        /*
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(1, 1, 0, 1);
 
         //sr.rect(hero.getRectangle().getX(), hero.getRectangle().getY(), hero.getRectangle().getWidth(),hero.getRectangle().getHeight());
 
-        /*
+
         if(enteredShop) {
             for (ItemButton itemButton : itemButtons)
                 sr.rect(itemButton.getX(), itemButton.getY(), itemButton.getWidth(), itemButton.getHeight());
@@ -844,10 +810,10 @@ public class PlayState extends State{
         }
 
         if(toTownCoolDown <= 0)
-            sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());*/
+            sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
 
         sr.end();
-
+        */
 
     }
 }
