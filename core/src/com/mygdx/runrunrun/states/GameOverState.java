@@ -17,6 +17,9 @@ public class GameOverState extends State {
     private TextImage highScore;
     private TextImage currentScore;
 
+    private TextImage menu;
+    private TextImage play;
+
     private float transitionVal;
     private boolean startTransition;
 
@@ -39,6 +42,11 @@ public class GameOverState extends State {
         }
 
         game_over_text.setTextHide(false);
+
+        menu = new TextImage("MENU", Main.WIDTH/2 + 100, Main.HEIGHT/2 - 150, 1f);
+        play = new TextImage("PLAY", Main.WIDTH/2 - 100, Main.HEIGHT/2 - 150, 1f);
+        menu.setTextHide(false);
+        play.setTextHide(false);
 
     }
 
@@ -73,6 +81,9 @@ public class GameOverState extends State {
         currentScore.render(sb);
         highScore.render(sb);
         game_over_text.render(sb);
+
+        menu.render(sb);
+        play.render(sb);
 
         sb.end();
     }
