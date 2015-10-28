@@ -608,7 +608,6 @@ public class PlayState extends State{
 
     private void onGameOverTransition(float dt){
         if(gameOverTransitioning) {
-
             gameOverTransitionVal += 0.5f * dt;
 
             if (gameOverTransitionVal >= 1f) {

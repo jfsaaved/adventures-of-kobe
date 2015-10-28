@@ -20,15 +20,24 @@ public class GameOverState extends State {
     private TextImage menu;
     private TextImage play;
 
-    private float transitionVal;
-    private boolean startTransition;
+    private float exitTransitionVal;
+    private boolean exitTransition;
+
+    private boolean enterTransition;
+    private float enterTransitionVal;
+    private float getEnterTransitionValHelper;
 
     private boolean fState; // 0 play again, 1 main menu;
 
     public GameOverState(GSM gsm, int score){
         super(gsm);
 
-        startTransition = false;
+
+        enterTransition = true;
+        enterTransitionVal = 1f;
+        getEnterTransitionValHelper = 1f;
+
+        exitTransition = false;
 
         currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2, 1f );
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
@@ -53,27 +62,43 @@ public class GameOverState extends State {
     }
 
     public void handleInput(){
-        if(Gdx.input.isTouched() && !startTransition){
+        if(Gdx.input.isTouched() && !exitTransition){
 
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
-
-            if(menu.contains(mouse.x, mouse.y))
+            if(menu.contains(mouse.x, mouse.y)) {
                 fState = true;
-            else if (play.contains(mouse.x,mouse.y))
+                exitTransition = true;
+                exitTransitionVal = 0f;
+            }
+            else if (play.contains(mouse.x,mouse.y)) {
                 fState = false;
-
-            startTransition = true;
-            transitionVal = 0f;
+                exitTransition = true;
+                exitTransitionVal = 0f;
+            }
         }
     }
 
-    private void transition(float dt){
-        if(startTransition){
 
-            transitionVal += 1f * dt;
+    private void onEnterTransition(float dt){
+        if(enterTransition){
+            if(getEnterTransitionValHelper > 0)
+                getEnterTransitionValHelper -= 1f * dt;
+            else
+                enterTransitionVal -= 0.5f * dt;
 
-            if(transitionVal >= 1f){
+            if(enterTransitionVal <= 0f){
+                enterTransition = false;
+            }
+        }
+    }
+
+    private void onExitTransition(float dt){
+        if(exitTransition){
+
+            exitTransitionVal+= 1f * dt;
+
+            if(exitTransitionVal >= 1f){
                 if(!fState)
                     gsm.set(new PlayState(gsm, 5));
                 else if(fState)
@@ -85,7 +110,8 @@ public class GameOverState extends State {
 
     public void update(float dt){
         handleInput();
-        transition(dt);
+        onEnterTransition(dt);
+        onExitTransition(dt);
     }
 
     public void render(SpriteBatch sb){
@@ -109,7 +135,11 @@ public class GameOverState extends State {
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
-        sr.setColor(new Color(0,0,0,transitionVal));
+        if(enterTransition)
+            sr.setColor((new Color(0,0,0,enterTransitionVal)));
+        else if(exitTransition)
+            sr.setColor(new Color(0,0,0, exitTransitionVal));
+
         sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
 
 

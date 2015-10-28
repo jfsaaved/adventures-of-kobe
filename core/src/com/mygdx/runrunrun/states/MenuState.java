@@ -29,6 +29,7 @@ public class MenuState extends State {
 
         enterTransition = true;
         enterTransitionVal = 1f;
+        getEnterTransitionValHelper = 1f;
 
         exitTransition = false;
 
