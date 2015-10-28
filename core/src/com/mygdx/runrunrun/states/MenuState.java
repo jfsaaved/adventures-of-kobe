@@ -48,6 +48,17 @@ public class MenuState extends State {
         }
     }
 
+    @Override
+    protected void onExitTransition(float dt){
+        if(exitTransition){
+
+            exitTransitionVal += 1f * dt;
+            if(exitTransitionVal >= 1f){
+                gsm.set(new PlayState(gsm, 5));
+            }
+        }
+    }
+
     public void update(float dt){
 
         handleInput();

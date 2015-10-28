@@ -45,18 +45,7 @@ public abstract class State {
         }
     }
 
-    protected void onExitTransition(float dt){
-        if(exitTransition){
-
-            exitTransitionVal += 1f * dt;
-
-            if(exitTransitionVal >= 1f){
-                gsm.set(new PlayState(gsm, 5));
-            }
-
-        }
-    }
-
+    protected abstract void onExitTransition(float dt);
     protected abstract void handleInput();
     protected abstract void update(float dt);
     protected abstract void render(SpriteBatch sb);
