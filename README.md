@@ -3,9 +3,13 @@ A 2D endless runner game  using core Java and libgdx.
 Re-uses objects to populate the dynamic map/level.
 
 Stop at shop = Click/Touch screen when the Shop contains Hero
+
 Dash = Click/Touch hero
+
 Destroy object = Click/Touch object
+
 Jump = Click/Touch anywhere else on the screen
+
 
 Feel free to download and/or use the files
 
