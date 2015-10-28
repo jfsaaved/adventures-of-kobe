@@ -19,11 +19,16 @@ public class MenuState extends State {
     private float transitionVal;
     private boolean startTransition;
 
+    private boolean enterTransition;
+    private float enterTransitionVal;
 
     public MenuState(GSM gsm){
         super(gsm);
 
+        enterTransition = true;
         startTransition = false;
+        enterTransitionVal = 0f;
+
         title = new TextImage("RUN", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 80,1);
@@ -77,13 +82,18 @@ public class MenuState extends State {
     }
 
     public void shapeRender(ShapeRenderer sr){
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
-        sr.setColor(new Color(0,0,0,transitionVal));
+        if(enterTransition)
+            sr.setColor((new Color(0,0,0,enterTransitionVal)));
+        else
+            sr.setColor(new Color(0,0,0,transitionVal));
+
         sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
 
 
