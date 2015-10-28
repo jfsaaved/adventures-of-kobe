@@ -17,13 +17,6 @@ public class MenuState extends State {
     private TextImage title;
     private TextImage startButton;
 
-    private float exitTransitionVal;
-    private boolean exitTransition;
-
-    private boolean enterTransition;
-    private float enterTransitionVal;
-    private float getEnterTransitionValHelper;
-
     public MenuState(GSM gsm){
         super(gsm);
 
@@ -55,31 +48,6 @@ public class MenuState extends State {
         }
     }
 
-    private void onEnterTransition(float dt){
-        if(enterTransition){
-            if(getEnterTransitionValHelper > 0)
-                getEnterTransitionValHelper -= 1f * dt;
-            else
-                enterTransitionVal -= 0.5f * dt;
-
-            if(enterTransitionVal <= 0f){
-                enterTransition = false;
-            }
-        }
-    }
-
-    private void onExitTransition(float dt){
-        if(exitTransition){
-
-            exitTransitionVal += 1f * dt;
-
-            if(exitTransitionVal >= 1f){
-                gsm.set(new PlayState(gsm, 5));
-            }
-
-        }
-    }
-
     public void update(float dt){
 
         handleInput();
@@ -100,22 +68,6 @@ public class MenuState extends State {
     }
 
     public void shapeRender(ShapeRenderer sr){
-
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        sr.setProjectionMatrix(cam.combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-
-        if(enterTransition)
-            sr.setColor((new Color(0,0,0,enterTransitionVal)));
-        else if(exitTransition)
-            sr.setColor(new Color(0,0,0, exitTransitionVal));
-
-        sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
-
-
-        sr.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
+        super.shapeRender(sr);
     }
 }

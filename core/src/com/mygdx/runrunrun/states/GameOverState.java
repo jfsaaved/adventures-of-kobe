@@ -20,18 +20,10 @@ public class GameOverState extends State {
     private TextImage menu;
     private TextImage play;
 
-    private float exitTransitionVal;
-    private boolean exitTransition;
-
-    private boolean enterTransition;
-    private float enterTransitionVal;
-    private float getEnterTransitionValHelper;
-
     private boolean fState; // 0 play again, 1 main menu;
 
     public GameOverState(GSM gsm, int score){
         super(gsm);
-
 
         enterTransition = true;
         enterTransitionVal = 1f;
@@ -71,7 +63,7 @@ public class GameOverState extends State {
                 exitTransition = true;
                 exitTransitionVal = 0f;
             }
-            else if (play.contains(mouse.x,mouse.y)) {
+            else if (play.contains(mouse.x, mouse.y)) {
                 fState = false;
                 exitTransition = true;
                 exitTransitionVal = 0f;
@@ -79,24 +71,11 @@ public class GameOverState extends State {
         }
     }
 
-
-    private void onEnterTransition(float dt){
-        if(enterTransition){
-            if(getEnterTransitionValHelper > 0)
-                getEnterTransitionValHelper -= 1f * dt;
-            else
-                enterTransitionVal -= 0.5f * dt;
-
-            if(enterTransitionVal <= 0f){
-                enterTransition = false;
-            }
-        }
-    }
-
-    private void onExitTransition(float dt){
+    @Override
+    protected void onExitTransition(float dt){
         if(exitTransition){
 
-            exitTransitionVal+= 1f * dt;
+            exitTransitionVal += 1f * dt;
 
             if(exitTransitionVal >= 1f){
                 if(!fState)
@@ -129,21 +108,6 @@ public class GameOverState extends State {
     }
 
     public void shapeRender(ShapeRenderer sr){
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        sr.setProjectionMatrix(cam.combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-
-        if(enterTransition)
-            sr.setColor((new Color(0,0,0,enterTransitionVal)));
-        else if(exitTransition)
-            sr.setColor(new Color(0,0,0, exitTransitionVal));
-
-        sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
-
-
-        sr.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
+        super.shapeRender(sr);
     }
 }
