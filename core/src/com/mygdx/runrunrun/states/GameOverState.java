@@ -51,7 +51,12 @@ public class GameOverState extends State {
     }
 
     public void handleInput(){
-        if(Gdx.input.isTouched()){
+        if(Gdx.input.isTouched() && !startTransition){
+
+            mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cam.unproject(mouse);
+
+
             startTransition = true;
             transitionVal = 0f;
         }
