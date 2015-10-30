@@ -27,8 +27,8 @@ public class Hero extends MoveableObject {
     // Fly mechanics
     private boolean fly;
     private float flyTimer;
+    private float flyHeight;
     private boolean flyTimerBoolean;
-    private int flyHeight;
 
     // Moving mechanics
     private float speed;
@@ -302,28 +302,34 @@ public class Hero extends MoveableObject {
         }
         else {
             inAir = true;
-            if(flyHeight < 139){
+
+            if(flyHeight < 100){ // Originally 139
                 flyHeight += 100 * dt;
             }
-            final_y = flyHeight + flyTimer * dt;
+
+            /*
             if(!flyTimerBoolean){
-                flyTimer += 300f * dt;
-                if(flyTimer > 500){
+                if(flyTimer >= 300)
                     flyTimerBoolean = true;
+                else{
+                    flyTimer += 300f * dt;
                 }
             }else{
-                flyTimer -= 300f * dt;
-                if(flyTimer < 0){
+                if(flyTimer <= 0)
                     flyTimerBoolean = false;
+                else{
+                    flyTimer -= 300f * dt;
                 }
-            }
+            }*/
+
+            final_y = flyHeight + (flyTimer * dt);
+
         }
 
-
-        updateAnimation(dt);
         this.position.set(final_x,final_y);
         this.rect.setWidth(30);
         this.rect.setPosition(final_x + 30,final_y);
+        updateAnimation(dt);
 
     }
 
