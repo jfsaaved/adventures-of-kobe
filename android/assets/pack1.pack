@@ -1,0 +1,89 @@
+
+pack1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+fontsheet
+  rotate: false
+  xy: 1, 571
+  size: 450, 450
+  orig: 450, 450
+  offset: 0, 0
+  index: -1
+player
+  rotate: false
+  xy: 1, 302
+  size: 624, 267
+  orig: 624, 267
+  offset: 0, 0
+  index: -1
+test
+  rotate: false
+  xy: 1, 33
+  size: 624, 267
+  orig: 624, 267
+  offset: 0, 0
+  index: -1
+clouds1
+  rotate: false
+  xy: 453, 861
+  size: 400, 160
+  orig: 400, 160
+  offset: 0, 0
+  index: -1
+bg1
+  rotate: false
+  xy: 453, 733
+  size: 400, 126
+  orig: 400, 126
+  offset: 0, 0
+  index: -1
+ground1
+  rotate: false
+  xy: 1, 1
+  size: 400, 30
+  orig: 400, 30
+  offset: 0, 0
+  index: -1
+building1
+  rotate: false
+  xy: 453, 577
+  size: 199, 154
+  orig: 199, 154
+  offset: 0, 0
+  index: -1
+textbox1
+  rotate: false
+  xy: 855, 886
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+block2
+  rotate: false
+  xy: 654, 631
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+coin1
+  rotate: false
+  xy: 403, 7
+  size: 25, 24
+  orig: 25, 24
+  offset: 0, 0
+  index: -1
+block1
+  rotate: false
+  xy: 855, 864
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+heart
+  rotate: false
+  xy: 992, 1005
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
