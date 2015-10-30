@@ -498,7 +498,7 @@ public class PlayState extends State{
 
             if(!toTown){
                 currentCycle++;
-                if(currentCycle % 10 == 0){
+                if(currentCycle % 5 == 0){ // Originally 10
                     if(level < 24) {
                         level++;
                         initLevelObj(level);
@@ -739,7 +739,7 @@ public class PlayState extends State{
     private void renderHealth(SpriteBatch sb){
         int health_y_offset = 4;
         for(int i = 1; i <= hero.getHealth_counter(); i++)
-            sb.draw(health,cam.position.x + cam.viewportWidth/2 - (16 * i), cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth(),health.getRegionHeight());
+            sb.draw(health, (cam.position.x + cam.viewportWidth/2 - (16 * i)) - 10, cam.position.y + cam.viewportHeight/2 - (25 + health_y_offset),health.getRegionWidth(),health.getRegionHeight());
     }
 
     public void render(SpriteBatch sb){

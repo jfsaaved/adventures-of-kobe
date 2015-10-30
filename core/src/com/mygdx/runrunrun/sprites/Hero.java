@@ -307,7 +307,7 @@ public class Hero extends MoveableObject {
                 flyHeight += 100 * dt;
             }
 
-            /*
+
             if(!flyTimerBoolean){
                 if(flyTimer >= 300)
                     flyTimerBoolean = true;
@@ -320,7 +320,7 @@ public class Hero extends MoveableObject {
                 else{
                     flyTimer -= 300f * dt;
                 }
-            }*/
+            }
 
             final_y = flyHeight + (flyTimer * dt);
 
