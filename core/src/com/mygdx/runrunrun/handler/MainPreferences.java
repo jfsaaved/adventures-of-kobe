@@ -28,4 +28,28 @@ public class MainPreferences {
         }
     }
 
+    public void setName(String name){
+        prefs.putString("Name",name);
+        prefs.flush();
+    }
+
+    public String getName(){
+        if(prefs.getString("Name") != null){
+            return prefs.getString("Name");
+        }else
+            return "No name";
+    }
+
+    public void setGold(int gold){
+        prefs.putInteger("Gold",gold);
+        prefs.flush();
+    }
+
+    public int getGold(){
+        if(prefs.getInteger("Gold") >= 0){
+            return prefs.getInteger("Gold");
+        }else
+            return 0;
+    }
+
 }
