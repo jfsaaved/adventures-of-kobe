@@ -13,6 +13,7 @@ import com.mygdx.runrunrun.ui.TextImage;
  */
 public class MenuState extends State {
 
+    private TextImage name;
     private TextImage highScore;
     private TextImage title;
     private TextImage startButton;
@@ -20,19 +21,36 @@ public class MenuState extends State {
     public MenuState(GSM gsm){
         super(gsm);
 
+        initPrefs();
+
         enterTransition = true;
         enterTransitionVal = 1f;
         getEnterTransitionValHelper = 1f;
 
         exitTransition = false;
 
+        name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2, Main.HEIGHT/2 - 120, 1);
         title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 80,1);
+
+        name.setTextHide(false);
         title.setTextHide(false);
         startButton.setTextHide(false);
         highScore.setTextHide(false);
 
+    }
+
+    private void initPrefs(){
+
+        if(!Main.pref.getPrefs().contains("Name"))
+            Main.pref.setName("Julian");
+
+        if(!Main.pref.getPrefs().contains("Gold"))
+           Main.pref.setGold(0);
+
+        if(!Main.pref.getPrefs().contains("High Score"))
+            Main.pref.setHighScore(0);
     }
 
     public void handleInput(){
@@ -71,6 +89,7 @@ public class MenuState extends State {
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
+        name.render(sb);
         title.render(sb);
         startButton.render(sb);
         highScore.render(sb);

@@ -14,6 +14,10 @@ public class MainPreferences {
         prefs = Gdx.app.getPreferences("RunRunRun-Save");
     }
 
+    public Preferences getPrefs(){
+        return prefs;
+    }
+
     public void setHighScore(int score){
         prefs.putInteger("High Score",score);
         prefs.flush();
@@ -34,10 +38,10 @@ public class MainPreferences {
     }
 
     public String getName(){
-        if(prefs.getString("Name") != null){
+        if(!prefs.getString("Name").equals(null)){
             return prefs.getString("Name");
         }else
-            return "No name";
+            return "noname";
     }
 
     public void setGold(int gold){
