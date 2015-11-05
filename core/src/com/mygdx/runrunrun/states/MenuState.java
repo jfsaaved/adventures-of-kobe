@@ -14,6 +14,7 @@ import com.mygdx.runrunrun.ui.TextImage;
 public class MenuState extends State {
 
     private TextImage name;
+    private TextImage gold;
     private TextImage highScore;
     private TextImage title;
     private TextImage startButton;
@@ -29,12 +30,14 @@ public class MenuState extends State {
 
         exitTransition = false;
 
-        name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2, Main.HEIGHT/2 - 120, 1);
+        name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2 + 65, Main.HEIGHT/2 - 125, 0.5f);
+        gold = new TextImage("" + Main.pref.getGold(), Main.WIDTH/2 + 20, Main.HEIGHT/2 - 150, 0.5f);
         title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 80,1);
 
         name.setTextHide(false);
+        gold.setTextHide(false);
         title.setTextHide(false);
         startButton.setTextHide(false);
         highScore.setTextHide(false);
@@ -90,6 +93,7 @@ public class MenuState extends State {
         sb.begin();
 
         name.render(sb);
+        gold.render(sb);
         title.render(sb);
         startButton.render(sb);
         highScore.render(sb);

@@ -589,6 +589,7 @@ public class PlayState extends State{
 
             exitTransitionVal += 1f * dt;
             if(exitTransitionVal >= 1f){
+                Main.pref.setGold(hero.getCoins());
                 gsm.set(new GameOverState(gsm, score));
             }
 
