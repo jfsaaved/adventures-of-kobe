@@ -575,7 +575,7 @@ public class PlayState extends State{
             hero.toggleStop(true);
             hero.setFade(true);
             exitTransition = true;
-            exitTransitionVal = 0f;
+            exitTransitionVal = -1f;
         }
     }
 
