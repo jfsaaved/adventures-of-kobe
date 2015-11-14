@@ -22,6 +22,7 @@ import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.sprites.Types;
 import com.mygdx.runrunrun.handler.Sounds;
+import com.mygdx.runrunrun.ui.Item;
 import com.mygdx.runrunrun.ui.ItemButton;
 import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
@@ -153,7 +154,7 @@ public class PlayState extends State{
     }
 
     private void initSounds(){
-        jumpSound = Main.sounds.getSound("select");
+        jumpSound = Main.sounds.getSound("jump");
     }
 
     private void initCamera(int mapLength){
@@ -299,9 +300,7 @@ public class PlayState extends State{
 
             for(ItemButton itemButton : itemButtons){
                 if(itemButton.containsRect(mouse.x,mouse.y)){
-
                     itemButton.interact(hero, this);
-
                     return;
                 }
             }
@@ -457,7 +456,7 @@ public class PlayState extends State{
                     itemButton.setHide(true);
             }
             else if(exitShopTimer < 97 && exitShopTimer > 20){
-                if(currentDialogue.equals(shop.getDialogue(0)) || currentDialogue.equals(shop.getDialogue(2)) || currentDialogue.equals(shop.getDialogue(3))) {
+                if(currentDialogue.equals(shop.getDialogue(0)) || currentDialogue.equals(shop.getDialogue(5)) || currentDialogue.equals(shop.getDialogue(2)) || currentDialogue.equals(shop.getDialogue(3))) {
                     currentDialogue = shop.getDialogue(1);
                     shopTextBox.setTextHide(false);
                     shopTextBox.setTextBox_hide(false);
@@ -498,7 +497,7 @@ public class PlayState extends State{
 
             if(!toTown){
                 currentCycle++;
-                if(currentCycle % 5 == 0){ // Originally 10
+                if(currentCycle % 3 == 0){ // Originally 10, or 5
                     if(level < 24) {
                         level++;
                         initLevelObj(level);

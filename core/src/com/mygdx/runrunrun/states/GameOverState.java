@@ -59,11 +59,13 @@ public class GameOverState extends State {
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
             if(menu.contains(mouse.x, mouse.y)) {
+                Main.sounds.playSound("select");
                 fState = true;
                 exitTransition = true;
                 exitTransitionVal = 0f;
             }
             else if (play.contains(mouse.x, mouse.y)) {
+                Main.sounds.playSound("select");
                 fState = false;
                 exitTransition = true;
                 exitTransitionVal = 0f;
@@ -74,11 +76,8 @@ public class GameOverState extends State {
     @Override
     protected void onExitTransition(float dt){
         if(exitTransition){
-
             exitTransitionVal += 1f * dt;
-
             if(exitTransitionVal >= 1f){
-                Main.sounds.playSound("select");
                 if(!fState)
                     gsm.set(new PlayState(gsm, 5));
                 else if(fState)

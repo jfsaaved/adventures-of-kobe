@@ -43,6 +43,7 @@ public class Main extends ApplicationAdapter {
         musicContent.loadMusic("play.mp3","play");
         musicContent.loadMusic("intro.mp3","intro");
         sounds.loadSound("select.mp3","select");
+        sounds.loadSound("jump.mp3","jump");
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();

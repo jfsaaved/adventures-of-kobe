@@ -21,7 +21,7 @@ public class Shop extends MoveableObject{
     public Shop(float x, float y, TextureRegion image){
         super(x,y,image, Types.Shop);
 
-        dialogue = new String[5];
+        dialogue = new String[6];
         output = new String[2];
         item = new Item[2];
         options = new String[2];
@@ -42,6 +42,9 @@ public class Shop extends MoveableObject{
                       "Shop Owner: Anything else?                " ;
 
         dialogue[4] = "Shop Owner: sick sesh bruh                " ;
+
+        dialogue[5] = "Shop Owner: You have full health!         " +
+                      "Shop Owner: Anything else?                " ;
 
         // Items
         item[0] = Item.REST;
