@@ -146,6 +146,10 @@ public class Hero extends MoveableObject {
         if(isStopped){
             speed = MAX_SPEED;
             isStopped = false;
+
+            if(stopping){
+                stopping = false;
+            }
         }else{
             isStopped = true;
         }
@@ -156,7 +160,6 @@ public class Hero extends MoveableObject {
             speed = 0;
         }else{
             speed = MAX_SPEED;
-
             if(stopping){
                 stopping = false;
             }
@@ -235,7 +238,7 @@ public class Hero extends MoveableObject {
                     rowIndex = 0;
                 }
             }
-            else if(stopping){
+            else if(stopping || isStopped){
                 colIndex = 1;
                 rowIndex = 6;
             }
