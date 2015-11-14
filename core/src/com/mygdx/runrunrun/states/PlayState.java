@@ -12,7 +12,6 @@ import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.backgrounds.Clouds;
 import com.mygdx.runrunrun.backgrounds.Ground;
 import com.mygdx.runrunrun.backgrounds.Mountains;
-import com.mygdx.runrunrun.handler.Sounds;
 import com.mygdx.runrunrun.sprites.Block;
 import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.Hero;
@@ -21,8 +20,6 @@ import com.mygdx.runrunrun.sprites.MoveableObject;
 import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.sprites.Shop;
 import com.mygdx.runrunrun.sprites.Types;
-import com.mygdx.runrunrun.handler.Sounds;
-import com.mygdx.runrunrun.ui.Item;
 import com.mygdx.runrunrun.ui.ItemButton;
 import com.mygdx.runrunrun.ui.TextBoxImage;
 import com.mygdx.runrunrun.ui.TextImage;
@@ -373,6 +370,7 @@ public class PlayState extends State{
         if(!firstObj.getHide()) {
             if (firstObj.overlaps(secondObj.getRectangle())) {
                 if (hit_cool_down == 0) {
+                    firstObj.kill();
                     hit_cool_down = HIT_COOL_DOWN_MAX;
                     hit_splash_cool_down = 60f;
                 }
@@ -575,7 +573,6 @@ public class PlayState extends State{
         if(gameOver){
             gameOver = false;
             hero.toggleStop(true);
-            hero.setFly(true);
             hero.setFade(true);
             exitTransition = true;
             exitTransitionVal = 0f;
