@@ -13,7 +13,7 @@ import com.mygdx.runrunrun.ui.TextImage;
  */
 public class MenuState extends State {
 
-    private TextImage name;
+    //private TextImage name;
     private TextImage gold;
     private TextImage highScore;
     private TextImage title;
@@ -30,13 +30,13 @@ public class MenuState extends State {
 
         exitTransition = false;
 
-        name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2, Main.HEIGHT/2 - 50, 1);
-        gold = new TextImage("" + Main.pref.getGold(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1);
+        //name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2, Main.HEIGHT/2 - 50, 1);
+        gold = new TextImage("GOLD: " + Main.pref.getGold(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1);
         title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 100,1);
         startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2 + 50,1);
-        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2,1);
+        highScore = new TextImage("HIGH SCORE: " + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2,1);
 
-        name.setTextHide(false);
+        //name.setTextHide(false);
         gold.setTextHide(false);
         title.setTextHide(false);
         startButton.setTextHide(false);
@@ -47,7 +47,7 @@ public class MenuState extends State {
     private void initPrefs(){
 
         if(!Main.pref.getPrefs().contains("Name"))
-            Main.pref.setName("JULIAN");
+            Main.pref.setName("PLAYER");
 
         if(!Main.pref.getPrefs().contains("Gold"))
            Main.pref.setGold(0);
@@ -92,7 +92,7 @@ public class MenuState extends State {
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        name.render(sb);
+        //name.render(sb);
         gold.render(sb);
         title.render(sb);
         startButton.render(sb);
