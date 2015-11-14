@@ -77,7 +77,7 @@ public class Hero extends MoveableObject {
         speed = MAX_SPEED;
 
         // Items
-        coins = 0;
+        coins = Main.pref.getGold();
 
         // Fly mechanics
         fly = false;

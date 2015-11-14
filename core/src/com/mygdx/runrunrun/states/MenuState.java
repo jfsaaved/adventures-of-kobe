@@ -30,11 +30,11 @@ public class MenuState extends State {
 
         exitTransition = false;
 
-        name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2 + 65, Main.HEIGHT/2 - 125, 0.5f);
-        gold = new TextImage("" + Main.pref.getGold(), Main.WIDTH/2 + 20, Main.HEIGHT/2 - 150, 0.5f);
-        title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 80,1);
-        startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2,1);
-        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 80,1);
+        name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2, Main.HEIGHT/2 - 50, 1);
+        gold = new TextImage("" + Main.pref.getGold(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1);
+        title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 100,1);
+        startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2 + 50,1);
+        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2,1);
 
         name.setTextHide(false);
         gold.setTextHide(false);
@@ -47,7 +47,7 @@ public class MenuState extends State {
     private void initPrefs(){
 
         if(!Main.pref.getPrefs().contains("Name"))
-            Main.pref.setName("Julian");
+            Main.pref.setName("JULIAN");
 
         if(!Main.pref.getPrefs().contains("Gold"))
            Main.pref.setGold(0);
