@@ -78,6 +78,7 @@ public class GameOverState extends State {
             exitTransitionVal += 1f * dt;
 
             if(exitTransitionVal >= 1f){
+                Main.sounds.playSound("select");
                 if(!fState)
                     gsm.set(new PlayState(gsm, 5));
                 else if(fState)
