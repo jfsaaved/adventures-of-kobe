@@ -10,19 +10,25 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.ui.TextImage;
 
+import org.w3c.dom.css.Rect;
+
 /**
  * Created by 343076 on 12/08/2015.
  */
 public class GameOverState extends State {
 
     private TextureRegion gameOver;
+    private TextureRegion play;
+    private Rectangle playRect;
+    private TextureRegion menu;
+    private Rectangle menuRect;
 
     //private TextImage game_over_text;
     private TextImage highScore;
     private TextImage currentScore;
 
-    private TextImage menu;
-    private TextImage play;
+    //private TextImage menu;
+    //private TextImage play;
 
     private boolean fState; // 0 play again, 1 main menu;
 
@@ -35,10 +41,19 @@ public class GameOverState extends State {
 
         exitTransition = false;
 
-        currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2, 1f );
-        highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
+        currentScore = new TextImage("YOUR SCORE:" + score, 0, 0, 0.5f );
+        highScore = new TextImage("HIGH SCORE:" + Main.pref.getHighScore(), 0, 0, 0.5f);
+
+
         //game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2 + 100, 1f);
         gameOver = new TextureRegion(Main.resource.getAtlas("assets").findRegion("gameover"));
+        play = new TextureRegion(Main.resource.getAtlas("assets").findRegion("restart"));
+        playRect = new Rectangle(Main.WIDTH/2 - play.getRegionWidth()/2,Main.HEIGHT/2,play.getRegionWidth(),play.getRegionHeight());
+        menu = new TextureRegion(Main.resource.getAtlas("assets").findRegion("mainmenu"));
+        menuRect = new Rectangle(Main.WIDTH/2 - menu.getRegionWidth()/2,Main.HEIGHT/2 - playRect.getHeight(),menu.getRegionWidth(),menu.getRegionHeight());
+
+        currentScore.update(Main.WIDTH/2 + currentScore.getWidth()/2, Main.HEIGHT/2 - 130);
+        highScore.update(Main.WIDTH/2 + highScore.getWidth()/2, Main.HEIGHT/2 - 160);
 
         if(score > Main.pref.getHighScore()) {
             Main.pref.setHighScore(score);
@@ -50,11 +65,10 @@ public class GameOverState extends State {
         }
 
         //game_over_text.setTextHide(false);
-
-        menu = new TextImage("MENU", Main.WIDTH/2 + 100, Main.HEIGHT/2 - 150, 1f);
-        play = new TextImage("PLAY", Main.WIDTH/2 - 100, Main.HEIGHT/2 - 150, 1f);
-        menu.setTextHide(false);
-        play.setTextHide(false);
+        //menu = new TextImage("MENU", Main.WIDTH/2 + 100, Main.HEIGHT/2 - 150, 1f);
+        //play = new TextImage("PLAY", Main.WIDTH/2 - 100, Main.HEIGHT/2 - 150, 1f);
+        //menu.setTextHide(false);
+        //play.setTextHide(false);
 
     }
 
@@ -63,13 +77,13 @@ public class GameOverState extends State {
 
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
-            if(menu.contains(mouse.x, mouse.y)) {
+            if(menuRect.contains(mouse.x, mouse.y)) {
                 Main.sounds.playSound("select");
                 fState = true;
                 exitTransition = true;
                 exitTransitionVal = 0f;
             }
-            else if (play.contains(mouse.x, mouse.y)) {
+            else if (playRect.contains(mouse.x, mouse.y)) {
                 Main.sounds.playSound("select");
                 fState = false;
                 exitTransition = true;
@@ -106,9 +120,10 @@ public class GameOverState extends State {
         highScore.render(sb);
         //game_over_text.render(sb);
         sb.draw(gameOver,Main.WIDTH/2 - gameOver.getRegionWidth()/2, Main.HEIGHT/2 + 100);
-
-        menu.render(sb);
-        play.render(sb);
+        sb.draw(play,playRect.getX(),playRect.getY());
+        sb.draw(menu,menuRect.getX(),menuRect.getY());
+        //menu.render(sb);
+        //play.render(sb);
 
         sb.end();
     }
