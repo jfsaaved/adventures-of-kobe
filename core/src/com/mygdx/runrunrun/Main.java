@@ -11,6 +11,7 @@ import com.mygdx.runrunrun.handler.MainPreferences;
 import com.mygdx.runrunrun.handler.MusicContent;
 import com.mygdx.runrunrun.handler.Sounds;
 import com.mygdx.runrunrun.states.GSM;
+import com.mygdx.runrunrun.states.GameOverState;
 import com.mygdx.runrunrun.states.MenuState;
 import com.mygdx.runrunrun.states.PlayState;
 
@@ -48,7 +49,8 @@ public class Main extends ApplicationAdapter {
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
         gsm = new GSM();
-        gsm.push(new MenuState(gsm));
+        gsm.push(new GameOverState(gsm,0));
+        //gsm.push(new MenuState(gsm));
 
 	}
 

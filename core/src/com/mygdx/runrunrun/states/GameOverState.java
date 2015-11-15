@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.ui.TextImage;
 
@@ -13,7 +15,9 @@ import com.mygdx.runrunrun.ui.TextImage;
  */
 public class GameOverState extends State {
 
-    private TextImage game_over_text;
+    private TextureRegion gameOver;
+
+    //private TextImage game_over_text;
     private TextImage highScore;
     private TextImage currentScore;
 
@@ -33,7 +37,8 @@ public class GameOverState extends State {
 
         currentScore = new TextImage("" + score, Main.WIDTH/2, Main.HEIGHT/2, 1f );
         highScore = new TextImage("" + Main.pref.getHighScore(), Main.WIDTH/2, Main.HEIGHT/2 - 100, 1f);
-        game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2 + 100, 1f);
+        //game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2 + 100, 1f);
+        gameOver = new TextureRegion(Main.resource.getAtlas("assets").findRegion("gameover"));
 
         if(score > Main.pref.getHighScore()) {
             Main.pref.setHighScore(score);
@@ -44,7 +49,7 @@ public class GameOverState extends State {
             highScore.setTextHide(false);
         }
 
-        game_over_text.setTextHide(false);
+        //game_over_text.setTextHide(false);
 
         menu = new TextImage("MENU", Main.WIDTH/2 + 100, Main.HEIGHT/2 - 150, 1f);
         play = new TextImage("PLAY", Main.WIDTH/2 - 100, Main.HEIGHT/2 - 150, 1f);
@@ -99,7 +104,8 @@ public class GameOverState extends State {
 
         currentScore.render(sb);
         highScore.render(sb);
-        game_over_text.render(sb);
+        //game_over_text.render(sb);
+        sb.draw(gameOver,Main.WIDTH/2 - gameOver.getRegionWidth()/2, Main.HEIGHT/2 + 100);
 
         menu.render(sb);
         play.render(sb);
