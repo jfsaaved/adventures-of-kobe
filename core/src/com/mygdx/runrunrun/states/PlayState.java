@@ -650,11 +650,9 @@ public class PlayState extends State{
         }else if(gameOver || exitTransition){
             if(play.isPlaying()) {
                 play.stop();
-                play.dispose();
             }
             if(beforePlay.isPlaying()){
                 beforePlay.stop();
-                beforePlay.dispose();
             }
         }else{
             if(beforePlay.isPlaying())
