@@ -23,12 +23,8 @@ public class GameOverState extends State {
     private TextureRegion menu;
     private Rectangle menuRect;
 
-    //private TextImage game_over_text;
     private TextImage highScore;
     private TextImage currentScore;
-
-    //private TextImage menu;
-    //private TextImage play;
 
     private boolean fState; // 0 play again, 1 main menu;
 
@@ -44,8 +40,6 @@ public class GameOverState extends State {
         currentScore = new TextImage("YOUR SCORE:" + score, 0, 0, 0.5f );
         highScore = new TextImage("HIGH SCORE:" + Main.pref.getHighScore(), 0, 0, 0.5f);
 
-
-        //game_over_text = new TextImage("GAME OVER!",Main.WIDTH/2, Main.HEIGHT/2 + 100, 1f);
         gameOver = new TextureRegion(Main.resource.getAtlas("assets").findRegion("gameover"));
         play = new TextureRegion(Main.resource.getAtlas("assets").findRegion("restart"));
         playRect = new Rectangle(Main.WIDTH/2 - play.getRegionWidth()/2,Main.HEIGHT/2,play.getRegionWidth(),play.getRegionHeight());
@@ -63,12 +57,6 @@ public class GameOverState extends State {
             currentScore.setTextHide(false);
             highScore.setTextHide(false);
         }
-
-        //game_over_text.setTextHide(false);
-        //menu = new TextImage("MENU", Main.WIDTH/2 + 100, Main.HEIGHT/2 - 150, 1f);
-        //play = new TextImage("PLAY", Main.WIDTH/2 - 100, Main.HEIGHT/2 - 150, 1f);
-        //menu.setTextHide(false);
-        //play.setTextHide(false);
 
     }
 
@@ -102,7 +90,6 @@ public class GameOverState extends State {
                 else if(fState)
                     gsm.set(new MenuState(gsm));
             }
-
         }
     }
 
@@ -118,12 +105,10 @@ public class GameOverState extends State {
 
         currentScore.render(sb);
         highScore.render(sb);
-        //game_over_text.render(sb);
+
         sb.draw(gameOver,Main.WIDTH/2 - gameOver.getRegionWidth()/2, Main.HEIGHT/2 + 100);
         sb.draw(play,playRect.getX(),playRect.getY());
         sb.draw(menu,menuRect.getX(),menuRect.getY());
-        //menu.render(sb);
-        //play.render(sb);
 
         sb.end();
     }

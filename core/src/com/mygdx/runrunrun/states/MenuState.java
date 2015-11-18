@@ -16,12 +16,8 @@ import com.mygdx.runrunrun.ui.TextImage;
  */
 public class MenuState extends State {
 
-    //private TextImage name;
     private TextImage gold;
     private TextImage highScore;
-
-    //private TextImage title;
-    //private TextImage startButton;
 
     private TextureRegion title;
     private TextureRegion startButton;
@@ -43,10 +39,6 @@ public class MenuState extends State {
 
         exitTransition = false;
 
-        //name = new TextImage("" + Main.pref.getName(), Main.WIDTH/2, Main.HEIGHT/2 - 50, 1);
-        //title = new TextImage("KOBE", Main.WIDTH/2, Main.HEIGHT/2 + 100,1);
-        //startButton = new TextImage("START", Main.WIDTH/2, Main.HEIGHT/2 + 50,1);
-
         clouds = new TextureRegion(Main.resource.getAtlas("assets").findRegion("clouds1"));
         clouds2 = clouds;
 
@@ -62,11 +54,6 @@ public class MenuState extends State {
 
         highScore.setTextHide(false);
         gold.setTextHide(false);
-
-        //name.setTextHide(false);
-        //title.setTextHide(false);
-        //startButton.setTextHide(false);
-
 
     }
 
@@ -131,10 +118,6 @@ public class MenuState extends State {
         sb.draw(title, Main.WIDTH/2 - title.getRegionWidth()/2, Main.HEIGHT/2 + 60);
         sb.draw(startButton, startRect.getX(), startRect.getY());
         highScore.render(sb);
-
-        //name.render(sb);
-        //title.render(sb);
-        //startButton.render(sb);
 
         sb.end();
     }
