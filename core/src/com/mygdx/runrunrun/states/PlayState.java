@@ -107,6 +107,8 @@ public class PlayState extends State{
     private Music play;
 
     // Sound effects
+    private Sound selectSound;
+    private boolean selectSoundHelper;
     private Sound hitSound;
     private boolean hitSoundHelper;
     private Sound jumpSound;
@@ -153,7 +155,7 @@ public class PlayState extends State{
     }
 
     private void initSounds(){
-
+        selectSound = Main.sounds.getSound("select");
         jumpSound = Main.sounds.getSound("jump");
         hitSound = Main.sounds.getSound("hit");
     }
@@ -303,6 +305,7 @@ public class PlayState extends State{
             for(ItemButton itemButton : itemButtons){
                 if(itemButton.containsRect(mouse.x,mouse.y)){
                     itemButton.interact(hero, this);
+                    selectSoundHelper = true;
                     return;
                 }
             }
@@ -677,6 +680,11 @@ public class PlayState extends State{
         if(hitSoundHelper){
             hitSound.play();
             hitSoundHelper = false;
+        }
+
+        if(selectSoundHelper){
+            selectSound.play();
+            selectSoundHelper = false;
         }
     }
 
