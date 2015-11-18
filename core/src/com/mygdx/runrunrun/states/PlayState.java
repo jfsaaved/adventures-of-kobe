@@ -107,6 +107,8 @@ public class PlayState extends State{
     private Music play;
 
     // Sound effects
+    private Sound hitSound;
+    private boolean hitSoundHelper;
     private Sound jumpSound;
     private boolean jumpSoundHelper;
 
@@ -151,7 +153,9 @@ public class PlayState extends State{
     }
 
     private void initSounds(){
+
         jumpSound = Main.sounds.getSound("jump");
+        hitSound = Main.sounds.getSound("hit");
     }
 
     private void initCamera(int mapLength){
@@ -270,6 +274,7 @@ public class PlayState extends State{
                 if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.kill();
+                        hitSoundHelper = true;
                         return;
                     }
                 }else if(object.getType().equals(Types.Coin)){
@@ -668,6 +673,11 @@ public class PlayState extends State{
             jumpSound.play();
             jumpSoundHelper = false;
         }
+
+        if(hitSoundHelper){
+            hitSound.play();
+            hitSoundHelper = false;
+        }
     }
 
     private void onExitCycle(){
@@ -790,7 +800,6 @@ public class PlayState extends State{
 
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
-
 
         //sr.rect(hero.getRectangle().getX(), hero.getRectangle().getY(), hero.getRectangle().getWidth(),hero.getRectangle().getHeight());
         //sr.setColor(1, 1, 0, 1);
