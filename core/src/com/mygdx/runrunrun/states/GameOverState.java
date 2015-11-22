@@ -12,6 +12,13 @@ import com.mygdx.runrunrun.ui.TextImage;
 
 import org.w3c.dom.css.Rect;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import sun.net.www.http.HttpClient;
+
 /**
  * Created by 343076 on 12/08/2015.
  */
@@ -58,6 +65,21 @@ public class GameOverState extends State {
             highScore.setTextHide(false);
         }
 
+        sendScore();
+    }
+
+    private void sendScore(){
+        String urlParameters  = "param1=a&param2=b&param3=c";
+        String request = "http://jfsaaved.github.io";
+        byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+        int    postDataLength = postData.length;
+        try {
+            URL url = new URL(request);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println(conn.getContent());
+        }catch(IOException e){
+            System.out.println("lol");
+        }
     }
 
     public void handleInput(){
