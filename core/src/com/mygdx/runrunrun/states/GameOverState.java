@@ -74,7 +74,9 @@ public class GameOverState extends State {
             String name = URLEncoder.encode("\"new guy 2\"", "UTF8");
             String gold = URLEncoder.encode("5","UTF8");
             String score = URLEncoder.encode("5","UTF8");
-            URL url = new URL("http://localhost:8080/kobe/NewEntry?name=" + name + "&gold=" + gold + "&score" + score);
+            URL url = new URL("http://localhost:8080/kobe/NewEntry?name=" + name + "&gold=" + gold + "&score=" + score);
+
+            System.out.println(url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             String USER_AGENT = "Mozilla/5.0";

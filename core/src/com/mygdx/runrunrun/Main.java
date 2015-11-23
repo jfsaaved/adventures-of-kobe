@@ -50,8 +50,8 @@ public class Main extends ApplicationAdapter {
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
         gsm = new GSM();
-        //gsm.push(new GameOverState(gsm,0));
-        gsm.push(new MenuState(gsm));
+        gsm.push(new GameOverState(gsm,0));
+        //gsm.push(new MenuState(gsm));
 
 	}
 
