@@ -15,6 +15,7 @@ import org.w3c.dom.css.Rect;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import sun.net.www.http.HttpClient;
@@ -69,7 +70,22 @@ public class GameOverState extends State {
     }
 
     private void sendScore(){
-        String urlParameters  = "param1=a&param2=b&param3=c";
+        try {
+            String name = URLEncoder.encode("\"new guy 2\"", "UTF8");
+            String gold = URLEncoder.encode("5","UTF8");
+            String score = URLEncoder.encode("5","UTF8");
+            URL url = new URL("http://localhost:8080/kobe/NewEntry?name=" + name + "&gold=" + gold + "&score" + score);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            String USER_AGENT = "Mozilla/5.0";
+            conn.setRequestProperty("User-Agent", USER_AGENT);
+            int responseCode = conn.getResponseCode();
+            System.out.println("Response Code : " + responseCode);
+        }catch(IOException e){
+            System.out.println("lol");
+        }
+
+        /*String urlParameters  = "param1=a&param2=b&param3=c";
         String request = "http://jfsaaved.github.io";
         byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
         int    postDataLength = postData.length;
@@ -79,7 +95,7 @@ public class GameOverState extends State {
             System.out.println(conn.getContent());
         }catch(IOException e){
             System.out.println("lol");
-        }
+        }*/
     }
 
     public void handleInput(){
