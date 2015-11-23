@@ -67,16 +67,15 @@ public class GameOverState extends State {
         }
 
         sendScore();
+
     }
 
     private void sendScore(){
         try {
-            String name = URLEncoder.encode("\"new guy 2\"", "UTF8");
-            String gold = URLEncoder.encode("5","UTF8");
-            String score = URLEncoder.encode("5","UTF8");
+            String name = URLEncoder.encode("\""+Main.pref.getName()+"\"", "UTF8");
+            String gold = URLEncoder.encode(""+Main.pref.getGold(),"UTF8");
+            String score = URLEncoder.encode(""+Main.pref.getHighScore(),"UTF8");
             URL url = new URL("http://localhost:8080/kobe/NewEntry?name=" + name + "&gold=" + gold + "&score=" + score);
-
-            System.out.println(url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             String USER_AGENT = "Mozilla/5.0";
@@ -84,20 +83,9 @@ public class GameOverState extends State {
             int responseCode = conn.getResponseCode();
             System.out.println("Response Code : " + responseCode);
         }catch(IOException e){
-            System.out.println("lol");
+            e.printStackTrace();
+            System.out.println("Error: Connection failed.");
         }
-
-        /*String urlParameters  = "param1=a&param2=b&param3=c";
-        String request = "http://jfsaaved.github.io";
-        byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
-        int    postDataLength = postData.length;
-        try {
-            URL url = new URL(request);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            System.out.println(conn.getContent());
-        }catch(IOException e){
-            System.out.println("lol");
-        }*/
     }
 
     public void handleInput(){
