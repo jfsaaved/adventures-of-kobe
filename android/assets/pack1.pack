@@ -103,21 +103,21 @@ exit
   index: -1
 coin1
   rotate: false
-  xy: 403, 543
-  size: 25, 24
-  orig: 25, 24
+  xy: 453, 606
+  size: 64, 16
+  orig: 64, 16
   offset: 0, 0
   index: -1
 block1
   rotate: false
-  xy: 403, 133
+  xy: 403, 547
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 heart
   rotate: false
-  xy: 453, 606
+  xy: 403, 137
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

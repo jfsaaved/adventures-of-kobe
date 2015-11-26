@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
+import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.ui.TextImage;
 
 import org.w3c.dom.css.Rect;

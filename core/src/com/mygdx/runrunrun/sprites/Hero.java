@@ -28,7 +28,6 @@ public class Hero extends MoveableObject {
     private boolean fly;
     private float flyTimer;
     private float flyHeight;
-    private boolean flyTimerBoolean;
 
     // Moving mechanics
     private float speed;
@@ -41,7 +40,7 @@ public class Hero extends MoveableObject {
     private boolean stopping;
     private boolean jumping;
 
-    private TextureRegion[][] fontSheet;
+    private TextureRegion[][] spriteSheet;
     private int rowIndex;
     private int colIndex;
     private float animationDelay;
@@ -63,11 +62,11 @@ public class Hero extends MoveableObject {
         int rows = image.getRegionWidth() / width;
         int cols = image.getRegionHeight() / height;
 
-        fontSheet = new TextureRegion[rows][cols];
+        spriteSheet = new TextureRegion[rows][cols];
 
         for(int i = 0 ; i < rows ; i ++){
             for(int j = 0 ; j < cols ; j ++){
-                fontSheet[i][j] = new TextureRegion(image, width * i, height * j, width, height);
+                spriteSheet[i][j] = new TextureRegion(image, width * i, height * j, width, height);
             }
         }
 
@@ -82,7 +81,6 @@ public class Hero extends MoveableObject {
 
         // Fly mechanics
         fly = false;
-        flyTimerBoolean = false;
         flyTimer = 0;
         flyHeight = Main.GROUND_LEVEL;
 
@@ -98,7 +96,6 @@ public class Hero extends MoveableObject {
     public void setFly(boolean b){
         fly = b;
         if(fly){
-            flyTimerBoolean = false;
             flyTimer = 0;
             flyHeight = Main.GROUND_LEVEL;
         }
@@ -217,6 +214,11 @@ public class Hero extends MoveableObject {
             running = false;
             standing = false;
             jumping = true;
+            if(fly) {
+                running = true;
+                jumping = false;
+                standing = false;
+            }
         }
     }
 
@@ -297,8 +299,7 @@ public class Hero extends MoveableObject {
         }
 
         this.position.set(final_x,final_y);
-        this.rect.setWidth(30);
-        this.rect.setPosition(final_x + 30,final_y);
+        this.rect.setPosition(final_x,final_y);
 
         updateState();
         updateAnimation(dt);
@@ -308,7 +309,7 @@ public class Hero extends MoveableObject {
     public void render(SpriteBatch sb){
 
         if(hide == false)
-                sb.draw(fontSheet[rowIndex][colIndex],position.x, position.y, width, height);
+                sb.draw(spriteSheet[rowIndex][colIndex],position.x, position.y, width, height);
 
     }
 
