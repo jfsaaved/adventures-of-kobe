@@ -221,15 +221,15 @@ public class PlayState extends State{
         objects.lastElement().setHide(true);
 
         // Moving objects
-        objects.add(new MovingBlock(0, 0, Main.resource.getAtlas("assets").findRegion("blob1"), 20f));
+        objects.add(new MovingBlock(0, 0, Main.resource.getAtlas("assets").findRegion("blob3"), 20f));
         objects.lastElement().setHide(true);
 
         // Blocks
         for (int i = 0; i < level; i++) {
             if (i < (level / 2) + 2) {
-                objects.add(new Block(0, 0, Main.resource.getAtlas("assets").findRegion("block1")));
+                objects.add(new Block(0, 0, Main.resource.getAtlas("assets").findRegion("blob1")));
             } else {
-                objects.add(new HitBlock(0, 0, Main.resource.getAtlas("assets").findRegion("block2")));
+                objects.add(new HitBlock(0, 0, Main.resource.getAtlas("assets").findRegion("blob2")));
             }
             objects.lastElement().setHide(true);
         }
