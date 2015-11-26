@@ -54,7 +54,7 @@ public class Hero extends MoveableObject {
 
         // Animation test
         int width = 36;
-        int height = 60;
+        int height = 54;
         rowIndex = 0;
         colIndex = 0;
         animationDelay = 1f;
