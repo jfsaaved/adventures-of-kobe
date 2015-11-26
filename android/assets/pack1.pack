@@ -5,126 +5,119 @@ filter: Nearest,Nearest
 repeat: none
 fontsheet
   rotate: false
-  xy: 1, 571
+  xy: 1, 569
   size: 450, 450
   orig: 450, 450
   offset: 0, 0
   index: -1
-player
-  rotate: false
-  xy: 1, 302
-  size: 624, 267
-  orig: 624, 267
-  offset: 0, 0
-  index: -1
-test
-  rotate: false
-  xy: 1, 33
-  size: 624, 267
-  orig: 624, 267
-  offset: 0, 0
-  index: -1
 clouds1
   rotate: false
-  xy: 453, 861
-  size: 400, 160
-  orig: 400, 160
+  xy: 1, 332
+  size: 400, 235
+  orig: 400, 235
   offset: 0, 0
   index: -1
 bg1
   rotate: false
-  xy: 453, 733
-  size: 400, 126
-  orig: 400, 126
+  xy: 453, 901
+  size: 400, 118
+  orig: 400, 118
+  offset: 0, 0
+  index: -1
+player
+  rotate: false
+  xy: 1, 234
+  size: 768, 96
+  orig: 768, 96
   offset: 0, 0
   index: -1
 gameover
   rotate: false
-  xy: 453, 654
+  xy: 1, 155
   size: 428, 77
   orig: 428, 77
   offset: 0, 0
   index: -1
-ground1
-  rotate: false
-  xy: 1, 1
-  size: 400, 30
-  orig: 400, 30
-  offset: 0, 0
-  index: -1
-start
-  rotate: false
-  xy: 453, 585
-  size: 263, 67
-  orig: 263, 67
-  offset: 0, 0
-  index: -1
-textbox1
-  rotate: false
-  xy: 855, 886
-  size: 135, 135
-  orig: 135, 135
-  offset: 0, 0
-  index: -1
-building1
-  rotate: false
-  xy: 718, 498
-  size: 199, 154
-  orig: 199, 154
-  offset: 0, 0
-  index: -1
 title
   rotate: false
-  xy: 627, 377
+  xy: 453, 780
   size: 332, 119
   orig: 332, 119
   offset: 0, 0
   index: -1
+ground1
+  rotate: false
+  xy: 1, 123
+  size: 400, 30
+  orig: 400, 30
+  offset: 0, 0
+  index: -1
+building1
+  rotate: false
+  xy: 453, 624
+  size: 199, 154
+  orig: 199, 154
+  offset: 0, 0
+  index: -1
+start
+  rotate: false
+  xy: 431, 165
+  size: 263, 67
+  orig: 263, 67
+  offset: 0, 0
+  index: -1
 mainmenu
   rotate: false
-  xy: 627, 316
+  xy: 1, 62
   size: 253, 59
   orig: 253, 59
   offset: 0, 0
   index: -1
 restart
   rotate: false
-  xy: 627, 255
+  xy: 1, 1
   size: 207, 59
   orig: 207, 59
   offset: 0, 0
   index: -1
+textbox1
+  rotate: false
+  xy: 654, 643
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
 block2
   rotate: false
-  xy: 855, 784
+  xy: 855, 919
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 exit
   rotate: false
-  xy: 627, 194
+  xy: 256, 62
   size: 124, 59
   orig: 124, 59
   offset: 0, 0
   index: -1
 coin1
   rotate: false
-  xy: 403, 7
+  xy: 403, 543
   size: 25, 24
   orig: 25, 24
   offset: 0, 0
   index: -1
 block1
   rotate: false
-  xy: 992, 1001
+  xy: 403, 133
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 heart
   rotate: false
-  xy: 882, 359
+  xy: 453, 606
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

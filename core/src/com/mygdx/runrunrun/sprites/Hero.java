@@ -37,9 +37,9 @@ public class Hero extends MoveableObject {
 
     // Animation handler
     private boolean standing;
+    private boolean running;
     private boolean stopping;
-    private boolean jumpingUp;
-    private boolean jumpingDown;
+    private boolean jumping;
 
     private TextureRegion[][] fontSheet;
     private int rowIndex;
@@ -54,19 +54,20 @@ public class Hero extends MoveableObject {
         super(x, y, image, Types.Hero);
 
         // Animation test
-        int size = 89;
+        int width = 36;
+        int height = 60;
         rowIndex = 0;
         colIndex = 0;
         animationDelay = 1f;
-        resize(size,size);
-        int rows = image.getRegionWidth() / size;
-        int cols = image.getRegionHeight() / size;
+        resize(width,height);
+        int rows = image.getRegionWidth() / width;
+        int cols = image.getRegionHeight() / height;
 
         fontSheet = new TextureRegion[rows][cols];
 
         for(int i = 0 ; i < rows ; i ++){
             for(int j = 0 ; j < cols ; j ++){
-                fontSheet[i][j] = new TextureRegion(image, size * i, size * j, size, size);
+                fontSheet[i][j] = new TextureRegion(image, width * i, height * j, width, height);
             }
         }
 
@@ -200,61 +201,42 @@ public class Hero extends MoveableObject {
         }
     }
 
+    private void updateState(){
+
+        if(speed < MAX_SPEED){
+            standing = true;
+            running = false;
+            jumping = false;
+        }else if(speed >= MAX_SPEED){
+            running = true;
+            standing = false;
+            jumping = false;
+        }
+
+        if(inAir){
+            running = false;
+            standing = false;
+            jumping = true;
+        }
+    }
+
     private void updateAnimation(float dt){
-
         if(animationDelay > 0){
-            animationDelay -= 10f * dt;
+            if(standing)
+                animationDelay -= 5f * dt;
+            else
+                animationDelay -= 10f * dt;
         }else{
-
-            animationDelay = 1f;
             rowIndex++;
-
-            if(speed > 0){
-                standing = false;
-            }else{
-                standing = true;
-            }
-            if(jump_acceleration > 1){
-                if(jump_acceleration > 200){
-                    jumpingDown = false;
-                    jumpingUp = true;
-                }else{
-                    jumpingUp = false;
-                    jumpingDown = true;
-                }
-            }else{
-                if(flyHeight > Main.GROUND_LEVEL && !fly){
-                    jumpingUp = false;
-                    jumpingDown = true;
-                }else{
-                    jumpingUp = false;
-                    jumpingDown = false;
-                }
-            }
-
-            if(standing || fly) {
-                colIndex = 0;
-                if (rowIndex >= 5) {
+            animationDelay = 1f;
+            if(standing){
+                if(rowIndex >= 4)
                     rowIndex = 0;
-                }
-            }
-            else if(stopping || isStopped){
-                colIndex = 1;
-                rowIndex = 6;
-            }
-            else if(jumpingUp || jumpingDown){
-                colIndex = 2;
-                if(jumpingUp){
-                    if(rowIndex >= 2) rowIndex = 0;
-                }else{
-                    rowIndex = 3;
-                }
-            }
-            else{
-                colIndex = 1;
-                if(rowIndex >= 6){
-                    rowIndex = 0;
-                }
+            }else if(running){
+               if(rowIndex <= 4 || rowIndex >= 15)
+                   rowIndex = 5;
+            }else if(jumping){
+               rowIndex = 4;
             }
         }
     }
@@ -310,21 +292,6 @@ public class Hero extends MoveableObject {
                 flyHeight += 100 * dt;
             }
 
-
-            /*if(!flyTimerBoolean){
-                if(flyTimer >= 300)
-                    flyTimerBoolean = true;
-                else{
-                    flyTimer += 300f * dt;
-                }
-            }else{
-                if(flyTimer <= 0)
-                    flyTimerBoolean = false;
-                else{
-                    flyTimer -= 300f * dt;
-                }
-            }*/
-
             final_y = flyHeight + (flyTimer * dt);
 
         }
@@ -332,11 +299,10 @@ public class Hero extends MoveableObject {
         this.position.set(final_x,final_y);
         this.rect.setWidth(30);
         this.rect.setPosition(final_x + 30,final_y);
+
+        updateState();
         updateAnimation(dt);
-
     }
-
-
 
     @Override
     public void render(SpriteBatch sb){
