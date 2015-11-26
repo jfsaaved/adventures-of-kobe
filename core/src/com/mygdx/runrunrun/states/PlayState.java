@@ -221,7 +221,7 @@ public class PlayState extends State{
         objects.lastElement().setHide(true);
 
         // Moving objects
-        objects.add(new MovingBlock(0, 0, Main.resource.getAtlas("assets").findRegion("block1"), 20f));
+        objects.add(new MovingBlock(0, 0, Main.resource.getAtlas("assets").findRegion("blob1"), 20f));
         objects.lastElement().setHide(true);
 
         // Blocks

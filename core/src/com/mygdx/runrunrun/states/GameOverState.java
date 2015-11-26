@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
 import com.mygdx.runrunrun.sprites.Coin;
+import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.ui.TextImage;
 
 import org.w3c.dom.css.Rect;
@@ -126,6 +127,7 @@ public class GameOverState extends State {
         handleInput();
         onEnterTransition(dt);
         onExitTransition(dt);
+
     }
 
     public void render(SpriteBatch sb){
