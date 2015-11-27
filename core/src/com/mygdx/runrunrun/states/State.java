@@ -57,13 +57,14 @@ public abstract class State {
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
-        if(enterTransition)
-            sr.setColor((new Color(0,0,0,enterTransitionVal)));
-        else if(exitTransition)
+        if(enterTransition) {
+            sr.setColor((new Color(0, 0, 0, enterTransitionVal)));
+            sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
+        }
+        else if(exitTransition){
             sr.setColor(new Color(0,0,0, exitTransitionVal));
-
-        sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
-
+            sr.rect(0,0,Main.WIDTH,Main.HEIGHT);
+        }
 
         sr.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);

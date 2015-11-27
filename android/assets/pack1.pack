@@ -94,30 +94,37 @@ filter: Nearest,Nearest
 repeat: none
 fontsheet
   rotate: false
-  xy: 1, 33
+  xy: 1, 551
+  size: 450, 450
+  orig: 450, 450
+  offset: 0, 0
+  index: -1
+nameSheet
+  rotate: false
+  xy: 1, 99
   size: 450, 450
   orig: 450, 450
   offset: 0, 0
   index: -1
 clouds1
   rotate: false
-  xy: 453, 246
+  xy: 453, 764
   size: 400, 237
   orig: 400, 237
   offset: 0, 0
   index: -1
-gameover
-  rotate: false
-  xy: 453, 167
-  size: 428, 77
-  orig: 428, 77
-  offset: 0, 0
-  index: -1
 blob2
   rotate: false
-  xy: 453, 101
+  xy: 1, 33
   size: 512, 64
   orig: 512, 64
+  offset: 0, 0
+  index: -1
+gameover
+  rotate: false
+  xy: 453, 685
+  size: 428, 77
+  orig: 428, 77
   offset: 0, 0
   index: -1
 ground1
@@ -129,14 +136,14 @@ ground1
   index: -1
 mainmenu
   rotate: false
-  xy: 453, 40
+  xy: 453, 624
   size: 253, 59
   orig: 253, 59
   offset: 0, 0
   index: -1
 blob3
   rotate: false
-  xy: 708, 67
+  xy: 453, 590
   size: 256, 32
   orig: 256, 32
   offset: 0, 0
