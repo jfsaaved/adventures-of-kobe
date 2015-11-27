@@ -22,8 +22,8 @@ public class MenuState extends State {
     private TextureRegion title;
     private TextureRegion startButton;
 
-    private TextureRegion clouds;
-    private TextureRegion clouds2;
+    private TextureRegion bg;
+    private TextureRegion bg2;
     private int currentBGX;
 
     private Rectangle startRect;
@@ -39,8 +39,8 @@ public class MenuState extends State {
 
         exitTransition = false;
 
-        clouds = new TextureRegion(Main.resource.getAtlas("assets").findRegion("clouds1"));
-        clouds2 = clouds;
+        bg = new TextureRegion(Main.resource.getAtlas("assets").findRegion("tiled_bg"));
+        bg2 = bg;
 
         title = new TextureRegion(Main.resource.getAtlas("assets").findRegion("title"));
         startButton = new TextureRegion(Main.resource.getAtlas("assets").findRegion("start"));
@@ -99,7 +99,7 @@ public class MenuState extends State {
         onEnterTransition(dt);
         onExitTransition(dt);
 
-        if(currentBGX < clouds.getRegionWidth()){
+        if(currentBGX < bg.getRegionWidth()){
             currentBGX++;
         }else{
             currentBGX = 0;
@@ -111,8 +111,8 @@ public class MenuState extends State {
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
 
-        sb.draw(clouds,currentBGX - clouds.getRegionWidth(),Main.HEIGHT/2);
-        sb.draw(clouds2,currentBGX,Main.HEIGHT/2);
+        sb.draw(bg,currentBGX - bg.getRegionWidth(),0);
+        sb.draw(bg2,currentBGX,0);
 
         gold.render(sb);
         sb.draw(title, Main.WIDTH/2 - title.getRegionWidth()/2, Main.HEIGHT/2 + 60);

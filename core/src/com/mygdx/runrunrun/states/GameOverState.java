@@ -36,6 +36,10 @@ public class GameOverState extends State {
     private TextImage highScore;
     private TextImage currentScore;
 
+    private TextureRegion bg;
+    private TextureRegion bg2;
+    private int currentBGX;
+
     private boolean fState; // 0 play again, 1 main menu;
 
     public GameOverState(GSM gsm, int score){
@@ -46,6 +50,9 @@ public class GameOverState extends State {
         getEnterTransitionValHelper = 1f;
 
         exitTransition = false;
+
+        bg = new TextureRegion(Main.resource.getAtlas("assets").findRegion("tiled_bg"));
+        bg2 = bg;
 
         currentScore = new TextImage("YOUR SCORE:" + score, 0, 0, 0.5f );
         highScore = new TextImage("HIGH SCORE:" + Main.pref.getHighScore(), 0, 0, 0.5f);
@@ -128,11 +135,20 @@ public class GameOverState extends State {
         onEnterTransition(dt);
         onExitTransition(dt);
 
+        if(currentBGX < bg.getRegionWidth()){
+            currentBGX++;
+        }else{
+            currentBGX = 0;
+        }
+
     }
 
     public void render(SpriteBatch sb){
         sb.setProjectionMatrix((cam.combined));
         sb.begin();
+
+        sb.draw(bg,currentBGX - bg.getRegionWidth(),0);
+        sb.draw(bg2,currentBGX,0);
 
         currentScore.render(sb);
         highScore.render(sb);
