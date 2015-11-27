@@ -84,6 +84,7 @@ public class MovingBlock extends MoveableObject {
         }
 
         updateAnimation(dt);
+        this.rect.setHeight(24);
         this.position.set(final_position_x, final_position_y);
     }
 

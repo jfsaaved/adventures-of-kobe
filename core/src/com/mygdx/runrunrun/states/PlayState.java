@@ -276,6 +276,13 @@ public class PlayState extends State{
                 if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.kill();
+
+                        if(object.getType().equals(Types.HitBlock)){
+                            score += 5;
+                        }else{
+                            score += 2;
+                        }
+
                         hitSoundHelper = true;
                         return;
                     }
@@ -698,7 +705,7 @@ public class PlayState extends State{
 
     private void scoreCalculator(){
         if(!intro) {
-            if (scoreTimer == 60) {
+            if (scoreTimer == 60 && !gameOver) {
                 scoreTimer = 0;
                 score++;
             }
@@ -808,11 +815,14 @@ public class PlayState extends State{
 
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
-
-        //sr.rect(hero.getRectangle().getX(), hero.getRectangle().getY(), hero.getRectangle().getWidth(),hero.getRectangle().getHeight());
-        //sr.setColor(1, 1, 0, 1);
-
         /*
+        sr.rect(hero.getRectangle().getX(), hero.getRectangle().getY(), hero.getRectangle().getWidth(),hero.getRectangle().getHeight());
+
+        for(MoveableObject object : objects){
+            sr.rect(object.getRectangle().getX(), object.getRectangle().getY(),object.getRectangle().getWidth(),object.getRectangle().getHeight());
+        }
+
+
         if(enteredShop) {
             for (ItemButton itemButton : itemButtons)
                 sr.rect(itemButton.getX(), itemButton.getY(), itemButton.getWidth(), itemButton.getHeight());
@@ -822,8 +832,8 @@ public class PlayState extends State{
 
         if(toTownCoolDown <= 0)
             sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
-        */
 
+        */
         sr.end();
 
     }

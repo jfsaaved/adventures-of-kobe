@@ -78,6 +78,7 @@ public class Block extends MoveableObject{
             interacted = false;
         }
 
+        this.rect.setHeight(16);
         updateAnimation(dt);
     }
 
