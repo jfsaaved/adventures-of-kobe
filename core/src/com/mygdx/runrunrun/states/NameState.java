@@ -40,6 +40,8 @@ public class NameState extends State {
      */
     private int nameIndex;
     private float flashLineVal;
+    private String name;
+    private Vector<TextImage> nameLines;
     private Vector<TextImage> emptyNameLines;
 
     public NameState(GSM gsm){
@@ -80,9 +82,9 @@ public class NameState extends State {
         letterBox = new Vector<Rectangle>();
         int initX = Main.WIDTH/2 - fontSheet.getRegionWidth()/2;
         int initY = 2;
-        for(int row = 0 ; row < 10 ; row ++ ){
-            for(int col = 0 ; col < 6 ; col ++ ){
-                letterBox.add(new Rectangle(initX + (row * 45),initY + (col * 45),45,45));
+        for(int col = 6 ; col > 0 ; col -- ){
+            for(int row = 0 ; row < 10 ; row ++ ){
+                letterBox.add(new Rectangle(initX + (row * 45),initY + (col * 45) - 45,45,45));
             }
         }
 
@@ -92,9 +94,12 @@ public class NameState extends State {
          */
         nameIndex = 0;
         flashLineVal = 1f;
+        nameLines = new Vector<TextImage>();
         emptyNameLines = new Vector<TextImage>();
         for(int lines = 0 ; lines < 10 ; lines ++) {
+            nameLines.add(new TextImage("", initX + (lines * 45) + 23,335, 1f));
             emptyNameLines.add(new TextImage("_", initX + (lines * 45) + 25, 315, 1f));
+            nameLines.lastElement().setTextHide(false);
             emptyNameLines.lastElement().setTextHide(false);
         }
 
@@ -124,6 +129,20 @@ public class NameState extends State {
         if(Gdx.input.justTouched() && !exitTransition && !enterTransition){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
+
+            int index = 0;
+            for(Rectangle box : letterBox){
+                if(box.contains(mouse.x,mouse.y)){
+                    String c =  Character.toString( (char)(index + 32) );
+                    System.out.println(c);
+                    nameLines.elementAt(nameIndex).update(c,Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
+                    emptyNameLines.elementAt(nameIndex).setTextHide(false);
+                    if(nameIndex < 9)
+                        nameIndex++;
+                }
+                index++;
+            }
+
             if(enterRect.contains(mouse.x,mouse.y)){
                 Main.sounds.playSound("select");
                 exitTransition = true;
@@ -132,7 +151,12 @@ public class NameState extends State {
                 Main.sounds.playSound("select");
                 exitTransition = true;
                 exitTransitionVal = 0f;
-            }
+            }else if(backRect.contains(mouse.x,mouse.y) && nameIndex != 0){
+                nameLines.elementAt(nameIndex).update("",Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
+                emptyNameLines.elementAt(nameIndex).setTextHide(false);
+                nameIndex--;
+            }else if(backRect.contains(mouse.x,mouse.y) && nameIndex == 0)
+                nameLines.elementAt(nameIndex).update("",Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
         }
     }
 
@@ -163,6 +187,9 @@ public class NameState extends State {
 
         for(TextImage line : emptyNameLines)
             line.render(sb);
+
+        for(TextImage nLine : nameLines)
+            nLine.render(sb);
 
         enter.render(sb);
         back.render(sb);
