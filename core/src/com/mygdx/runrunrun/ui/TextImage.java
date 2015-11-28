@@ -82,6 +82,10 @@ public class TextImage extends Box{
         rect.setPosition( this.x - width / 2, y - height / 2);
     }
 
+    public boolean getHide(){
+        return text_hidden;
+    }
+
     public float getX(){
         return this.rect.getX();
     }

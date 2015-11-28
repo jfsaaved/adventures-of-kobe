@@ -24,12 +24,23 @@ public class NameState extends State {
     private TextureRegion fontSheet;
     private Vector<Rectangle> letterBox;
 
+    /**
+     * Enter, back and exit images
+     */
     private TextImage enter;
     private TextImage back;
     private TextImage exit;
     private Rectangle enterRect;
     private Rectangle backRect;
     private Rectangle exitRect;
+
+    /**
+     * For the name box
+     *
+     */
+    private int nameIndex;
+    private float flashLineVal;
+    private Vector<TextImage> emptyNameLines;
 
     public NameState(GSM gsm){
         super(gsm);
@@ -75,6 +86,27 @@ public class NameState extends State {
             }
         }
 
+
+        /**
+         * For the empty name lines
+         */
+        nameIndex = 0;
+        flashLineVal = 1f;
+        emptyNameLines = new Vector<TextImage>();
+        for(int lines = 0 ; lines < 10 ; lines ++) {
+            emptyNameLines.add(new TextImage("_", initX + (lines * 45) + 25, 315, 1f));
+            emptyNameLines.lastElement().setTextHide(false);
+        }
+
+    }
+
+    private void flashLine(float dt){
+        if(flashLineVal > 0){
+            flashLineVal -= 2.5f * dt;
+        }else{
+            emptyNameLines.elementAt(nameIndex).setTextHide(!emptyNameLines.elementAt(nameIndex).getHide());
+            flashLineVal = 1f;
+        }
     }
 
     @Override
@@ -110,7 +142,7 @@ public class NameState extends State {
         handleInput();
         onExitTransition(dt);
         onEnterTransition(dt);
-
+        flashLine(dt);
 
         if(currentBGX < bg.getRegionWidth()){
             currentBGX++;
@@ -128,6 +160,9 @@ public class NameState extends State {
         sb.draw(bg2,currentBGX,0);
 
         sb.draw(fontSheet,Main.WIDTH/2 - fontSheet.getRegionWidth()/2, -180);
+
+        for(TextImage line : emptyNameLines)
+            line.render(sb);
 
         enter.render(sb);
         back.render(sb);
