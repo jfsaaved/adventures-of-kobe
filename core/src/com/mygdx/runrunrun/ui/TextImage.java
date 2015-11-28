@@ -86,6 +86,10 @@ public class TextImage extends Box{
         return text_hidden;
     }
 
+    public String getText(){
+        return text;
+    }
+
     public float getX(){
         return this.rect.getX();
     }

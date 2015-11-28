@@ -134,7 +134,6 @@ public class NameState extends State {
             for(Rectangle box : letterBox){
                 if(box.contains(mouse.x,mouse.y)){
                     String c =  Character.toString( (char)(index + 32) );
-                    System.out.println(c);
                     nameLines.elementAt(nameIndex).update(c,Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
                     emptyNameLines.elementAt(nameIndex).setTextHide(false);
                     if(nameIndex < 9)
@@ -144,6 +143,13 @@ public class NameState extends State {
             }
 
             if(enterRect.contains(mouse.x,mouse.y)){
+                name = "";
+                for(TextImage letter : nameLines){
+                    if(!letter.equals("") || letter != null)
+                        name += letter.getText();
+                }
+                Main.pref.setName(name);
+                System.out.println(name);
                 Main.sounds.playSound("select");
                 exitTransition = true;
                 exitTransitionVal = 0f;

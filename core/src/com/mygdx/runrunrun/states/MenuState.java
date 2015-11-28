@@ -60,7 +60,7 @@ public class MenuState extends State {
     private void initPrefs(){
 
         if(!Main.pref.getPrefs().contains("Name"))
-            Main.pref.setName("PLAYER");
+            Main.pref.setName("ANONYMOUS");
 
         if(!Main.pref.getPrefs().contains("Gold"))
            Main.pref.setGold(0);
