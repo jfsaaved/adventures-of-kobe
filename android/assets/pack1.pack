@@ -99,7 +99,7 @@ fontsheet
   orig: 450, 450
   offset: 0, 0
   index: -1
-nameSheet
+namesheet
   rotate: false
   xy: 1, 99
   size: 450, 450
@@ -134,16 +134,23 @@ ground1
   orig: 400, 30
   offset: 0, 0
   index: -1
+name
+  rotate: false
+  xy: 453, 620
+  size: 320, 63
+  orig: 320, 63
+  offset: 0, 0
+  index: -1
 mainmenu
   rotate: false
-  xy: 453, 624
+  xy: 453, 559
   size: 253, 59
   orig: 253, 59
   offset: 0, 0
   index: -1
 blob3
   rotate: false
-  xy: 453, 590
+  xy: 453, 525
   size: 256, 32
   orig: 256, 32
   offset: 0, 0

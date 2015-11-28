@@ -75,7 +75,7 @@ public class NameState extends State {
         /**
          * Below are the letter boxes images
          */
-        fontSheet = new TextureRegion(Main.resource.getAtlas("assets").findRegion("nameSheet"));
+        fontSheet = new TextureRegion(Main.resource.getAtlas("assets").findRegion("namesheet"));
         bg = new TextureRegion(Main.resource.getAtlas("assets").findRegion("tiled_bg"));
         bg2 = bg;
 
@@ -133,8 +133,9 @@ public class NameState extends State {
             int index = 0;
             for(Rectangle box : letterBox){
                 if(box.contains(mouse.x,mouse.y)){
+                    Main.sounds.playSound("select");
                     String c =  Character.toString( (char)(index + 32) );
-                    nameLines.elementAt(nameIndex).update(c,Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
+                    nameLines.elementAt(nameIndex).update(c, Main.WIDTH / 2 - fontSheet.getRegionWidth() / 2 + (nameIndex * 45) + 25, 335, 1f);
                     emptyNameLines.elementAt(nameIndex).setTextHide(false);
                     if(nameIndex < 9)
                         nameIndex++;
@@ -149,7 +150,6 @@ public class NameState extends State {
                         name += letter.getText();
                 }
                 Main.pref.setName(name);
-                System.out.println(name);
                 Main.sounds.playSound("select");
                 exitTransition = true;
                 exitTransitionVal = 0f;
@@ -158,11 +158,14 @@ public class NameState extends State {
                 exitTransition = true;
                 exitTransitionVal = 0f;
             }else if(backRect.contains(mouse.x,mouse.y) && nameIndex != 0){
+                Main.sounds.playSound("select");
                 nameLines.elementAt(nameIndex).update("",Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
                 emptyNameLines.elementAt(nameIndex).setTextHide(false);
                 nameIndex--;
-            }else if(backRect.contains(mouse.x,mouse.y) && nameIndex == 0)
-                nameLines.elementAt(nameIndex).update("",Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
+            }else if(backRect.contains(mouse.x,mouse.y) && nameIndex == 0) {
+                Main.sounds.playSound("select");
+                nameLines.elementAt(nameIndex).update("", Main.WIDTH / 2 - fontSheet.getRegionWidth() / 2 + (nameIndex * 45) + 25, 335, 1f);
+            }
         }
     }
 
