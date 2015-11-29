@@ -308,8 +308,9 @@ public class PlayState extends State{
             }
 
             if(hero.contains(mouse.x, mouse.y) && !stopForShop && !hero.isFlying()){
+                if(!hero.getBoost())
+                    hitSoundHelper = true;
                 hero.interact();
-                hitSoundHelper = true;
                 return;
             }
 

@@ -136,6 +136,10 @@ public class Hero extends MoveableObject {
         health_counter = 3;
     }
 
+    public boolean getBoost(){
+        return boostActivated;
+    }
+
     public float getSpeed(){
         return speed;
     }
