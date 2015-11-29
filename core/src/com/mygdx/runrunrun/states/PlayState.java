@@ -107,6 +107,13 @@ public class PlayState extends State{
     private Music play;
 
     // Sound effects
+
+    private Sound coinSound;
+    private boolean coinSoundHelper;
+
+    private Sound getHitSound;
+    private boolean getHitSoundHelper;
+
     private Sound selectSound;
     private boolean selectSoundHelper;
     private Sound hitSound1, hitSound2, hitSound3, hitSound4;
@@ -155,6 +162,8 @@ public class PlayState extends State{
     }
 
     private void initSounds(){
+        coinSound = Main.sounds.getSound("coin");
+        getHitSound = Main.sounds.getSound("hit");
         selectSound = Main.sounds.getSound("select");
         jumpSound = Main.sounds.getSound("type1");
         hitSound1 = Main.sounds.getSound("type2");
@@ -292,6 +301,7 @@ public class PlayState extends State{
                 }else if(object.getType().equals(Types.Coin)){
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
                         object.interact();
+                        hitSoundHelper = true;
                         return;
                     }
                 }
@@ -299,10 +309,12 @@ public class PlayState extends State{
 
             if(hero.contains(mouse.x, mouse.y) && !stopForShop && !hero.isFlying()){
                 hero.interact();
+                hitSoundHelper = true;
                 return;
             }
 
             if(goToTown.containsRect(mouse.x,mouse.y) && toTownCoolDown <= 0){
+                selectSoundHelper = true;
                 toTown = true;
                 toTownTimer = 40;
                 toTownString = "TRAVELING";
@@ -322,6 +334,7 @@ public class PlayState extends State{
 
 
             if(stopForShop){
+                hitSoundHelper = true;
                 hero.toggleStop();
                 if(!enteredShop){
                     currentDialogue = shop.getDialogue(0);
@@ -377,6 +390,7 @@ public class PlayState extends State{
 
         if(firstObj.overlaps(hero.getRectangle())){
             if(firstObj.getHide() == false) {
+                coinSoundHelper = true;
                 hero.addCoin( coin.getValue());
                 firstObj.setHide(true);
             }
@@ -423,6 +437,7 @@ public class PlayState extends State{
         if(hit_cool_down > 0f){
             if(hit_cool_down == HIT_COOL_DOWN_MAX){
                 hero.reduceHealth();
+                getHitSoundHelper = true;
                 if(hero.getHealth_counter() == 0) {
                     hero.reduceHealth();
                     gameOver = true;
@@ -705,6 +720,16 @@ public class PlayState extends State{
         if(selectSoundHelper){
             selectSound.play();
             selectSoundHelper = false;
+        }
+
+        if(coinSoundHelper){
+            coinSound.play();
+            coinSoundHelper = false;
+        }
+
+        if(getHitSoundHelper){
+            getHitSound.play();
+            getHitSoundHelper = false;
         }
     }
 
