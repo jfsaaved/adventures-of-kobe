@@ -133,7 +133,7 @@ public class NameState extends State {
             int index = 0;
             for(Rectangle box : letterBox){
                 if(box.contains(mouse.x,mouse.y)){
-                    Main.sounds.playSound("select");
+                    Main.sounds.playSound("type1");
                     String c =  Character.toString( (char)(index + 32) );
                     nameLines.elementAt(nameIndex).update(c, Main.WIDTH / 2 - fontSheet.getRegionWidth() / 2 + (nameIndex * 45) + 25, 335, 1f);
                     emptyNameLines.elementAt(nameIndex).setTextHide(false);
@@ -158,12 +158,12 @@ public class NameState extends State {
                 exitTransition = true;
                 exitTransitionVal = 0f;
             }else if(backRect.contains(mouse.x,mouse.y) && nameIndex != 0){
-                Main.sounds.playSound("select");
+                Main.sounds.playSound("type4");
                 nameLines.elementAt(nameIndex).update("",Main.WIDTH/2 - fontSheet.getRegionWidth()/2 + (nameIndex * 45) + 25, 335, 1f);
                 emptyNameLines.elementAt(nameIndex).setTextHide(false);
                 nameIndex--;
             }else if(backRect.contains(mouse.x,mouse.y) && nameIndex == 0) {
-                Main.sounds.playSound("select");
+                Main.sounds.playSound("type4");
                 nameLines.elementAt(nameIndex).update("", Main.WIDTH / 2 - fontSheet.getRegionWidth() / 2 + (nameIndex * 45) + 25, 335, 1f);
             }
         }

@@ -109,7 +109,7 @@ public class PlayState extends State{
     // Sound effects
     private Sound selectSound;
     private boolean selectSoundHelper;
-    private Sound hitSound;
+    private Sound hitSound1, hitSound2, hitSound3, hitSound4;
     private boolean hitSoundHelper;
     private Sound jumpSound;
     private boolean jumpSoundHelper;
@@ -156,8 +156,11 @@ public class PlayState extends State{
 
     private void initSounds(){
         selectSound = Main.sounds.getSound("select");
-        jumpSound = Main.sounds.getSound("jump");
-        hitSound = Main.sounds.getSound("hit");
+        jumpSound = Main.sounds.getSound("type1");
+        hitSound1 = Main.sounds.getSound("type2");
+        hitSound2 = Main.sounds.getSound("type3");
+        hitSound3 = Main.sounds.getSound("type4");
+        hitSound4 = Main.sounds.getSound("type5");
     }
 
     private void initCamera(int mapLength){
@@ -685,7 +688,17 @@ public class PlayState extends State{
         }
 
         if(hitSoundHelper){
-            hitSound.play();
+            Random rand = new Random();
+            int randNum = rand.nextInt(4);
+            if(randNum == 0)
+                hitSound1.play();
+            else if(randNum == 1)
+                hitSound2.play();
+            else if(randNum == 2)
+                hitSound3.play();
+            else if(randNum == 3)
+                hitSound4.play();
+            System.out.println(randNum);
             hitSoundHelper = false;
         }
 

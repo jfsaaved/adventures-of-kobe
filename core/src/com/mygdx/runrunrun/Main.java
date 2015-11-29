@@ -42,11 +42,15 @@ public class Main extends ApplicationAdapter {
         pref = new MainPreferences();
 
         resource.loadAtlas("pack1.pack","assets");
+
         musicContent.loadMusic("play.mp3","play");
         musicContent.loadMusic("intro.mp3","intro");
         sounds.loadSound("select.mp3","select");
-        sounds.loadSound("hit.mp3","hit");
-        sounds.loadSound("hit.mp3","jump");
+        sounds.loadSound("type1.mp3","type1");
+        sounds.loadSound("type2.mp3","type2");
+        sounds.loadSound("type3.mp3","type3");
+        sounds.loadSound("type4.mp3","type4");
+        sounds.loadSound("type5.mp3","type5");
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
