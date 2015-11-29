@@ -56,4 +56,17 @@ public class MainPreferences {
             return 0;
     }
 
+    public void setID(int id){
+        prefs.putInteger("ID",id);
+        prefs.flush();
+    }
+
+    public int getID(){
+        if(prefs.getInteger("ID") >= 1){
+            return prefs.getInteger("ID");
+        }else{
+            return -1;
+        }
+    }
+
 }
