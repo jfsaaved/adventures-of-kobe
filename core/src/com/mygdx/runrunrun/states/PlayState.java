@@ -326,7 +326,7 @@ public class PlayState extends State{
             }
 
             for(ItemButton itemButton : itemButtons){
-                if(itemButton.containsRect(mouse.x,mouse.y)){
+                if(itemButton.containsRect(mouse.x,mouse.y) && flyCount <= 0){
                     itemButton.interact(hero, this);
                     selectSoundHelper = true;
                     return;
@@ -756,7 +756,8 @@ public class PlayState extends State{
     public void setFly(boolean b){
         if(b){
             flyCount = 1;
-
+            shopTextBoxOptions.setTextHide(true);
+            shopTextBoxOptions.setTextBox_hide(true);
         }else{
             flyCount = -1;
         }
