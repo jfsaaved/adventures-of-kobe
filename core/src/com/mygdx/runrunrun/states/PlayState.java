@@ -520,17 +520,23 @@ public class PlayState extends State{
 
         if(newCycle){
 
+            boolean alreadyLeveled = false;
+
             if(flyCount > 0){
                 flyCount--;
             }else if(flyCount == 0){
                 hero.setFly(false);
+                level += 4;
+                if(level > 24)
+                    level = 24;
+                alreadyLeveled = true;
                 flyCount--;
             }
 
             if(!toTown){
                 currentCycle++;
                 if(currentCycle % 3 == 0){ // Originally 10, or 5
-                    if(level < 24) {
+                    if(level < 24 && !alreadyLeveled) {
                         level++;
                         initLevelObj(level);
                     }
@@ -714,7 +720,6 @@ public class PlayState extends State{
                 hitSound3.play();
             else if(randNum == 3)
                 hitSound4.play();
-            System.out.println(randNum);
             hitSoundHelper = false;
         }
 
