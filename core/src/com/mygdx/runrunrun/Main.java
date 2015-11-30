@@ -58,8 +58,8 @@ public class Main extends ApplicationAdapter {
         sr = new ShapeRenderer();
         gsm = new GSM();
         //gsm.push(new NameState(gsm));
-        //gsm.push(new GameOverState(gsm,0));
-        gsm.push(new MenuState(gsm));
+        gsm.push(new GameOverState(gsm,0));
+        //gsm.push(new MenuState(gsm));
 
 	}
 
