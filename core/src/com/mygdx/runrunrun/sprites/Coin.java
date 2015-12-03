@@ -70,6 +70,10 @@ public class Coin extends MoveableObject {
         }
     }
 
+    public boolean getInteracted(){
+        return interacted;
+    }
+
     public int getValue(){
         return value;
     }

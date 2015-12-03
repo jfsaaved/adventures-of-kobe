@@ -57,6 +57,10 @@ public class MoveableObject {
         kill = true;
     }
 
+    public boolean getKilled(){
+        return kill;
+    }
+
     private void onKill(float dt){
         if(killVal > 0f){
             killVal -= 1f * dt;

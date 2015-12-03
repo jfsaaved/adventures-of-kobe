@@ -287,6 +287,8 @@ public class PlayState extends State{
             for(MoveableObject object : objects){
                 if(object.getType().equals(Types.HitBlock) || object.getType().equals(Types.Block) || object.getType().equals(Types.MovingBlock)) {
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
+                        if(!object.getKilled())
+                            hitSoundHelper = true;
                         object.kill();
 
                         if(object.getType().equals(Types.HitBlock)){
@@ -295,13 +297,16 @@ public class PlayState extends State{
                             score += 2;
                         }
 
-                        hitSoundHelper = true;
                         return;
                     }
                 }else if(object.getType().equals(Types.Coin)){
                     if (object.contains(mouse.x, mouse.y) && !object.getHide()) {
+
+                        Coin temp = (Coin) object;
+                        if(!temp.getInteracted())
+                            hitSoundHelper = true;
+
                         object.interact();
-                        hitSoundHelper = true;
                         return;
                     }
                 }
