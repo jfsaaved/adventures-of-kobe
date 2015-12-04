@@ -41,7 +41,7 @@ public class MainPreferences {
         if(!prefs.getString("Name").equals(null)){
             return prefs.getString("Name");
         }else
-            return "noname";
+            return "ANONYMOUS";
     }
 
     public void setGold(int gold){

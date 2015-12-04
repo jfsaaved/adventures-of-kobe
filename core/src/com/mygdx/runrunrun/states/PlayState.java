@@ -675,9 +675,9 @@ public class PlayState extends State{
 
         textSplash.update("HIT!", cam.position.x, cam.position.y + cam.viewportHeight / 2 - hit_y_offset, 0.5f);
         pressToBegin.update("PRESS TO BEGIN", cam.position.x, cam.position.y + cam.viewportHeight / 2 - 75, 0.5f);
-        goToTown.update(toTownString, cam.position.x - 150, 16, 0.25f);
-        levelText.update("LEVEL" + (level - 4),cam.position.x + 150, 20, 0.25f);
-        scoreImage.update("SCORE" + score, cam.position.x + 150, 8, 0.20f);
+        goToTown.update(toTownString, cam.position.x - 150, 8, 0.25f);
+        levelText.update("LEVEL" + (level - 4),cam.position.x + 150, 8, 0.25f);
+        scoreImage.update("SCORE" + score, cam.position.x + 1, 8, 0.25f);
 
         coinsText.update(hero.getCoins() + "", cam.position.x + cam.viewportWidth/2 - coin_text_x_offset, cam.position.y + cam.viewportHeight/2 - coin_text_y_offset,0.20f);
     }
@@ -885,6 +885,9 @@ public class PlayState extends State{
             sr.rect(goToTown.getX(), goToTown.getY(), goToTown.getWidth(), goToTown.getHeight());
 
         */
+
+        //sr.rect(cam.position.x - 200, 0, cam.viewportWidth, cam.viewportHeight);
+
         sr.end();
 
     }

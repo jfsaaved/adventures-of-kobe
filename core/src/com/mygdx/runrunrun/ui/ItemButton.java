@@ -45,10 +45,12 @@ public class ItemButton extends Box{
                     break;
                 case CHILL:
                     state.changeDialogue(4);
-                    hero.setFly(true);
-                    state.setFly(true);
                     if(hero.getCoins() >= 50) {
+                        hero.setFly(true);
+                        state.setFly(true);
                         hero.subtractCoins(50);
+                    } else{
+                        state.changeDialogue(3);
                     }
                     break;
             }

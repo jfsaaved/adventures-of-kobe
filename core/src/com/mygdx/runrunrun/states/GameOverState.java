@@ -8,13 +8,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.runrunrun.Main;
+import com.mygdx.runrunrun.handler.MainPreferences;
 import com.mygdx.runrunrun.sprites.Coin;
 import com.mygdx.runrunrun.sprites.MovingBlock;
 import com.mygdx.runrunrun.ui.TextImage;
 
 import org.w3c.dom.css.Rect;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -85,13 +91,30 @@ public class GameOverState extends State {
             String name = URLEncoder.encode("\""+Main.pref.getName()+"\"", "UTF8");
             String gold = URLEncoder.encode(""+Main.pref.getGold(),"UTF8");
             String score = URLEncoder.encode(""+Main.pref.getHighScore(),"UTF8");
-            URL url = new URL("http://localhost:8080/kobe/NewEntry?name=" + name + "&gold=" + gold + "&score=" + score);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            String USER_AGENT = "Mozilla/5.0";
-            conn.setRequestProperty("User-Agent", USER_AGENT);
-            int responseCode = conn.getResponseCode();
-            System.out.println("Response Code : " + responseCode);
+
+            if(Main.pref.getID() < 0){
+                URL url = new URL("http://localhost:8080/kobe/update?name=" + name + "&gold=" + gold + "&score=" + score);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                String USER_AGENT = "Mozilla/5.0";
+                conn.setRequestProperty("User-Agent", USER_AGENT);
+                System.out.println("Response Code : " + conn.getResponseCode());
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                int newID = Integer.parseInt(br.readLine());
+                System.out.println("Content : "+ newID);
+                Main.pref.setID(newID);
+
+            } else{
+                URL url = new URL("http://localhost:8080/kobe/update?id="+Main.pref.getID()+"&name=" + name + "&gold=" + gold + "&score=" + score);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                String USER_AGENT = "Mozilla/5.0";
+                conn.setRequestProperty("User-Agent", USER_AGENT);
+                System.out.println("Response Code : " + conn.getResponseCode());
+                System.out.println("Updated: "+Main.pref.getID());
+            }
+
         }catch(IOException e){
             e.printStackTrace();
             System.out.println("Error: Connection failed.");

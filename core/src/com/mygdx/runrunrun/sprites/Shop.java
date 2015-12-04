@@ -41,7 +41,7 @@ public class Shop extends MoveableObject{
         dialogue[3] = "Shop Owner: Not enough gold!!!            " +
                       "Shop Owner: Anything else?                " ;
 
-        dialogue[4] = "Shop Owner: sick sesh bruh                " ;
+        dialogue[4] = "Shop Owner: Whoa! You're flying!!         " ;
 
         dialogue[5] = "Shop Owner: You have full health!         " +
                       "Shop Owner: Anything else?                " ;
