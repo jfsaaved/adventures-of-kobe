@@ -88,12 +88,12 @@ public class GameOverState extends State {
 
     private void sendScore(){
         try {
-            String name = URLEncoder.encode("\""+Main.pref.getName()+"\"", "UTF8");
+            String name = URLEncoder.encode(""+Main.pref.getName(), "UTF8");
             String gold = URLEncoder.encode(""+Main.pref.getGold(),"UTF8");
             String score = URLEncoder.encode(""+Main.pref.getHighScore(),"UTF8");
 
             if(Main.pref.getID() < 0){
-                URL url = new URL("http://localhost:8080/kobe/update?name=" + name + "&gold=" + gold + "&score=" + score);
+                URL url = new URL("http://kobe-juliansaavedra.rhcloud.com//update?name=" + name + "&gold=" + gold + "&score=" + score);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 String USER_AGENT = "Mozilla/5.0";
@@ -102,17 +102,28 @@ public class GameOverState extends State {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
                 int newID = Integer.parseInt(br.readLine());
-                System.out.println("Content : "+ newID);
+                System.out.println("New ID : "+ newID);
                 Main.pref.setID(newID);
+                System.out.println(br.readLine());
 
             } else{
-                URL url = new URL("http://localhost:8080/kobe/update?id="+Main.pref.getID()+"&name=" + name + "&gold=" + gold + "&score=" + score);
+                URL url = new URL("http://kobe-juliansaavedra.rhcloud.com//update?id="+Main.pref.getID()+"&name=" + name + "&gold=" + gold + "&score=" + score);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 String USER_AGENT = "Mozilla/5.0";
                 conn.setRequestProperty("User-Agent", USER_AGENT);
                 System.out.println("Response Code : " + conn.getResponseCode());
-                System.out.println("Updated: "+Main.pref.getID());
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                int updateCode = Integer.parseInt(br.readLine());
+                if(updateCode == 0) {
+                    int newID = Integer.parseInt(br.readLine());
+                    System.out.println("New ID : "+ newID);
+                    Main.pref.setID(newID);
+                    System.out.println(br.readLine());
+                }else{
+                    System.out.println("Your ID: "+Main.pref.getID());
+                    System.out.println(br.readLine());
+                }
             }
 
         }catch(IOException e){
