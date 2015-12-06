@@ -1,4 +1,7 @@
 # Adventures of Kobe
+Google Play: https://play.google.com/store/apps/details?id=com.mygdx.runrunrun.android    
+Leader Board http://kobe-juliansaavedra.rhcloud.com/    
+
 A 2D endless runner game  using core Java and libgdx.
 Re-uses objects to populate the dynamic map/level.
 
